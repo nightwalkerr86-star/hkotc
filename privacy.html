@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en-HK">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — HKOTC.io</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07090f; --bg2: #0d1120; --bg3: #131829;
+      --border: rgba(255,255,255,0.08); --gold: #f5a623; --gold2: #ffcc66;
+      --text: #f0f2ff; --muted: #8892a8; --radius: 16px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    a { color: var(--gold); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    nav {
+      position: sticky; top: 0; z-index: 99;
+      background: rgba(7,9,15,0.95); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 20px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .nav-logo { font-size: 18px; font-weight: 800; }
+    .nav-logo span { background: linear-gradient(135deg,var(--gold),var(--gold2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .nav-back { font-size: 14px; font-weight: 600; color: var(--muted); display:flex; align-items:center; gap:6px; transition: color 0.2s; }
+    .nav-back:hover { color: var(--text); text-decoration: none; }
+    .lang-btn {
+      display:inline-flex; align-items:center; gap:5px;
+      padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 700;
+      background: rgba(245,166,35,0.1); border: 1px solid rgba(245,166,35,0.25);
+      color: var(--gold); cursor: pointer; transition: all 0.2s;
+    }
+    .lang-btn:hover { background: rgba(245,166,35,0.18); }
+    .lang-dropdown { position:relative; display:inline-flex; }
+    .lang-menu { display:none; position:absolute; top:calc(100% + 6px); right:0; background:var(--bg2); border:1px solid rgba(245,166,35,0.2); border-radius:10px; padding:5px; min-width:130px; z-index:300; box-shadow:0 8px 28px rgba(0,0,0,0.35); }
+    .lang-menu.open { display:flex; flex-direction:column; gap:2px; }
+    .lang-option { display:flex; align-items:center; gap:8px; width:100%; padding:8px 10px; border-radius:7px; border:none; background:transparent; color:var(--text); cursor:pointer; font-size:13px; font-weight:600; font-family:inherit; transition:background 0.15s; text-align:left; }
+    .lang-option:hover { background:rgba(255,255,255,0.06); }
+    .lang-option.active { background:rgba(245,166,35,0.15); color:var(--gold); }
+
+    .page-hero {
+      padding: 60px 20px 48px;
+      background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(245,166,35,0.08), transparent 70%);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .page-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 14px; border-radius: 100px;
+      background: rgba(245,166,35,0.1); border: 1px solid rgba(245,166,35,0.2);
+      font-size: 12px; font-weight: 600; color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .page-title { font-size: clamp(28px, 6vw, 44px); font-weight: 900; letter-spacing: -1px; margin-bottom: 10px; }
+    .page-meta { font-size: 14px; color: var(--muted); }
+
+    .content-wrap { max-width: 800px; margin: 0 auto; padding: 48px 20px 80px; }
+    .toc { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 48px; }
+    .toc h3 { font-size: 14px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; }
+    .toc ol { padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+    .toc ol li a { font-size: 14px; color: var(--muted); transition: color 0.2s; }
+    .toc ol li a:hover { color: var(--gold); text-decoration: none; }
+
+    .section { margin-bottom: 44px; scroll-margin-top: 80px; }
+    .section h2 { font-size: 22px; font-weight: 800; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+    .section h2 .icon { display: inline-flex; align-items: center; flex-shrink: 0; color: var(--gold); }
+    .section h2 .icon svg { width: 20px; height: 20px; }
+    .page-badge .icon { display: inline-flex; align-items: center; color: var(--gold); }
+    .page-badge .icon svg { width: 14px; height: 14px; }
+    .section h3 { font-size: 16px; font-weight: 700; margin: 20px 0 10px; color: var(--gold); }
+    .section p { font-size: 15px; color: var(--muted); margin-bottom: 14px; line-height: 1.8; }
+    .section ul, .section ol { padding-left: 20px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 8px; }
+    .section ul li, .section ol li { font-size: 15px; color: var(--muted); line-height: 1.7; }
+    .section ul li::marker { color: var(--gold); }
+
+    .highlight-box { background: rgba(245,166,35,0.06); border: 1px solid rgba(245,166,35,0.15); border-radius: 12px; padding: 16px 20px; margin: 16px 0; }
+    .highlight-box p { color: var(--text); margin-bottom: 0; }
+
+    .contact-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 32px; text-align: center; margin-top: 48px; }
+    .contact-section h3 { font-size: 20px; font-weight: 800; margin-bottom: 10px; }
+    .contact-section p { color: var(--muted); margin-bottom: 20px; }
+    .contact-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+    .btn:hover { text-decoration: none; transform: translateY(-1px); }
+    .btn-wa { background: #25d366; color: #fff; }
+    .btn-tg { background: #2ca5e0; color: #fff; }
+
+    footer { padding: 32px 20px; border-top: 1px solid var(--border); text-align: center; }
+    footer .links { display: flex; gap: 24px; justify-content: center; margin-bottom: 12px; flex-wrap: wrap; }
+    footer .links a { font-size: 13px; color: var(--muted); }
+    footer .links a:hover { color: var(--text); text-decoration: none; }
+    footer p { font-size: 12px; color: var(--muted); opacity: 0.6; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">HKOTC<span>.io</span></a>
+  <div class="nav-right">
+    <div class="lang-dropdown" id="lang-dropdown">
+      <button class="lang-btn" id="lang-btn" onclick="toggleLangMenu()">
+        <span id="lang-current">EN</span>
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="flex-shrink:0"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="lang-menu" id="lang-menu">
+        <button class="lang-option" data-lang="en" onclick="setLang('en')">
+          <img src="https://flagcdn.com/w20/gb.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> English
+        </button>
+        <button class="lang-option" data-lang="zh" onclick="setLang('zh')">
+          <img src="https://flagcdn.com/w20/hk.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> 中文
+        </button>
+      </div>
+    </div>
+    <a href="index.html" class="nav-back" data-i18n="nav-back">← Back to Home</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-badge"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><span data-i18n="page-badge">Legal Document</span></div>
+  <h1 class="page-title" data-i18n="page-title">Privacy Policy</h1>
+  <div class="page-meta" data-i18n="page-meta">Last Updated: 1 January 2025 · Effective Date: 1 January 2025</div>
+</div>
+
+<div class="content-wrap">
+
+  <div class="toc">
+    <h3 data-i18n="toc-title">Table of Contents</h3>
+    <ol>
+      <li><a href="#s1" data-i18n="toc-1">Who We Are</a></li>
+      <li><a href="#s2" data-i18n="toc-2">Information We Collect</a></li>
+      <li><a href="#s3" data-i18n="toc-3">How We Use Your Information</a></li>
+      <li><a href="#s4" data-i18n="toc-4">Legal Basis for Processing</a></li>
+      <li><a href="#s5" data-i18n="toc-5">Information Sharing</a></li>
+      <li><a href="#s6" data-i18n="toc-6">Data Retention</a></li>
+      <li><a href="#s7" data-i18n="toc-7">Security</a></li>
+      <li><a href="#s8" data-i18n="toc-8">Your Rights</a></li>
+      <li><a href="#s9" data-i18n="toc-9">Cookies &amp; Tracking</a></li>
+      <li><a href="#s10" data-i18n="toc-10">Children's Privacy</a></li>
+      <li><a href="#s11" data-i18n="toc-11">Changes to This Policy</a></li>
+      <li><a href="#s12" data-i18n="toc-12">Contact Us</a></li>
+    </ol>
+  </div>
+
+  <div class="highlight-box">
+    <p data-i18n="intro">Your privacy is important to us. This policy explains what personal data HKOTC.io collects, how we use it, and your rights. We are committed to protecting your information in accordance with Hong Kong's Personal Data (Privacy) Ordinance (Cap. 486) and applicable international standards.</p>
+  </div>
+
+  <div class="section" id="s1">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M9 21V9l3-3 3 3v12M9 21h6M3 9.5L12 3l9 6.5"/></svg></span><span data-i18n="s1-title">1. Who We Are</span></h2>
+    <p data-i18n="s1-p1">HKOTC.io ("we", "us", "our") is a cryptocurrency OTC (over-the-counter) exchange platform incorporated and operating in Hong Kong Special Administrative Region, People's Republic of China.</p>
+    <p data-i18n="s1-p2">We act as the Data Controller for personal information collected through our website, mobile app, and services. Our registered office is located in Hong Kong.</p>
+    <p data-i18n="s1-p3">For privacy-related inquiries, contact us at: <strong>privacy@hkotc.io</strong></p>
+  </div>
+
+  <div class="section" id="s2">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></span><span data-i18n="s2-title">2. Information We Collect</span></h2>
+    <h3 data-i18n="s2-h1">2.1 Information You Provide Directly</h3>
+    <ul>
+      <li data-i18n="s2-li1"><strong>Identity data:</strong> Full name, date of birth, nationality, government-issued ID (HKID, passport)</li>
+      <li data-i18n="s2-li2"><strong>Contact data:</strong> Email address, phone number, messaging handles (WhatsApp, Telegram)</li>
+      <li data-i18n="s2-li3"><strong>Account data:</strong> Username, password (hashed), account preferences</li>
+      <li data-i18n="s2-li4"><strong>Financial data:</strong> Bank account details, transaction history, trade records</li>
+      <li data-i18n="s2-li5"><strong>KYC documents:</strong> ID photo, selfie, proof of address (required by AML regulations)</li>
+    </ul>
+    <h3 data-i18n="s2-h2">2.2 Information Collected Automatically</h3>
+    <ul>
+      <li data-i18n="s2-a1"><strong>Device data:</strong> IP address, browser type, operating system, device identifiers</li>
+      <li data-i18n="s2-a2"><strong>Usage data:</strong> Pages visited, features used, time spent, referral source</li>
+      <li data-i18n="s2-a3"><strong>Transaction metadata:</strong> Trade timestamps, wallet addresses, trade amounts</li>
+    </ul>
+    <h3 data-i18n="s2-h3">2.3 Information from Third Parties</h3>
+    <ul>
+      <li data-i18n="s2-t1">Identity verification partners (KYC/AML providers)</li>
+      <li data-i18n="s2-t2">Blockchain analytics platforms (for compliance screening)</li>
+      <li data-i18n="s2-t3">Publicly available sources and sanctions lists</li>
+    </ul>
+  </div>
+
+  <div class="section" id="s3">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span><span data-i18n="s3-title">3. How We Use Your Information</span></h2>
+    <p data-i18n="s3-intro">We use your personal data for the following purposes:</p>
+    <ul>
+      <li data-i18n="s3-li1"><strong>Account management:</strong> Creating and maintaining your account, authentication and security</li>
+      <li data-i18n="s3-li2"><strong>Trade execution:</strong> Processing your buy/sell orders, settlement, and receipts</li>
+      <li data-i18n="s3-li3"><strong>KYC/AML compliance:</strong> Verifying your identity, screening against sanctions lists, meeting regulatory obligations</li>
+      <li data-i18n="s3-li4"><strong>Customer support:</strong> Responding to your enquiries via WhatsApp, Telegram, or email</li>
+      <li data-i18n="s3-li5"><strong>Communications:</strong> Sending rate alerts, trade confirmations, and service updates</li>
+      <li data-i18n="s3-li6"><strong>Security:</strong> Detecting fraud, unauthorized access, and suspicious activity</li>
+      <li data-i18n="s3-li7"><strong>Legal obligations:</strong> Complying with HKMA, FATF, and other applicable regulations</li>
+      <li data-i18n="s3-li8"><strong>Service improvement:</strong> Analyzing usage patterns to improve our platform</li>
+    </ul>
+  </div>
+
+  <div class="section" id="s4">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M5 7h14M5 7l-3 8a4 4 0 008 0L5 7zM19 7l-3 8a4 4 0 008 0L19 7z"/><line x1="4" y1="21" x2="20" y2="21"/></svg></span><span data-i18n="s4-title">4. Legal Basis for Processing</span></h2>
+    <ul>
+      <li data-i18n="s4-li1"><strong>Contract performance:</strong> Processing necessary to execute trades and provide services</li>
+      <li data-i18n="s4-li2"><strong>Legal obligation:</strong> KYC/AML requirements under Hong Kong law</li>
+      <li data-i18n="s4-li3"><strong>Legitimate interests:</strong> Fraud prevention, security monitoring, service improvements</li>
+      <li data-i18n="s4-li4"><strong>Consent:</strong> Marketing communications and optional features (you may withdraw consent at any time)</li>
+    </ul>
+  </div>
+
+  <div class="section" id="s5">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></span><span data-i18n="s5-title">5. Information Sharing</span></h2>
+    <p data-i18n="s5-intro">We do not sell your personal data. We share information only in the following circumstances:</p>
+    <h3 data-i18n="s5-h1">5.1 Service Providers</h3>
+    <ul>
+      <li data-i18n="s5-li1">KYC/identity verification providers</li>
+      <li data-i18n="s5-li2">Banking and payment partners for HKD settlement</li>
+      <li data-i18n="s5-li3">Cloud infrastructure and hosting providers</li>
+      <li data-i18n="s5-li4">Customer support tooling</li>
+    </ul>
+    <h3 data-i18n="s5-h2">5.2 Legal &amp; Regulatory</h3>
+    <ul>
+      <li data-i18n="s5-li5">Hong Kong Police Force or regulatory authorities when lawfully required</li>
+      <li data-i18n="s5-li6">HKMA or Financial Intelligence Unit (FIU) for AML/CFT reporting obligations</li>
+      <li data-i18n="s5-li7">Courts or legal proceedings</li>
+    </ul>
+    <h3 data-i18n="s5-h3">5.3 Business Transfers</h3>
+    <p data-i18n="s5-p1">In the event of a merger, acquisition, or sale of assets, your data may be transferred to the acquiring entity, subject to the same privacy protections.</p>
+    <p data-i18n="s5-p2">All third parties are contractually bound to protect your data and may only use it for specified purposes.</p>
+  </div>
+
+  <div class="section" id="s6">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><span data-i18n="s6-title">6. Data Retention</span></h2>
+    <p data-i18n="s6-intro">We retain your personal data for as long as necessary to:</p>
+    <ul>
+      <li data-i18n="s6-li1">Maintain your account and provide services</li>
+      <li data-i18n="s6-li2">Comply with AML/KYC record-keeping requirements (minimum 7 years under Hong Kong law)</li>
+      <li data-i18n="s6-li3">Resolve disputes and enforce our agreements</li>
+    </ul>
+    <p data-i18n="s6-p1">After retention periods expire, data is securely deleted or anonymized.</p>
+  </div>
+
+  <div class="section" id="s7">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span><span data-i18n="s7-title">7. Security</span></h2>
+    <p data-i18n="s7-intro">We implement industry-standard security measures to protect your data:</p>
+    <ul>
+      <li data-i18n="s7-li1">AES-256 encryption for data at rest</li>
+      <li data-i18n="s7-li2">TLS 1.3 encryption for all data in transit</li>
+      <li data-i18n="s7-li3">Multi-factor authentication (MFA) for all accounts</li>
+      <li data-i18n="s7-li4">Regular penetration testing and security audits</li>
+      <li data-i18n="s7-li5">Strict access controls — staff access data on a need-to-know basis</li>
+      <li data-i18n="s7-li6">24/7 security monitoring and incident response</li>
+    </ul>
+    <p data-i18n="s7-p1">While we take every precaution, no system is 100% secure. In the event of a data breach affecting your rights and freedoms, we will notify you and applicable authorities within the timeframes required by law.</p>
+  </div>
+
+  <div class="section" id="s8">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></span><span data-i18n="s8-title">8. Your Rights</span></h2>
+    <p data-i18n="s8-intro">Under Hong Kong's Personal Data (Privacy) Ordinance, you have the right to:</p>
+    <ul>
+      <li data-i18n="s8-li1"><strong>Access:</strong> Request a copy of the personal data we hold about you</li>
+      <li data-i18n="s8-li2"><strong>Correction:</strong> Request correction of inaccurate or incomplete data</li>
+      <li data-i18n="s8-li3"><strong>Erasure:</strong> Request deletion of your data (subject to legal retention requirements)</li>
+      <li data-i18n="s8-li4"><strong>Opt-out:</strong> Withdraw consent for marketing communications at any time</li>
+      <li data-i18n="s8-li5"><strong>Portability:</strong> Receive your data in a structured, machine-readable format</li>
+      <li data-i18n="s8-li6"><strong>Complaint:</strong> Lodge a complaint with the Privacy Commissioner for Personal Data (PCPD)</li>
+    </ul>
+    <p data-i18n="s8-p1">To exercise any of these rights, contact us at <strong>privacy@hkotc.io</strong> or via WhatsApp/Telegram. We will respond within 40 days as required by the PDPO.</p>
+  </div>
+
+  <div class="section" id="s9">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></span><span data-i18n="s9-title">9. Cookies &amp; Tracking</span></h2>
+    <p data-i18n="s9-p1">We use essential cookies to operate our service (authentication, security). We use analytics cookies to understand usage patterns and improve our platform.</p>
+    <p data-i18n="s9-p2">You can control cookies via your browser settings. Disabling non-essential cookies will not affect your ability to use our trading services.</p>
+    <p data-i18n="s9-p3">We do not use third-party advertising cookies or sell behavioral data to advertisers.</p>
+  </div>
+
+  <div class="section" id="s10">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20v-2a4 4 0 014-4h8a4 4 0 014 4v2"/></svg></span><span data-i18n="s10-title">10. Children's Privacy</span></h2>
+    <p data-i18n="s10-p1">Our services are not directed to individuals under 18 years of age. We do not knowingly collect personal data from minors. If you believe a minor has provided us with personal data, please contact us immediately and we will delete it.</p>
+  </div>
+
+  <div class="section" id="s11">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></span><span data-i18n="s11-title">11. Changes to This Policy</span></h2>
+    <p data-i18n="s11-p1">We may update this Privacy Policy from time to time to reflect changes in our practices or applicable law. We will notify you of material changes via email or an in-app notification at least 14 days before the change takes effect.</p>
+    <p data-i18n="s11-p2">Continued use of our services after the effective date constitutes acceptance of the updated policy.</p>
+  </div>
+
+  <div class="section" id="s12">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z"/><polyline points="22 6 12 13 2 6"/></svg></span><span data-i18n="s12-title">12. Contact Us</span></h2>
+    <p data-i18n="s12-intro">For any privacy-related questions, requests, or complaints, please contact our Data Protection Officer:</p>
+    <ul>
+      <li data-i18n="s12-li1"><strong>Email:</strong> privacy@hkotc.io</li>
+      <li data-i18n="s12-li2"><strong>WhatsApp:</strong> +852 9876 5432</li>
+      <li data-i18n="s12-li3"><strong>Telegram:</strong> @hkotcio</li>
+    </ul>
+    <p data-i18n="s12-p1">You also have the right to lodge a complaint with the <strong>Privacy Commissioner for Personal Data (PCPD)</strong> of Hong Kong at <em>www.pcpd.org.hk</em>.</p>
+  </div>
+
+  <div class="contact-section">
+    <h3 data-i18n="cta-title">Questions About Your Privacy?</h3>
+    <p data-i18n="cta-sub">Our team is available 24/7 to address any privacy concerns.</p>
+    <div class="contact-btns">
+      <a href="https://wa.me/85298765432?text=Privacy%20enquiry%3A" target="_blank" class="btn btn-wa" data-i18n="cta-wa">WhatsApp Us</a>
+      <a href="https://t.me/hkotcio" target="_blank" class="btn btn-tg" data-i18n="cta-tg">Telegram</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="links">
+    <a href="index.html" data-i18n="ft-home">Home</a>
+    <a href="terms.html" data-i18n="ft-terms">Terms of Service</a>
+    <a href="privacy.html" data-i18n="ft-privacy">Privacy Policy</a>
+    <a href="blog.html" data-i18n="ft-blog">Blog</a>
+  </div>
+  <p data-i18n="ft-copy">© 2025 HKOTC.io. All rights reserved.</p>
+</footer>
+
+<script>
+  const LANG = {
+    en: {
+      'nav-back': '← Back to Home',
+      'page-badge': 'Legal Document',
+      'page-title': 'Privacy Policy',
+      'page-meta': 'Last Updated: 1 January 2025 · Effective Date: 1 January 2025',
+      'toc-title': 'Table of Contents',
+      'toc-1':'Who We Are','toc-2':'Information We Collect','toc-3':'How We Use Your Information',
+      'toc-4':'Legal Basis for Processing','toc-5':'Information Sharing','toc-6':'Data Retention',
+      'toc-7':'Security','toc-8':'Your Rights','toc-9':'Cookies &amp; Tracking',
+      'toc-10':"Children's Privacy",'toc-11':'Changes to This Policy','toc-12':'Contact Us',
+      'intro': 'Your privacy is important to us. This policy explains what personal data HKOTC.io collects, how we use it, and your rights. We are committed to protecting your information in accordance with Hong Kong\'s Personal Data (Privacy) Ordinance (Cap. 486) and applicable international standards.',
+      's1-title':'1. Who We Are',
+      's1-p1':'HKOTC.io ("we", "us", "our") is a cryptocurrency OTC (over-the-counter) exchange platform incorporated and operating in Hong Kong Special Administrative Region, People\'s Republic of China.',
+      's1-p2':'We act as the Data Controller for personal information collected through our website, mobile app, and services. Our registered office is located in Hong Kong.',
+      's1-p3':'For privacy-related inquiries, contact us at: <strong>privacy@hkotc.io</strong>',
+      's2-title':'2. Information We Collect',
+      's2-h1':'2.1 Information You Provide Directly',
+      's2-li1':'<strong>Identity data:</strong> Full name, date of birth, nationality, government-issued ID (HKID, passport)',
+      's2-li2':'<strong>Contact data:</strong> Email address, phone number, messaging handles (WhatsApp, Telegram)',
+      's2-li3':'<strong>Account data:</strong> Username, password (hashed), account preferences',
+      's2-li4':'<strong>Financial data:</strong> Bank account details, transaction history, trade records',
+      's2-li5':'<strong>KYC documents:</strong> ID photo, selfie, proof of address (required by AML regulations)',
+      's2-h2':'2.2 Information Collected Automatically',
+      's2-a1':'<strong>Device data:</strong> IP address, browser type, operating system, device identifiers',
+      's2-a2':'<strong>Usage data:</strong> Pages visited, features used, time spent, referral source',
+      's2-a3':'<strong>Transaction metadata:</strong> Trade timestamps, wallet addresses, trade amounts',
+      's2-h3':'2.3 Information from Third Parties',
+      's2-t1':'Identity verification partners (KYC/AML providers)',
+      's2-t2':'Blockchain analytics platforms (for compliance screening)',
+      's2-t3':'Publicly available sources and sanctions lists',
+      's3-title':'3. How We Use Your Information',
+      's3-intro':'We use your personal data for the following purposes:',
+      's3-li1':'<strong>Account management:</strong> Creating and maintaining your account, authentication and security',
+      's3-li2':'<strong>Trade execution:</strong> Processing your buy/sell orders, settlement, and receipts',
+      's3-li3':'<strong>KYC/AML compliance:</strong> Verifying your identity, screening against sanctions lists, meeting regulatory obligations',
+      's3-li4':'<strong>Customer support:</strong> Responding to your enquiries via WhatsApp, Telegram, or email',
+      's3-li5':'<strong>Communications:</strong> Sending rate alerts, trade confirmations, and service updates',
+      's3-li6':'<strong>Security:</strong> Detecting fraud, unauthorized access, and suspicious activity',
+      's3-li7':'<strong>Legal obligations:</strong> Complying with HKMA, FATF, and other applicable regulations',
+      's3-li8':'<strong>Service improvement:</strong> Analyzing usage patterns to improve our platform',
+      's4-title':'4. Legal Basis for Processing',
+      's4-li1':'<strong>Contract performance:</strong> Processing necessary to execute trades and provide services',
+      's4-li2':'<strong>Legal obligation:</strong> KYC/AML requirements under Hong Kong law',
+      's4-li3':'<strong>Legitimate interests:</strong> Fraud prevention, security monitoring, service improvements',
+      's4-li4':'<strong>Consent:</strong> Marketing communications and optional features (you may withdraw consent at any time)',
+      's5-title':'5. Information Sharing',
+      's5-intro':'We do not sell your personal data. We share information only in the following circumstances:',
+      's5-h1':'5.1 Service Providers',
+      's5-li1':'KYC/identity verification providers',
+      's5-li2':'Banking and payment partners for HKD settlement',
+      's5-li3':'Cloud infrastructure and hosting providers',
+      's5-li4':'Customer support tooling',
+      's5-h2':'5.2 Legal &amp; Regulatory',
+      's5-li5':'Hong Kong Police Force or regulatory authorities when lawfully required',
+      's5-li6':'HKMA or Financial Intelligence Unit (FIU) for AML/CFT reporting obligations',
+      's5-li7':'Courts or legal proceedings',
+      's5-h3':'5.3 Business Transfers',
+      's5-p1':'In the event of a merger, acquisition, or sale of assets, your data may be transferred to the acquiring entity, subject to the same privacy protections.',
+      's5-p2':'All third parties are contractually bound to protect your data and may only use it for specified purposes.',
+      's6-title':'6. Data Retention',
+      's6-intro':'We retain your personal data for as long as necessary to:',
+      's6-li1':'Maintain your account and provide services',
+      's6-li2':'Comply with AML/KYC record-keeping requirements (minimum 7 years under Hong Kong law)',
+      's6-li3':'Resolve disputes and enforce our agreements',
+      's6-p1':'After retention periods expire, data is securely deleted or anonymized.',
+      's7-title':'7. Security',
+      's7-intro':'We implement industry-standard security measures to protect your data:',
+      's7-li1':'AES-256 encryption for data at rest',
+      's7-li2':'TLS 1.3 encryption for all data in transit',
+      's7-li3':'Multi-factor authentication (MFA) for all accounts',
+      's7-li4':'Regular penetration testing and security audits',
+      's7-li5':'Strict access controls — staff access data on a need-to-know basis',
+      's7-li6':'24/7 security monitoring and incident response',
+      's7-p1':'While we take every precaution, no system is 100% secure. In the event of a data breach affecting your rights and freedoms, we will notify you and applicable authorities within the timeframes required by law.',
+      's8-title':'8. Your Rights',
+      's8-intro':"Under Hong Kong's Personal Data (Privacy) Ordinance, you have the right to:",
+      's8-li1':'<strong>Access:</strong> Request a copy of the personal data we hold about you',
+      's8-li2':'<strong>Correction:</strong> Request correction of inaccurate or incomplete data',
+      's8-li3':'<strong>Erasure:</strong> Request deletion of your data (subject to legal retention requirements)',
+      's8-li4':'<strong>Opt-out:</strong> Withdraw consent for marketing communications at any time',
+      's8-li5':'<strong>Portability:</strong> Receive your data in a structured, machine-readable format',
+      's8-li6':'<strong>Complaint:</strong> Lodge a complaint with the Privacy Commissioner for Personal Data (PCPD)',
+      's8-p1':'To exercise any of these rights, contact us at <strong>privacy@hkotc.io</strong> or via WhatsApp/Telegram. We will respond within 40 days as required by the PDPO.',
+      's9-title':'9. Cookies &amp; Tracking',
+      's9-p1':'We use essential cookies to operate our service (authentication, security). We use analytics cookies to understand usage patterns and improve our platform.',
+      's9-p2':'You can control cookies via your browser settings. Disabling non-essential cookies will not affect your ability to use our trading services.',
+      's9-p3':'We do not use third-party advertising cookies or sell behavioral data to advertisers.',
+      's10-title':"10. Children's Privacy",
+      's10-p1':'Our services are not directed to individuals under 18 years of age. We do not knowingly collect personal data from minors. If you believe a minor has provided us with personal data, please contact us immediately and we will delete it.',
+      's11-title':'11. Changes to This Policy',
+      's11-p1':'We may update this Privacy Policy from time to time to reflect changes in our practices or applicable law. We will notify you of material changes via email or an in-app notification at least 14 days before the change takes effect.',
+      's11-p2':'Continued use of our services after the effective date constitutes acceptance of the updated policy.',
+      's12-title':'12. Contact Us',
+      's12-intro':'For any privacy-related questions, requests, or complaints, please contact our Data Protection Officer:',
+      's12-li1':'<strong>Email:</strong> privacy@hkotc.io',
+      's12-li2':'<strong>WhatsApp:</strong> +852 9876 5432',
+      's12-li3':'<strong>Telegram:</strong> @hkotcio',
+      's12-p1':'You also have the right to lodge a complaint with the <strong>Privacy Commissioner for Personal Data (PCPD)</strong> of Hong Kong at <em>www.pcpd.org.hk</em>.',
+      'cta-title':'Questions About Your Privacy?',
+      'cta-sub':'Our team is available 24/7 to address any privacy concerns.',
+      'cta-wa':'WhatsApp Us','cta-tg':'Telegram',
+      'ft-home':'Home','ft-terms':'Terms of Service','ft-privacy':'Privacy Policy','ft-blog':'Blog',
+      'ft-copy':'© 2025 HKOTC.io. All rights reserved.',
+    },
+    zh: {
+      'nav-back': '← 返回主頁',
+      'page-badge': '法律文件',
+      'page-title': '私隱政策',
+      'page-meta': '最後更新：2025年1月1日 · 生效日期：2025年1月1日',
+      'toc-title': '目錄',
+      'toc-1':'關於我們','toc-2':'我們收集的資料','toc-3':'我們如何使用您的資料',
+      'toc-4':'處理的法律依據','toc-5':'資料共享','toc-6':'資料保留',
+      'toc-7':'安全保障','toc-8':'您的權利','toc-9':'Cookies及追蹤技術',
+      'toc-10':'兒童私隱','toc-11':'本政策的修改','toc-12':'聯絡我們',
+      'intro': '您的私隱對我們至關重要。本政策說明HKOTC.io收集哪些個人資料、我們如何使用，以及您的相關權利。我們致力依照香港《個人資料（私隱）條例》（第486章）及適用的國際標準保護您的資料。',
+      's1-title':'1. 關於我們',
+      's1-p1':'HKOTC.io（「我們」）是一家在中華人民共和國香港特別行政區註冊成立並運營的加密貨幣場外交易（OTC）平台。',
+      's1-p2':'我們是通過網站、手機應用程式及服務所收集的個人資料的資料控制人，我們的註冊辦事處位於香港。',
+      's1-p3':'如有私隱相關查詢，請聯絡：<strong>privacy@hkotc.io</strong>',
+      's2-title':'2. 我們收集的資料',
+      's2-h1':'2.1 您直接提供的資料',
+      's2-li1':'<strong>身份資料：</strong>全名、出生日期、國籍、政府簽發的身份證明文件（香港身份證、護照）',
+      's2-li2':'<strong>聯絡資料：</strong>電郵地址、電話號碼、通訊帳號（WhatsApp、Telegram）',
+      's2-li3':'<strong>帳戶資料：</strong>用戶名稱、密碼（加密儲存）、帳戶偏好設定',
+      's2-li4':'<strong>財務資料：</strong>銀行帳戶詳情、交易記錄、交易檔案',
+      's2-li5':'<strong>KYC文件：</strong>身份證照片、自拍、地址證明（反洗錢法規要求）',
+      's2-h2':'2.2 自動收集的資料',
+      's2-a1':'<strong>設備資料：</strong>IP地址、瀏覽器類型、作業系統、設備識別碼',
+      's2-a2':'<strong>使用資料：</strong>瀏覽頁面、使用功能、停留時間、來源渠道',
+      's2-a3':'<strong>交易元數據：</strong>交易時間戳記、錢包地址、交易金額',
+      's2-h3':'2.3 來自第三方的資料',
+      's2-t1':'身份驗證合作夥伴（KYC/AML服務商）',
+      's2-t2':'區塊鏈分析平台（用於合規審查）',
+      's2-t3':'公開來源及制裁名單',
+      's3-title':'3. 我們如何使用您的資料',
+      's3-intro':'我們將您的個人資料用於以下目的：',
+      's3-li1':'<strong>帳戶管理：</strong>建立及維護您的帳戶、身份驗證及安全保障',
+      's3-li2':'<strong>交易執行：</strong>處理您的買賣訂單、結算及交易收據',
+      's3-li3':'<strong>KYC/AML合規：</strong>核實您的身份、篩查制裁名單、履行監管義務',
+      's3-li4':'<strong>客戶支援：</strong>透過WhatsApp、Telegram或電郵回應您的查詢',
+      's3-li5':'<strong>通訊：</strong>發送匯率提示、交易確認及服務更新',
+      's3-li6':'<strong>安全保障：</strong>偵測欺詐、未授權存取及可疑活動',
+      's3-li7':'<strong>法律義務：</strong>遵守金管局、金融行動特別組織（FATF）及其他適用法規',
+      's3-li8':'<strong>服務改善：</strong>分析使用模式以改進我們的平台',
+      's4-title':'4. 處理的法律依據',
+      's4-li1':'<strong>履行合同：</strong>執行交易及提供服務所必須的處理',
+      's4-li2':'<strong>法律義務：</strong>香港法律規定的KYC/AML要求',
+      's4-li3':'<strong>合法利益：</strong>防止欺詐、安全監控、服務改善',
+      's4-li4':'<strong>同意：</strong>市場推廣通訊及可選功能（您可隨時撤回同意）',
+      's5-title':'5. 資料共享',
+      's5-intro':'我們不出售您的個人資料。我們僅在以下情況下分享資料：',
+      's5-h1':'5.1 服務供應商',
+      's5-li1':'KYC/身份驗證服務商',
+      's5-li2':'港幣結算的銀行及支付合作夥伴',
+      's5-li3':'雲端基礎設施及託管服務商',
+      's5-li4':'客戶支援工具',
+      's5-h2':'5.2 法律及監管',
+      's5-li5':'在依法要求時，向香港警務處或監管機構披露',
+      's5-li6':'向金管局或金融情報組（FIU）履行AML/CFT匯報義務',
+      's5-li7':'配合法院或法律程序',
+      's5-h3':'5.3 業務轉讓',
+      's5-p1':'在合併、收購或出售資產的情況下，您的資料可能轉移至收購方，並受到同等的私隱保護。',
+      's5-p2':'所有第三方均受合同約束保護您的資料，且只能將其用於指定目的。',
+      's6-title':'6. 資料保留',
+      's6-intro':'我們在以下必要期間內保留您的個人資料：',
+      's6-li1':'維護您的帳戶及提供服務',
+      's6-li2':'遵守AML/KYC記錄保存要求（根據香港法律最少7年）',
+      's6-li3':'解決爭議及執行我們的協議',
+      's6-p1':'保留期限屆滿後，資料將被安全刪除或匿名化。',
+      's7-title':'7. 安全保障',
+      's7-intro':'我們採用業界標準的安全措施保護您的資料：',
+      's7-li1':'靜態資料採用AES-256加密',
+      's7-li2':'傳輸中的所有資料採用TLS 1.3加密',
+      's7-li3':'所有帳戶均採用多重身份驗證（MFA）',
+      's7-li4':'定期滲透測試及安全審計',
+      's7-li5':'嚴格的存取控制——員工僅在需要知情的基礎上存取資料',
+      's7-li6':'全天候安全監控及事故應對',
+      's7-p1':'儘管我們採取了一切預防措施，但沒有任何系統能夠做到100%安全。如發生影響您權利和自由的資料洩露事件，我們將在法律規定的時限內通知您及相關當局。',
+      's8-title':'8. 您的權利',
+      's8-intro':'根據香港《個人資料（私隱）條例》，您有權：',
+      's8-li1':'<strong>查閱：</strong>要求獲取我們持有的關於您的個人資料副本',
+      's8-li2':'<strong>更正：</strong>要求更正不準確或不完整的資料',
+      's8-li3':'<strong>刪除：</strong>要求刪除您的資料（須符合法律保留要求）',
+      's8-li4':'<strong>退出：</strong>隨時撤回對市場推廣通訊的同意',
+      's8-li5':'<strong>可攜性：</strong>以結構化、機器可讀的格式接收您的資料',
+      's8-li6':'<strong>投訴：</strong>向個人資料私隱專員公署（PCPD）提出投訴',
+      's8-p1':'如需行使上述任何權利，請透過 <strong>privacy@hkotc.io</strong> 或WhatsApp/Telegram聯絡我們。我們將根據《個人資料（私隱）條例》的要求，在40天內作出回應。',
+      's9-title':'9. Cookies及追蹤技術',
+      's9-p1':'我們使用必要的Cookies來運作我們的服務（身份驗證、安全保障），並使用分析性Cookies了解使用模式以改進平台。',
+      's9-p2':'您可以通過瀏覽器設定管理Cookies。停用非必要Cookies不會影響您使用我們的交易服務。',
+      's9-p3':'我們不使用第三方廣告Cookies，也不向廣告商出售行為資料。',
+      's10-title':'10. 兒童私隱',
+      's10-p1':'我們的服務不面向18歲以下人士。我們不會在明知的情況下收集未成年人的個人資料。如您認為未成年人已向我們提供個人資料，請立即聯絡我們，我們將予以刪除。',
+      's11-title':'11. 本政策的修改',
+      's11-p1':'我們可能會不時更新本私隱政策，以反映我們實踐或適用法律的變化。我們將在變更生效前至少14天通過電郵或應用內通知告知您重大變更。',
+      's11-p2':'在生效日期後繼續使用我們的服務，即表示您接受更新後的政策。',
+      's12-title':'12. 聯絡我們',
+      's12-intro':'如有任何私隱相關問題、請求或投訴，請聯絡我們的資料保護主任：',
+      's12-li1':'<strong>電郵：</strong>privacy@hkotc.io',
+      's12-li2':'<strong>WhatsApp：</strong>+852 9876 5432',
+      's12-li3':'<strong>Telegram：</strong>@hkotcio',
+      's12-p1':'您亦有權向香港<strong>個人資料私隱專員公署（PCPD）</strong>提出投訴，網址：<em>www.pcpd.org.hk</em>。',
+      'cta-title':'對私隱有疑問？',
+      'cta-sub':'我們的團隊全天候解答您的私隱問題。',
+      'cta-wa':'WhatsApp聯絡','cta-tg':'Telegram',
+      'ft-home':'主頁','ft-terms':'服務條款','ft-privacy':'私隱政策','ft-blog':'博客',
+      'ft-copy':'© 2025 HKOTC.io. 版權所有。',
+    }
+  };
+
+  let currentLang = localStorage.getItem('lang') || 'en';
+
+  function applyLang(lang) {
+    document.documentElement.lang = lang === 'zh' ? 'zh-HK' : 'en-HK';
+    const t = LANG[lang];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (!t[key]) return;
+      el.innerHTML = t[key];
+    });
+    const lc = document.getElementById('lang-current');
+    if (lc) lc.textContent = lang === 'en' ? 'EN' : '中文';
+    document.querySelectorAll('.lang-option[data-lang]').forEach(opt => {
+      opt.classList.toggle('active', opt.dataset.lang === lang);
+    });
+  }
+
+  function toggleLangMenu() {
+    document.getElementById('lang-menu').classList.toggle('open');
+  }
+
+  function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('lang', lang);
+    applyLang(lang);
+    const m = document.getElementById('lang-menu');
+    if (m) m.classList.remove('open');
+  }
+
+  document.addEventListener('click', function(e) {
+    const dd = document.getElementById('lang-dropdown');
+    if (dd && !dd.contains(e.target)) {
+      const m = document.getElementById('lang-menu');
+      if (m) m.classList.remove('open');
+    }
+  });
+
+  applyLang(currentLang);
+</script>
+</body>
+</html>

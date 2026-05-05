@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en-HK">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HKOTC — Post</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#07090f;--bg2:#0d1120;--surface:#131829;
+      --border:rgba(255,255,255,0.08);--text:#f0f2ff;--muted:#8892a8;
+      --gold:#f5a623;--gold2:#ffcc66;--green:#22c55e;
+      --radius:16px;--font:'Inter',sans-serif;
+    }
+    body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+    a{color:inherit;text-decoration:none}
+
+    /* ── NAV ── */
+    nav{position:sticky;top:0;z-index:100;background:rgba(7,9,15,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+    .nav-logo{font-size:18px;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .nav-back{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);transition:color .2s;padding:7px 14px;border-radius:8px;background:var(--surface);border:1px solid var(--border)}
+    .nav-back:hover{color:var(--gold);border-color:rgba(245,166,35,0.3)}
+
+    /* ── HERO IMAGE ── */
+    .post-hero{width:100%;max-height:480px;overflow:hidden;position:relative;background:var(--bg2)}
+    .post-hero img{width:100%;height:480px;object-fit:cover;display:block}
+    .post-hero-gradient{position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(to top,var(--bg),transparent)}
+    .post-hero-fallback{width:100%;height:260px;background:linear-gradient(135deg,#0d1829 0%,#1a0f2e 50%,#0a1a10 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    .post-hero-fallback::before{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(245,166,35,0.12) 0%,transparent 70%);top:-100px;left:-100px}
+    .post-hero-fallback::after{content:'';position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(42,171,238,0.1) 0%,transparent 70%);bottom:-80px;right:-80px}
+    .post-hero-fallback-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0.5}
+    .post-hero-fallback-inner svg{width:56px;height:56px}
+
+    /* ── ARTICLE ── */
+    .article-wrap{max-width:780px;margin:0 auto;padding:40px 24px 80px}
+    .article-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+    .art-cat{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;padding:4px 12px;border-radius:100px}
+    .cat-market{background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.2)}
+    .cat-regulation{background:rgba(245,166,35,.15);color:var(--gold);border:1px solid rgba(245,166,35,.2)}
+    .cat-guide{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.2)}
+    .cat-defi{background:rgba(168,85,247,.15);color:#c084fc;border:1px solid rgba(168,85,247,.2)}
+    .cat-news{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.2)}
+    .cat-channel{background:rgba(42,171,238,.15);color:#2AABEE;border:1px solid rgba(42,171,238,.2)}
+    .art-date{font-size:12px;color:var(--muted)}
+    .art-source{font-size:12px;color:var(--muted)}
+    .art-title{font-size:clamp(24px,4vw,40px);font-weight:900;line-height:1.2;letter-spacing:-1px;margin-bottom:16px}
+    .art-excerpt{font-size:17px;color:var(--muted);line-height:1.7;margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid var(--border)}
+    .art-body{font-size:16px;line-height:1.9;color:rgba(240,242,255,.85);white-space:pre-line;word-break:break-word}
+    .art-body h2{font-size:22px;font-weight:800;color:var(--text);margin:32px 0 12px}
+    .art-body strong,.art-body b{color:var(--text);font-weight:700}
+    .art-tags{margin-top:32px;padding-top:24px;border-top:1px solid var(--border);font-size:13px;color:#4a9eff;line-height:1.8}
+
+    /* ── CHANNEL POST STYLE ── */
+    .ch-header{display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+    .ch-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+    .ch-name{font-size:14px;font-weight:800;color:var(--text)}
+    .ch-handle{font-size:12px;color:var(--muted);margin-top:1px}
+    .ch-live{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--green);font-weight:600;margin-top:3px}
+    .ch-live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+    /* ── SHARE + CTA ── */
+    .post-actions{margin-top:40px;padding-top:32px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s}
+    .btn-tg{background:#2AABEE;color:#fff}
+    .btn-tg:hover{background:#1d96d4}
+    .btn-trade{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#07090f}
+    .btn-trade:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(245,166,35,.35)}
+    .share-label{font-size:12px;color:var(--muted);margin-right:4px}
+
+    /* ── RELATED / BACK SECTION ── */
+    .back-section{max-width:780px;margin:0 auto;padding:0 24px 48px}
+    .back-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:10px;background:var(--surface);border:1px solid var(--border);color:var(--muted);font-size:14px;font-weight:600;transition:all .2s;cursor:pointer;font-family:inherit}
+    .back-btn:hover{border-color:rgba(245,166,35,.3);color:var(--gold)}
+
+    /* ── SKELETON ── */
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    .skel{background:linear-gradient(90deg,var(--surface) 25%,rgba(255,255,255,.05) 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:8px}
+
+    /* ── NOT FOUND ── */
+    .not-found{text-align:center;padding:80px 24px}
+    .not-found h2{font-size:24px;font-weight:800;margin-bottom:8px}
+    .not-found p{color:var(--muted);margin-bottom:24px}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">HKOTC<span style="-webkit-text-fill-color:rgba(245,166,35,.5)">.io</span></a>
+  <a href="blog.html" class="nav-back">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Blog
+  </a>
+</nav>
+
+<div id="post-container"></div>
+
+<div class="back-section">
+  <button class="back-btn" onclick="history.back()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Blog
+  </button>
+</div>
+
+<script>
+  const BLOG_URL    = 'https://raw.githubusercontent.com/nightwalkerr86-star/otc-web/master/blog-posts.json';
+  const CHANNEL_URL = 'https://raw.githubusercontent.com/nightwalkerr86-star/otc-web/master/channel-posts.json';
+
+  const CAT_LABELS = {market:'Market',regulation:'Regulation',guide:'OTC Guide',defi:'DeFi',news:'News',channel:'Channel'};
+
+  function fmtDate(ts) {
+    const d = typeof ts === 'number' ? new Date(ts * 1000) : new Date(ts);
+    return isNaN(d) ? '' : d.toLocaleDateString('en-HK', {day:'numeric',month:'long',year:'numeric'});
+  }
+
+  function renderBlogPost(p) {
+    const cat = p.category || 'news';
+    const tags = (p.tags || []).map(t => '#' + t).join(' ');
+    return `
+      ${p.photo ? `<div class="post-hero"><img src="${p.photo}" alt="${p.title}" onerror="this.parentElement.style.display='none'"><div class="post-hero-gradient"></div></div>` : ''}
+      <div class="article-wrap">
+        <div class="article-meta">
+          <span class="art-cat cat-${cat}">${CAT_LABELS[cat]||cat}</span>
+          <span class="art-date">${fmtDate(p.date)}</span>
+          <span class="art-source">HKOTC</span>
+        </div>
+        <h1 class="art-title">${p.title}</h1>
+        ${p.excerpt ? `<p class="art-excerpt">${p.excerpt}</p>` : ''}
+        <div class="art-body">${p.body || ''}</div>
+        ${tags ? `<div class="art-tags">${tags}</div>` : ''}
+        <div class="post-actions">
+          <span class="share-label">Share:</span>
+          <a href="https://t.me/share/url?url=${encodeURIComponent(location.href)}&text=${encodeURIComponent(p.title)}" target="_blank" class="btn btn-tg">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            Share on Telegram
+          </a>
+          <a href="index.html#calculator" class="btn btn-trade">💱 Trade Now</a>
+        </div>
+      </div>`;
+  }
+
+  function renderChannelPost(p) {
+    const lines = (p.text || '').split('\n');
+    const hi = lines.findIndex(l => /^#\S/.test(l.trim()));
+    const body = hi > -1 ? lines.slice(0, hi).join('\n').trim() : (p.text || '').trim();
+    const tags = hi > -1 ? lines.slice(hi).join(' ').trim() : '';
+    const tgLink = p.message_link || `https://t.me/${p.channel || 'hkotcdesk'}`;
+    return `
+      ${p.photo
+        ? `<div class="post-hero"><img src="${p.photo}" alt="" onerror="this.parentElement.style.display='none'"><div class="post-hero-gradient"></div></div>`
+        : `<div class="post-hero-fallback"><div class="post-hero-fallback-inner"><svg viewBox="0 0 24 24" fill="none" stroke="#f5a623" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg><span style="font-size:13px;color:var(--gold);font-weight:700">港汇加密交易台</span></div></div>`
+      }
+      <div class="article-wrap">
+        <div class="ch-header">
+          <div class="ch-avatar">港</div>
+          <div>
+            <div class="ch-name">港汇加密交易台 | HK OTC Desk</div>
+            <div class="ch-live"><span class="ch-live-dot"></span> Official Channel</div>
+          </div>
+        </div>
+        <div class="art-body" style="font-size:17px;line-height:1.85">${body.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+        ${tags ? `<div class="art-tags" style="margin-top:20px">${tags}</div>` : ''}
+        <div class="article-meta" style="margin-top:20px"><span class="art-date">${fmtDate(p.date)}</span></div>
+        <div class="post-actions">
+          <a href="${tgLink}" target="_blank" rel="noopener" class="btn btn-tg">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            View on Telegram
+          </a>
+          <a href="index.html#calculator" class="btn btn-trade">💱 Trade Now</a>
+        </div>
+      </div>`;
+  }
+
+  function showSkeleton() {
+    document.getElementById('post-container').innerHTML = `
+      <div class="article-wrap">
+        <div class="article-meta"><div class="skel" style="height:22px;width:90px"></div><div class="skel" style="height:14px;width:120px;margin-left:8px"></div></div>
+        <div class="skel" style="height:40px;width:80%;margin-bottom:12px"></div>
+        <div class="skel" style="height:40px;width:60%;margin-bottom:32px"></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          ${Array(6).fill('<div class="skel" style="height:16px;width:100%"></div>').join('')}
+        </div>
+      </div>`;
+  }
+
+  function showNotFound() {
+    document.getElementById('post-container').innerHTML = `
+      <div class="not-found">
+        <h2>Post not found</h2>
+        <p>This post may have been removed or the link is incorrect.</p>
+        <a href="blog.html" class="btn btn-trade" style="display:inline-flex">← Back to Blog</a>
+      </div>`;
+  }
+
+  async function loadPost() {
+    const params = new URLSearchParams(location.search);
+    const type = params.get('type') || 'blog';
+    const id   = params.get('id');
+
+    if (!id) { showNotFound(); return; }
+    showSkeleton();
+
+    try {
+      const url  = type === 'channel' ? CHANNEL_URL : BLOG_URL;
+      const res  = await fetch(url + '?t=' + Date.now());
+      const posts = await res.json();
+      const post  = posts.find(p => String(p.id || p.message_id) === String(id));
+
+      if (!post) { showNotFound(); return; }
+
+      // Update page title
+      document.title = (post.title || post.text?.slice(0,60) || 'Post') + ' — HKOTC';
+
+      document.getElementById('post-container').innerHTML =
+        type === 'channel' ? renderChannelPost(post) : renderBlogPost(post);
+    } catch (e) {
+      showNotFound();
+    }
+  }
+
+  loadPost();
+</script>
+</body>
+</html>

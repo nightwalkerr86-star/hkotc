@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en-HK">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service — HKOTC.io</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07090f; --bg2: #0d1120;
+      --border: rgba(255,255,255,0.08); --gold: #f5a623; --gold2: #ffcc66;
+      --text: #f0f2ff; --muted: #8892a8; --radius: 16px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    a { color: var(--gold); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    nav {
+      position: sticky; top: 0; z-index: 99;
+      background: rgba(7,9,15,0.95); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 20px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .nav-logo { font-size: 18px; font-weight: 800; }
+    .nav-logo span { background: linear-gradient(135deg,var(--gold),var(--gold2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .nav-back { font-size: 14px; font-weight: 600; color: var(--muted); display:flex; align-items:center; gap:6px; transition: color 0.2s; }
+    .nav-back:hover { color: var(--text); text-decoration: none; }
+    .lang-btn {
+      display:inline-flex; align-items:center; gap:5px;
+      padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 700;
+      background: rgba(245,166,35,0.1); border: 1px solid rgba(245,166,35,0.25);
+      color: var(--gold); cursor: pointer; transition: all 0.2s;
+    }
+    .lang-btn:hover { background: rgba(245,166,35,0.18); }
+    .lang-dropdown { position:relative; display:inline-flex; }
+    .lang-menu { display:none; position:absolute; top:calc(100% + 6px); right:0; background:var(--bg2); border:1px solid rgba(245,166,35,0.2); border-radius:10px; padding:5px; min-width:130px; z-index:300; box-shadow:0 8px 28px rgba(0,0,0,0.35); }
+    .lang-menu.open { display:flex; flex-direction:column; gap:2px; }
+    .lang-option { display:flex; align-items:center; gap:8px; width:100%; padding:8px 10px; border-radius:7px; border:none; background:transparent; color:var(--text); cursor:pointer; font-size:13px; font-weight:600; font-family:inherit; transition:background 0.15s; text-align:left; }
+    .lang-option:hover { background:rgba(255,255,255,0.06); }
+    .lang-option.active { background:rgba(245,166,35,0.15); color:var(--gold); }
+
+    .page-hero {
+      padding: 60px 20px 48px;
+      background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(79,142,247,0.08), transparent 70%);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .page-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 14px; border-radius: 100px;
+      background: rgba(79,142,247,0.1); border: 1px solid rgba(79,142,247,0.2);
+      font-size: 12px; font-weight: 600; color: #4f8ef7;
+      margin-bottom: 16px;
+    }
+    .page-badge .icon { display: inline-flex; align-items: center; color: #4f8ef7; }
+    .page-badge .icon svg { width: 14px; height: 14px; }
+    .page-title { font-size: clamp(28px, 6vw, 44px); font-weight: 900; letter-spacing: -1px; margin-bottom: 10px; }
+    .page-meta { font-size: 14px; color: var(--muted); }
+
+    .content-wrap { max-width: 800px; margin: 0 auto; padding: 48px 20px 80px; }
+
+    .toc { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 48px; }
+    .toc h3 { font-size: 14px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; }
+    .toc ol { padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+    .toc ol li a { font-size: 14px; color: var(--muted); transition: color 0.2s; }
+    .toc ol li a:hover { color: var(--gold); text-decoration: none; }
+
+    .warning-box {
+      background: rgba(255,77,109,0.06); border: 1px solid rgba(255,77,109,0.2);
+      border-radius: 12px; padding: 16px 20px; margin: 0 0 48px;
+    }
+    .warning-box p { font-size: 14px; color: #ff4d6d; margin: 0; line-height: 1.7; }
+    .warning-box strong { color: #ff6b85; }
+
+    .section { margin-bottom: 44px; scroll-margin-top: 80px; }
+    .section h2 { font-size: 22px; font-weight: 800; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+    .section h2 .icon { display: inline-flex; align-items: center; flex-shrink: 0; color: var(--gold); }
+    .section h2 .icon svg { width: 20px; height: 20px; }
+    .section h3 { font-size: 16px; font-weight: 700; margin: 20px 0 10px; color: var(--gold); }
+    .section p { font-size: 15px; color: var(--muted); margin-bottom: 14px; line-height: 1.8; }
+    .section ul, .section ol { padding-left: 20px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 8px; }
+    .section ul li, .section ol li { font-size: 15px; color: var(--muted); line-height: 1.7; }
+    .section ul li::marker { color: var(--gold); }
+    .section ol li::marker { color: var(--gold); font-weight: 700; }
+
+    .highlight-box { background: rgba(245,166,35,0.06); border: 1px solid rgba(245,166,35,0.15); border-radius: 12px; padding: 16px 20px; margin: 16px 0; }
+    .highlight-box p { color: var(--text); margin-bottom: 0; }
+
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+    th { text-align: left; padding: 12px 14px; background: var(--bg2); border: 1px solid var(--border); color: var(--muted); font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; }
+    td { padding: 12px 14px; border: 1px solid var(--border); color: var(--muted); line-height: 1.6; }
+    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+    .contact-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 32px; text-align: center; margin-top: 48px; }
+    .contact-section h3 { font-size: 20px; font-weight: 800; margin-bottom: 10px; }
+    .contact-section p { color: var(--muted); margin-bottom: 20px; }
+    .contact-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+    .btn:hover { text-decoration: none; transform: translateY(-1px); }
+    .btn-wa { background: #25d366; color: #fff; }
+    .btn-tg { background: #2ca5e0; color: #fff; }
+
+    footer { padding: 32px 20px; border-top: 1px solid var(--border); text-align: center; }
+    footer .links { display: flex; gap: 24px; justify-content: center; margin-bottom: 12px; flex-wrap: wrap; }
+    footer .links a { font-size: 13px; color: var(--muted); }
+    footer .links a:hover { color: var(--text); text-decoration: none; }
+    footer p { font-size: 12px; color: var(--muted); opacity: 0.6; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">HKOTC<span>.io</span></a>
+  <div class="nav-right">
+    <div class="lang-dropdown" id="lang-dropdown">
+      <button class="lang-btn" id="lang-btn" onclick="toggleLangMenu()">
+        <span id="lang-current">EN</span>
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="flex-shrink:0"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="lang-menu" id="lang-menu">
+        <button class="lang-option" data-lang="en" onclick="setLang('en')">
+          <img src="https://flagcdn.com/w20/gb.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> English
+        </button>
+        <button class="lang-option" data-lang="zh" onclick="setLang('zh')">
+          <img src="https://flagcdn.com/w20/hk.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> 中文
+        </button>
+      </div>
+    </div>
+    <a href="index.html" class="nav-back" data-i18n="nav-back">← Back to Home</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-badge"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><span data-i18n="page-badge">Legal Document</span></div>
+  <h1 class="page-title" data-i18n="page-title">Terms of Service</h1>
+  <div class="page-meta" data-i18n="page-meta">Last Updated: 1 January 2025 · Effective Date: 1 January 2025</div>
+</div>
+
+<div class="content-wrap">
+
+  <div class="warning-box">
+    <p data-i18n="warning">&#x26A0; <strong>Important:</strong> Please read these Terms of Service carefully before using HKOTC.io. By accessing or using our services, you agree to be bound by these terms. Cryptocurrency trading involves significant risk of loss. Only trade with funds you can afford to lose.</p>
+  </div>
+
+  <div class="toc">
+    <h3 data-i18n="toc-title">Table of Contents</h3>
+    <ol>
+      <li><a href="#t1" data-i18n="toc-1">Acceptance of Terms</a></li>
+      <li><a href="#t2" data-i18n="toc-2">Eligibility &amp; Account Registration</a></li>
+      <li><a href="#t3" data-i18n="toc-3">Our Services</a></li>
+      <li><a href="#t4" data-i18n="toc-4">KYC / AML Requirements</a></li>
+      <li><a href="#t5" data-i18n="toc-5">Trading Rules &amp; Order Execution</a></li>
+      <li><a href="#t6" data-i18n="toc-6">Fees &amp; Charges</a></li>
+      <li><a href="#t7" data-i18n="toc-7">Prohibited Activities</a></li>
+      <li><a href="#t8" data-i18n="toc-8">Risk Disclosure</a></li>
+      <li><a href="#t9" data-i18n="toc-9">Intellectual Property</a></li>
+      <li><a href="#t10" data-i18n="toc-10">Limitation of Liability</a></li>
+      <li><a href="#t11" data-i18n="toc-11">Indemnification</a></li>
+      <li><a href="#t12" data-i18n="toc-12">Termination</a></li>
+      <li><a href="#t13" data-i18n="toc-13">Dispute Resolution</a></li>
+      <li><a href="#t14" data-i18n="toc-14">Governing Law</a></li>
+      <li><a href="#t15" data-i18n="toc-15">Changes to Terms</a></li>
+      <li><a href="#t16" data-i18n="toc-16">Contact Information</a></li>
+    </ol>
+  </div>
+
+  <div class="section" id="t1">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span><span data-i18n="t1-title">1. Acceptance of Terms</span></h2>
+    <p data-i18n="t1-p1">These Terms of Service ("Terms") govern your use of the HKOTC.io website, mobile application, and all related services (collectively, the "Services") provided by HKOTC Limited ("HKOTC", "we", "us", "our"), a company incorporated in Hong Kong.</p>
+    <p data-i18n="t1-p2">By creating an account, accessing our platform, or executing any trade, you acknowledge that you have read, understood, and agree to be bound by these Terms and our <a href="privacy.html" data-i18n-skip>Privacy Policy</a>, which is incorporated herein by reference.</p>
+    <p data-i18n="t1-p3">If you do not agree with any part of these Terms, you must not use our Services.</p>
+  </div>
+
+  <div class="section" id="t2">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><span data-i18n="t2-title">2. Eligibility &amp; Account Registration</span></h2>
+    <h3 data-i18n="t2-h1">2.1 Eligibility Requirements</h3>
+    <p data-i18n="t2-intro">To use HKOTC.io Services, you must:</p>
+    <ul>
+      <li data-i18n="t2-li1">Be at least 18 years of age</li>
+      <li data-i18n="t2-li2">Be a natural person, legal entity, or other organization with full legal capacity</li>
+      <li data-i18n="t2-li3">Not be a resident of or located in any jurisdiction where crypto OTC trading is prohibited</li>
+      <li data-i18n="t2-li4">Not be listed on any government sanction list (OFAC, UN, HK sanctions)</li>
+      <li data-i18n="t2-li5">Pass our KYC/AML verification process</li>
+    </ul>
+    <h3 data-i18n="t2-h2">2.2 Account Security</h3>
+    <p data-i18n="t2-p2">You are responsible for maintaining the confidentiality of your account credentials. You must immediately notify us of any unauthorized access to your account. We are not liable for losses resulting from unauthorized account access where reasonable security measures were in place.</p>
+    <h3 data-i18n="t2-h3">2.3 One Account Per Person</h3>
+    <p data-i18n="t2-p3">Each individual or entity may maintain only one account. Creating multiple accounts to circumvent limits or restrictions is prohibited and will result in immediate termination of all accounts.</p>
+  </div>
+
+  <div class="section" id="t3">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg></span><span data-i18n="t3-title">3. Our Services</span></h2>
+    <p data-i18n="t3-intro">HKOTC.io provides the following services:</p>
+    <ul>
+      <li data-i18n="t3-li1"><strong>OTC Trading:</strong> Facilitating peer-to-peer cryptocurrency trades (primarily USDT/HKD) at agreed rates</li>
+      <li data-i18n="t3-li2"><strong>Rate Quotation:</strong> Providing live indicative exchange rates for informational purposes</li>
+      <li data-i18n="t3-li3"><strong>Settlement:</strong> Processing HKD payments via FPS, bank transfer, or other agreed methods</li>
+      <li data-i18n="t3-li4"><strong>Trade Confirmation:</strong> Issuing trade receipts and statements for all completed transactions</li>
+    </ul>
+    <div class="highlight-box">
+      <p data-i18n="t3-note">All rates displayed on our website are indicative only. The final trade rate is agreed upon directly between you and our OTC desk via WhatsApp or Telegram before any trade is executed.</p>
+    </div>
+  </div>
+
+  <div class="section" id="t4">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2.5"/><line x1="13" y1="10" x2="19" y2="10"/><line x1="13" y1="14" x2="17" y2="14"/></svg></span><span data-i18n="t4-title">4. KYC / AML Requirements</span></h2>
+    <p data-i18n="t4-intro">HKOTC.io is committed to compliance with Hong Kong's Anti-Money Laundering and Counter-Terrorist Financing (AML/CTF) requirements under the Anti-Money Laundering and Counter-Terrorist Financing Ordinance (Cap. 615).</p>
+    <h3 data-i18n="t4-h1">4.1 Required Documents</h3>
+    <ul>
+      <li data-i18n="t4-li1">Government-issued photo ID (HKID card or passport)</li>
+      <li data-i18n="t4-li2">Proof of address (utility bill or bank statement, dated within 3 months)</li>
+      <li data-i18n="t4-li3">Selfie with ID for identity verification</li>
+      <li data-i18n="t4-li4">Source of funds declaration for trades exceeding HK$120,000</li>
+    </ul>
+    <h3 data-i18n="t4-h2">4.2 Enhanced Due Diligence</h3>
+    <p data-i18n="t4-p2">For high-value trades or high-risk profiles, we may request additional documentation including proof of source of wealth, business registration documents, or enhanced background checks.</p>
+    <h3 data-i18n="t4-h3">4.3 Right to Refuse</h3>
+    <p data-i18n="t4-p3">We reserve the right to refuse service to any individual or entity that fails to meet our KYC/AML requirements, without providing reasons.</p>
+  </div>
+
+  <div class="section" id="t5">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span data-i18n="t5-title">5. Trading Rules &amp; Order Execution</span></h2>
+    <h3 data-i18n="t5-h1">5.1 Trade Confirmation</h3>
+    <p data-i18n="t5-p1">A trade is only confirmed when both parties have explicitly agreed to the rate and amount via our communication channels (WhatsApp or Telegram). Indicative rates are not binding.</p>
+    <h3 data-i18n="t5-h2">5.2 Rate Lock</h3>
+    <p data-i18n="t5-p2">Agreed rates are locked for a maximum of 15 minutes. If payment is not received within this window, the rate may be subject to revision based on market conditions.</p>
+    <h3 data-i18n="t5-h3">5.3 Minimum &amp; Maximum Trade Sizes</h3>
+    <table>
+      <tr><th data-i18n="tb1-h1">Trade Type</th><th data-i18n="tb1-h2">Minimum</th><th data-i18n="tb1-h3">Maximum (Standard)</th></tr>
+      <tr><td data-i18n="tb1-r1c1">Buy USDT</td><td>HK$5,000</td><td>HK$2,000,000</td></tr>
+      <tr><td data-i18n="tb1-r2c1">Sell USDT</td><td>500 USDT</td><td>250,000 USDT</td></tr>
+    </table>
+    <p data-i18n="t5-p3">Higher limits may be available for verified institutional clients. Contact our desk for details.</p>
+    <h3 data-i18n="t5-h4">5.4 Settlement</h3>
+    <p data-i18n="t5-p4">Upon confirming your payment, USDT will be dispatched to your specified wallet within 15 minutes under normal conditions. Delays may occur during network congestion or system maintenance.</p>
+  </div>
+
+  <div class="section" id="t6">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span><span data-i18n="t6-title">6. Fees &amp; Charges</span></h2>
+    <p data-i18n="t6-intro">Our fees are embedded in the bid/ask spread. There are no separate commission charges for standard trades.</p>
+    <table>
+      <tr><th data-i18n="tb2-h1">Service</th><th data-i18n="tb2-h2">Fee</th></tr>
+      <tr><td data-i18n="tb2-r1c1">OTC Buy/Sell (standard)</td><td data-i18n="tb2-r1c2">Spread included in rate (approx. 0.3–0.8%)</td></tr>
+      <tr><td data-i18n="tb2-r2c1">FPS Transfer (HKD)</td><td data-i18n="tb2-r2c2">Free</td></tr>
+      <tr><td data-i18n="tb2-r3c1">On-chain USDT (TRC-20)</td><td data-i18n="tb2-r3c2">Network fee (~1 USDT)</td></tr>
+      <tr><td data-i18n="tb2-r4c1">On-chain USDT (ERC-20)</td><td data-i18n="tb2-r4c2">Network fee (variable)</td></tr>
+      <tr><td data-i18n="tb2-r5c1">Account maintenance</td><td data-i18n="tb2-r5c2">Free</td></tr>
+    </table>
+    <p data-i18n="t6-p1">Fees are subject to change with 7 days' notice. Current fees are always displayed before trade confirmation.</p>
+  </div>
+
+  <div class="section" id="t7">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></span><span data-i18n="t7-title">7. Prohibited Activities</span></h2>
+    <p data-i18n="t7-intro">You must not use our Services for:</p>
+    <ul>
+      <li data-i18n="t7-li1">Money laundering, terrorist financing, or any activity violating AML/CTF laws</li>
+      <li data-i18n="t7-li2">Trading on behalf of sanctioned individuals or entities</li>
+      <li data-i18n="t7-li3">Fraud, market manipulation, or deceptive practices</li>
+      <li data-i18n="t7-li4">Any activity that is illegal under Hong Kong or international law</li>
+      <li data-i18n="t7-li5">Circumventing transaction limits through multiple accounts or transactions</li>
+      <li data-i18n="t7-li6">Providing false information during KYC or trade processing</li>
+      <li data-i18n="t7-li7">Using automated bots or scripts to access our platform without authorization</li>
+      <li data-i18n="t7-li8">Reverse engineering, hacking, or attempting to compromise our security systems</li>
+    </ul>
+    <p data-i18n="t7-p1">Violation of these prohibitions may result in immediate account termination, fund freeze, and reporting to relevant law enforcement authorities.</p>
+  </div>
+
+  <div class="section" id="t8">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span data-i18n="t8-title">8. Risk Disclosure</span></h2>
+    <div class="warning-box">
+      <p data-i18n="t8-warning"><strong>Cryptocurrency trading involves substantial risk of financial loss. You should carefully consider your investment objectives, level of experience, and risk appetite before trading.</strong></p>
+    </div>
+    <p data-i18n="t8-intro">Specific risks include but are not limited to:</p>
+    <ul>
+      <li data-i18n="t8-li1"><strong>Price volatility:</strong> Cryptocurrency prices can fluctuate dramatically within short periods</li>
+      <li data-i18n="t8-li2"><strong>Liquidity risk:</strong> You may not be able to trade at your desired rate during extreme market conditions</li>
+      <li data-i18n="t8-li3"><strong>Regulatory risk:</strong> Changes in Hong Kong or international regulations may affect our operations</li>
+      <li data-i18n="t8-li4"><strong>Technology risk:</strong> System failures, network congestion, or cyberattacks may affect service availability</li>
+      <li data-i18n="t8-li5"><strong>Counterparty risk:</strong> Despite our best efforts, settlement delays or failures may occur</li>
+      <li data-i18n="t8-li6"><strong>Tax implications:</strong> Cryptocurrency gains may be subject to tax; consult a qualified tax advisor</li>
+    </ul>
+    <p data-i18n="t8-p1">Past performance is not indicative of future results. Do not trade more than you can afford to lose.</p>
+  </div>
+
+  <div class="section" id="t9">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M14.83 14.83a4 4 0 110-5.66"/></svg></span><span data-i18n="t9-title">9. Intellectual Property</span></h2>
+    <p data-i18n="t9-p1">All content on HKOTC.io, including but not limited to text, graphics, logos, software, and rate data, is the property of HKOTC Limited or its licensors and is protected by Hong Kong and international intellectual property laws.</p>
+    <p data-i18n="t9-p2">You may not copy, reproduce, distribute, or create derivative works without our prior written consent.</p>
+  </div>
+
+  <div class="section" id="t10">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M5 7h14M5 7l-3 8a4 4 0 008 0L5 7zM19 7l-3 8a4 4 0 008 0L19 7z"/><line x1="4" y1="21" x2="20" y2="21"/></svg></span><span data-i18n="t10-title">10. Limitation of Liability</span></h2>
+    <p data-i18n="t10-intro">To the maximum extent permitted by law, HKOTC.io and its directors, officers, employees, and agents shall not be liable for:</p>
+    <ul>
+      <li data-i18n="t10-li1">Any indirect, incidental, special, consequential, or punitive damages</li>
+      <li data-i18n="t10-li2">Loss of profits, revenue, data, or business opportunity</li>
+      <li data-i18n="t10-li3">Losses arising from market movements after an agreed trade rate expires</li>
+      <li data-i18n="t10-li4">Losses resulting from system downtime, network failures, or force majeure events</li>
+      <li data-i18n="t10-li5">Actions taken by regulatory authorities that affect your account or assets</li>
+    </ul>
+    <p data-i18n="t10-p1">Our total liability for any claim arising from these Terms shall not exceed the fees paid by you to us in the 30 days preceding the claim.</p>
+  </div>
+
+  <div class="section" id="t11">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><span data-i18n="t11-title">11. Indemnification</span></h2>
+    <p data-i18n="t11-intro">You agree to indemnify, defend, and hold harmless HKOTC.io and its affiliates from any claims, damages, losses, liabilities, costs, and expenses (including legal fees) arising from:</p>
+    <ul>
+      <li data-i18n="t11-li1">Your violation of these Terms</li>
+      <li data-i18n="t11-li2">Your violation of any applicable law or regulation</li>
+      <li data-i18n="t11-li3">Your infringement of any third-party rights</li>
+      <li data-i18n="t11-li4">Any false or misleading information you provide to us</li>
+    </ul>
+  </div>
+
+  <div class="section" id="t12">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></span><span data-i18n="t12-title">12. Termination</span></h2>
+    <p data-i18n="t12-intro">We may suspend or terminate your account at any time, with or without notice, for:</p>
+    <ul>
+      <li data-i18n="t12-li1">Violation of these Terms</li>
+      <li data-i18n="t12-li2">Failure to pass or maintain KYC/AML requirements</li>
+      <li data-i18n="t12-li3">Suspicious or potentially fraudulent activity</li>
+      <li data-i18n="t12-li4">Instructions from regulatory or law enforcement authorities</li>
+      <li data-i18n="t12-li5">Extended periods of inactivity (over 24 months)</li>
+    </ul>
+    <p data-i18n="t12-p1">You may close your account at any time by contacting our support team. Any outstanding trades will be settled before closure. These Terms survive account termination.</p>
+  </div>
+
+  <div class="section" id="t13">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polyline points="2 7 12 2 22 7"/></svg></span><span data-i18n="t13-title">13. Dispute Resolution</span></h2>
+    <p data-i18n="t13-p1">In the event of a dispute, we encourage you to contact us first at <strong>legal@hkotc.io</strong>. We will endeavour to resolve disputes within 14 business days.</p>
+    <p data-i18n="t13-p2">If a dispute cannot be resolved amicably, it shall be submitted to binding arbitration in Hong Kong under the rules of the Hong Kong International Arbitration Centre (HKIAC), conducted in English.</p>
+    <p data-i18n="t13-p3">You waive any right to participate in class action lawsuits against HKOTC.io.</p>
+  </div>
+
+  <div class="section" id="t14">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 018 8c0 5.25-8 14-8 14S4 15.25 4 10a8 8 0 018-8z"/></svg></span><span data-i18n="t14-title">14. Governing Law</span></h2>
+    <p data-i18n="t14-p1">These Terms are governed by and construed in accordance with the laws of the Hong Kong Special Administrative Region, without regard to its conflict of law provisions.</p>
+    <p data-i18n="t14-p2">You submit to the exclusive jurisdiction of the courts of Hong Kong for any matter not subject to arbitration.</p>
+  </div>
+
+  <div class="section" id="t15">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></span><span data-i18n="t15-title">15. Changes to Terms</span></h2>
+    <p data-i18n="t15-intro">We reserve the right to modify these Terms at any time. Material changes will be communicated via:</p>
+    <ul>
+      <li data-i18n="t15-li1">Email notification to your registered address</li>
+      <li data-i18n="t15-li2">In-app or in-platform notification</li>
+      <li data-i18n="t15-li3">WhatsApp or Telegram broadcast (for subscribed users)</li>
+    </ul>
+    <p data-i18n="t15-p1">Changes take effect 14 days after notification. Continued use of the Services after the effective date constitutes acceptance of the new Terms.</p>
+  </div>
+
+  <div class="section" id="t16">
+    <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z"/><polyline points="22 6 12 13 2 6"/></svg></span><span data-i18n="t16-title">16. Contact Information</span></h2>
+    <p data-i18n="t16-intro">For any questions regarding these Terms of Service, please contact us:</p>
+    <ul>
+      <li data-i18n="t16-li1"><strong>Legal:</strong> legal@hkotc.io</li>
+      <li data-i18n="t16-li2"><strong>Support:</strong> support@hkotc.io</li>
+      <li data-i18n="t16-li3"><strong>WhatsApp:</strong> +852 9876 5432</li>
+      <li data-i18n="t16-li4"><strong>Telegram:</strong> @hkotcio</li>
+    </ul>
+  </div>
+
+  <div class="contact-section">
+    <h3 data-i18n="cta-title">Questions About Our Terms?</h3>
+    <p data-i18n="cta-sub">Our compliance team is here to help clarify anything in these Terms.</p>
+    <div class="contact-btns">
+      <a href="https://wa.me/85298765432?text=Terms%20enquiry%3A" target="_blank" class="btn btn-wa" data-i18n="cta-wa">WhatsApp Us</a>
+      <a href="https://t.me/hkotcio" target="_blank" class="btn btn-tg" data-i18n="cta-tg">Telegram</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="links">
+    <a href="index.html" data-i18n="ft-home">Home</a>
+    <a href="terms.html" data-i18n="ft-terms">Terms of Service</a>
+    <a href="privacy.html" data-i18n="ft-privacy">Privacy Policy</a>
+    <a href="blog.html" data-i18n="ft-blog">Blog</a>
+  </div>
+  <p data-i18n="ft-copy">© 2025 HKOTC.io. All rights reserved.</p>
+</footer>
+
+<script>
+  const LANG = {
+    en: {
+      'nav-back':'← Back to Home',
+      'page-badge':'Legal Document',
+      'page-title':'Terms of Service',
+      'page-meta':'Last Updated: 1 January 2025 · Effective Date: 1 January 2025',
+      'warning':'&#x26A0; <strong>Important:</strong> Please read these Terms of Service carefully before using HKOTC.io. By accessing or using our services, you agree to be bound by these terms. Cryptocurrency trading involves significant risk of loss. Only trade with funds you can afford to lose.',
+      'toc-title':'Table of Contents',
+      'toc-1':'Acceptance of Terms','toc-2':'Eligibility &amp; Account Registration','toc-3':'Our Services',
+      'toc-4':'KYC / AML Requirements','toc-5':'Trading Rules &amp; Order Execution','toc-6':'Fees &amp; Charges',
+      'toc-7':'Prohibited Activities','toc-8':'Risk Disclosure','toc-9':'Intellectual Property',
+      'toc-10':'Limitation of Liability','toc-11':'Indemnification','toc-12':'Termination',
+      'toc-13':'Dispute Resolution','toc-14':'Governing Law','toc-15':'Changes to Terms','toc-16':'Contact Information',
+      't1-title':'1. Acceptance of Terms',
+      't1-p1':'These Terms of Service ("Terms") govern your use of the HKOTC.io website, mobile application, and all related services (collectively, the "Services") provided by HKOTC Limited ("HKOTC", "we", "us", "our"), a company incorporated in Hong Kong.',
+      't1-p2':'By creating an account, accessing our platform, or executing any trade, you acknowledge that you have read, understood, and agree to be bound by these Terms and our <a href="privacy.html">Privacy Policy</a>, which is incorporated herein by reference.',
+      't1-p3':'If you do not agree with any part of these Terms, you must not use our Services.',
+      't2-title':'2. Eligibility &amp; Account Registration',
+      't2-h1':'2.1 Eligibility Requirements',
+      't2-intro':'To use HKOTC.io Services, you must:',
+      't2-li1':'Be at least 18 years of age',
+      't2-li2':'Be a natural person, legal entity, or other organization with full legal capacity',
+      't2-li3':'Not be a resident of or located in any jurisdiction where crypto OTC trading is prohibited',
+      't2-li4':'Not be listed on any government sanction list (OFAC, UN, HK sanctions)',
+      't2-li5':'Pass our KYC/AML verification process',
+      't2-h2':'2.2 Account Security',
+      't2-p2':'You are responsible for maintaining the confidentiality of your account credentials. You must immediately notify us of any unauthorized access to your account. We are not liable for losses resulting from unauthorized account access where reasonable security measures were in place.',
+      't2-h3':'2.3 One Account Per Person',
+      't2-p3':'Each individual or entity may maintain only one account. Creating multiple accounts to circumvent limits or restrictions is prohibited and will result in immediate termination of all accounts.',
+      't3-title':'3. Our Services',
+      't3-intro':'HKOTC.io provides the following services:',
+      't3-li1':'<strong>OTC Trading:</strong> Facilitating peer-to-peer cryptocurrency trades (primarily USDT/HKD) at agreed rates',
+      't3-li2':'<strong>Rate Quotation:</strong> Providing live indicative exchange rates for informational purposes',
+      't3-li3':'<strong>Settlement:</strong> Processing HKD payments via FPS, bank transfer, or other agreed methods',
+      't3-li4':'<strong>Trade Confirmation:</strong> Issuing trade receipts and statements for all completed transactions',
+      't3-note':'All rates displayed on our website are indicative only. The final trade rate is agreed upon directly between you and our OTC desk via WhatsApp or Telegram before any trade is executed.',
+      't4-title':'4. KYC / AML Requirements',
+      't4-intro':"HKOTC.io is committed to compliance with Hong Kong's Anti-Money Laundering and Counter-Terrorist Financing (AML/CTF) requirements under the Anti-Money Laundering and Counter-Terrorist Financing Ordinance (Cap. 615).",
+      't4-h1':'4.1 Required Documents',
+      't4-li1':'Government-issued photo ID (HKID card or passport)',
+      't4-li2':'Proof of address (utility bill or bank statement, dated within 3 months)',
+      't4-li3':'Selfie with ID for identity verification',
+      't4-li4':'Source of funds declaration for trades exceeding HK$120,000',
+      't4-h2':'4.2 Enhanced Due Diligence',
+      't4-p2':'For high-value trades or high-risk profiles, we may request additional documentation including proof of source of wealth, business registration documents, or enhanced background checks.',
+      't4-h3':'4.3 Right to Refuse',
+      't4-p3':'We reserve the right to refuse service to any individual or entity that fails to meet our KYC/AML requirements, without providing reasons.',
+      't5-title':'5. Trading Rules &amp; Order Execution',
+      't5-h1':'5.1 Trade Confirmation',
+      't5-p1':'A trade is only confirmed when both parties have explicitly agreed to the rate and amount via our communication channels (WhatsApp or Telegram). Indicative rates are not binding.',
+      't5-h2':'5.2 Rate Lock',
+      't5-p2':'Agreed rates are locked for a maximum of 15 minutes. If payment is not received within this window, the rate may be subject to revision based on market conditions.',
+      't5-h3':'5.3 Minimum &amp; Maximum Trade Sizes',
+      'tb1-h1':'Trade Type','tb1-h2':'Minimum','tb1-h3':'Maximum (Standard)',
+      'tb1-r1c1':'Buy USDT','tb1-r2c1':'Sell USDT',
+      't5-p3':'Higher limits may be available for verified institutional clients. Contact our desk for details.',
+      't5-h4':'5.4 Settlement',
+      't5-p4':'Upon confirming your payment, USDT will be dispatched to your specified wallet within 15 minutes under normal conditions. Delays may occur during network congestion or system maintenance.',
+      't6-title':'6. Fees &amp; Charges',
+      't6-intro':'Our fees are embedded in the bid/ask spread. There are no separate commission charges for standard trades.',
+      'tb2-h1':'Service','tb2-h2':'Fee',
+      'tb2-r1c1':'OTC Buy/Sell (standard)','tb2-r1c2':'Spread included in rate (approx. 0.3–0.8%)',
+      'tb2-r2c1':'FPS Transfer (HKD)','tb2-r2c2':'Free',
+      'tb2-r3c1':'On-chain USDT (TRC-20)','tb2-r3c2':'Network fee (~1 USDT)',
+      'tb2-r4c1':'On-chain USDT (ERC-20)','tb2-r4c2':'Network fee (variable)',
+      'tb2-r5c1':'Account maintenance','tb2-r5c2':'Free',
+      't6-p1':"Fees are subject to change with 7 days' notice. Current fees are always displayed before trade confirmation.",
+      't7-title':'7. Prohibited Activities',
+      't7-intro':'You must not use our Services for:',
+      't7-li1':'Money laundering, terrorist financing, or any activity violating AML/CTF laws',
+      't7-li2':'Trading on behalf of sanctioned individuals or entities',
+      't7-li3':'Fraud, market manipulation, or deceptive practices',
+      't7-li4':'Any activity that is illegal under Hong Kong or international law',
+      't7-li5':'Circumventing transaction limits through multiple accounts or transactions',
+      't7-li6':'Providing false information during KYC or trade processing',
+      't7-li7':'Using automated bots or scripts to access our platform without authorization',
+      't7-li8':'Reverse engineering, hacking, or attempting to compromise our security systems',
+      't7-p1':'Violation of these prohibitions may result in immediate account termination, fund freeze, and reporting to relevant law enforcement authorities.',
+      't8-title':'8. Risk Disclosure',
+      't8-warning':'<strong>Cryptocurrency trading involves substantial risk of financial loss. You should carefully consider your investment objectives, level of experience, and risk appetite before trading.</strong>',
+      't8-intro':'Specific risks include but are not limited to:',
+      't8-li1':'<strong>Price volatility:</strong> Cryptocurrency prices can fluctuate dramatically within short periods',
+      't8-li2':'<strong>Liquidity risk:</strong> You may not be able to trade at your desired rate during extreme market conditions',
+      't8-li3':'<strong>Regulatory risk:</strong> Changes in Hong Kong or international regulations may affect our operations',
+      't8-li4':'<strong>Technology risk:</strong> System failures, network congestion, or cyberattacks may affect service availability',
+      't8-li5':'<strong>Counterparty risk:</strong> Despite our best efforts, settlement delays or failures may occur',
+      't8-li6':'<strong>Tax implications:</strong> Cryptocurrency gains may be subject to tax; consult a qualified tax advisor',
+      't8-p1':'Past performance is not indicative of future results. Do not trade more than you can afford to lose.',
+      't9-title':'9. Intellectual Property',
+      't9-p1':'All content on HKOTC.io, including but not limited to text, graphics, logos, software, and rate data, is the property of HKOTC Limited or its licensors and is protected by Hong Kong and international intellectual property laws.',
+      't9-p2':'You may not copy, reproduce, distribute, or create derivative works without our prior written consent.',
+      't10-title':'10. Limitation of Liability',
+      't10-intro':'To the maximum extent permitted by law, HKOTC.io and its directors, officers, employees, and agents shall not be liable for:',
+      't10-li1':'Any indirect, incidental, special, consequential, or punitive damages',
+      't10-li2':'Loss of profits, revenue, data, or business opportunity',
+      't10-li3':'Losses arising from market movements after an agreed trade rate expires',
+      't10-li4':'Losses resulting from system downtime, network failures, or force majeure events',
+      't10-li5':'Actions taken by regulatory authorities that affect your account or assets',
+      't10-p1':'Our total liability for any claim arising from these Terms shall not exceed the fees paid by you to us in the 30 days preceding the claim.',
+      't11-title':'11. Indemnification',
+      't11-intro':'You agree to indemnify, defend, and hold harmless HKOTC.io and its affiliates from any claims, damages, losses, liabilities, costs, and expenses (including legal fees) arising from:',
+      't11-li1':'Your violation of these Terms',
+      't11-li2':'Your violation of any applicable law or regulation',
+      't11-li3':'Your infringement of any third-party rights',
+      't11-li4':'Any false or misleading information you provide to us',
+      't12-title':'12. Termination',
+      't12-intro':'We may suspend or terminate your account at any time, with or without notice, for:',
+      't12-li1':'Violation of these Terms',
+      't12-li2':'Failure to pass or maintain KYC/AML requirements',
+      't12-li3':'Suspicious or potentially fraudulent activity',
+      't12-li4':'Instructions from regulatory or law enforcement authorities',
+      't12-li5':'Extended periods of inactivity (over 24 months)',
+      't12-p1':'You may close your account at any time by contacting our support team. Any outstanding trades will be settled before closure. These Terms survive account termination.',
+      't13-title':'13. Dispute Resolution',
+      't13-p1':'In the event of a dispute, we encourage you to contact us first at <strong>legal@hkotc.io</strong>. We will endeavour to resolve disputes within 14 business days.',
+      't13-p2':'If a dispute cannot be resolved amicably, it shall be submitted to binding arbitration in Hong Kong under the rules of the Hong Kong International Arbitration Centre (HKIAC), conducted in English.',
+      't13-p3':'You waive any right to participate in class action lawsuits against HKOTC.io.',
+      't14-title':'14. Governing Law',
+      't14-p1':'These Terms are governed by and construed in accordance with the laws of the Hong Kong Special Administrative Region, without regard to its conflict of law provisions.',
+      't14-p2':'You submit to the exclusive jurisdiction of the courts of Hong Kong for any matter not subject to arbitration.',
+      't15-title':'15. Changes to Terms',
+      't15-intro':'We reserve the right to modify these Terms at any time. Material changes will be communicated via:',
+      't15-li1':'Email notification to your registered address',
+      't15-li2':'In-app or in-platform notification',
+      't15-li3':'WhatsApp or Telegram broadcast (for subscribed users)',
+      't15-p1':'Changes take effect 14 days after notification. Continued use of the Services after the effective date constitutes acceptance of the new Terms.',
+      't16-title':'16. Contact Information',
+      't16-intro':'For any questions regarding these Terms of Service, please contact us:',
+      't16-li1':'<strong>Legal:</strong> legal@hkotc.io',
+      't16-li2':'<strong>Support:</strong> support@hkotc.io',
+      't16-li3':'<strong>WhatsApp:</strong> +852 9876 5432',
+      't16-li4':'<strong>Telegram:</strong> @hkotcio',
+      'cta-title':'Questions About Our Terms?',
+      'cta-sub':'Our compliance team is here to help clarify anything in these Terms.',
+      'cta-wa':'WhatsApp Us','cta-tg':'Telegram',
+      'ft-home':'Home','ft-terms':'Terms of Service','ft-privacy':'Privacy Policy','ft-blog':'Blog',
+      'ft-copy':'© 2025 HKOTC.io. All rights reserved.',
+    },
+    zh: {
+      'nav-back':'← 返回主頁',
+      'page-badge':'法律文件',
+      'page-title':'服務條款',
+      'page-meta':'最後更新：2025年1月1日 · 生效日期：2025年1月1日',
+      'warning':'&#x26A0; <strong>重要提示：</strong>請在使用HKOTC.io前仔細閱讀本服務條款。訪問或使用我們的服務，即表示您同意受本條款約束。加密貨幣交易存在重大虧損風險，請勿以不能承受損失的資金進行交易。',
+      'toc-title':'目錄',
+      'toc-1':'接受條款','toc-2':'資格及帳戶註冊','toc-3':'我們的服務',
+      'toc-4':'KYC / 反洗錢要求','toc-5':'交易規則及訂單執行','toc-6':'費用及收費',
+      'toc-7':'禁止行為','toc-8':'風險披露','toc-9':'知識產權',
+      'toc-10':'責任限制','toc-11':'賠償','toc-12':'終止',
+      'toc-13':'爭議解決','toc-14':'適用法律','toc-15':'條款修改','toc-16':'聯絡資料',
+      't1-title':'1. 接受條款',
+      't1-p1':'本服務條款（「條款」）規管您對HKOTC.io網站、手機應用程式及所有相關服務（統稱「服務」）的使用，該等服務由在香港註冊成立的HKOTC Limited（「HKOTC」、「我們」）提供。',
+      't1-p2':'通過創建帳戶、訪問我們的平台或執行任何交易，您確認已閱讀、理解並同意受本條款及我們的<a href="privacy.html">私隱政策</a>（該政策通過引用併入本條款）的約束。',
+      't1-p3':'如您不同意本條款的任何部分，請勿使用我們的服務。',
+      't2-title':'2. 資格及帳戶註冊',
+      't2-h1':'2.1 資格要求',
+      't2-intro':'使用HKOTC.io服務，您必須：',
+      't2-li1':'年滿18歲',
+      't2-li2':'為具有完全法律行為能力的自然人、法人或其他組織',
+      't2-li3':'不是任何禁止加密貨幣OTC交易的司法管轄區的居民或位於該地區',
+      't2-li4':'未被列入任何政府制裁名單（OFAC、聯合國、香港制裁）',
+      't2-li5':'通過我們的KYC/AML驗證流程',
+      't2-h2':'2.2 帳戶安全',
+      't2-p2':'您有責任維護帳戶憑證的保密性。如發現任何未經授權的帳戶訪問，必須立即通知我們。在已採取合理安全措施的情況下，因未經授權訪問帳戶所造成的損失，我們不承擔責任。',
+      't2-h3':'2.3 每人一個帳戶',
+      't2-p3':'每個人或實體只能維護一個帳戶。為規避限制而創建多個帳戶屬於違禁行為，將導致所有帳戶被立即終止。',
+      't3-title':'3. 我們的服務',
+      't3-intro':'HKOTC.io提供以下服務：',
+      't3-li1':'<strong>OTC交易：</strong>以約定匯率促成點對點加密貨幣交易（主要為USDT/港幣）',
+      't3-li2':'<strong>匯率報價：</strong>提供即時指示性匯率供參考用途',
+      't3-li3':'<strong>結算：</strong>通過FPS、銀行轉帳或其他約定方式處理港幣付款',
+      't3-li4':'<strong>交易確認：</strong>為所有已完成的交易發出交易收據及結單',
+      't3-note':'我們網站上顯示的所有匯率僅供參考。最終交易匯率在執行任何交易前，通過WhatsApp或Telegram由您與我們的OTC交易台直接議定。',
+      't4-title':'4. KYC / 反洗錢要求',
+      't4-intro':'HKOTC.io致力遵守香港《打擊洗錢及恐怖分子資金籌集條例》（第615章）下的反洗錢及反恐融資（AML/CTF）要求。',
+      't4-h1':'4.1 所需文件',
+      't4-li1':'政府簽發的附照片身份證明文件（香港身份證或護照）',
+      't4-li2':'地址證明（水電費帳單或銀行結單，日期在3個月內）',
+      't4-li3':'手持身份證件的自拍照片用於身份驗證',
+      't4-li4':'交易金額超過港幣120,000元時需提供資金來源聲明',
+      't4-h2':'4.2 加強盡職審查',
+      't4-p2':'對於高價值交易或高風險客戶，我們可能要求提供額外文件，包括財富來源證明、商業登記文件或加強背景調查。',
+      't4-h3':'4.3 拒絕服務的權利',
+      't4-p3':'我們保留在不提供理由的情況下，拒絕向未能符合KYC/AML要求的任何個人或實體提供服務的權利。',
+      't5-title':'5. 交易規則及訂單執行',
+      't5-h1':'5.1 交易確認',
+      't5-p1':'只有當雙方通過我們的通訊渠道（WhatsApp或Telegram）明確同意匯率和金額後，交易才算確認。指示性匯率不具約束力。',
+      't5-h2':'5.2 匯率鎖定',
+      't5-p2':'約定匯率最長鎖定15分鐘。若在此時間窗口內未收到付款，匯率可能根據市場情況進行修訂。',
+      't5-h3':'5.3 最低及最高交易金額',
+      'tb1-h1':'交易類型','tb1-h2':'最低金額','tb1-h3':'最高金額（標準）',
+      'tb1-r1c1':'買入USDT','tb1-r2c1':'賣出USDT',
+      't5-p3':'已認證的機構客戶可能可以享有更高限額，詳情請聯絡我們的交易台。',
+      't5-h4':'5.4 結算',
+      't5-p4':'確認收款後，USDT將在正常情況下於15分鐘內發送至您指定的錢包。網絡擁塞或系統維護期間可能出現延誤。',
+      't6-title':'6. 費用及收費',
+      't6-intro':'我們的費用已計入買賣差價。標準交易不另收佣金。',
+      'tb2-h1':'服務','tb2-h2':'費用',
+      'tb2-r1c1':'OTC買賣（標準）','tb2-r1c2':'費用計入匯率差價（約0.3–0.8%）',
+      'tb2-r2c1':'FPS轉帳（港幣）','tb2-r2c2':'免費',
+      'tb2-r3c1':'鏈上USDT（TRC-20）','tb2-r3c2':'網絡費用（約1 USDT）',
+      'tb2-r4c1':'鏈上USDT（ERC-20）','tb2-r4c2':'網絡費用（可變）',
+      'tb2-r5c1':'帳戶維護','tb2-r5c2':'免費',
+      't6-p1':'費用如有變更，將提前7天通知。當前費用在交易確認前始終顯示。',
+      't7-title':'7. 禁止行為',
+      't7-intro':'您不得將我們的服務用於：',
+      't7-li1':'洗錢、恐怖分子融資或任何違反AML/CTF法律的活動',
+      't7-li2':'代表受制裁的個人或實體進行交易',
+      't7-li3':'欺詐、市場操縱或欺騙性行為',
+      't7-li4':'香港或國際法律下任何非法的活動',
+      't7-li5':'通過多個帳戶或交易規避交易限額',
+      't7-li6':'在KYC或交易處理過程中提供虛假資料',
+      't7-li7':'在未獲授權的情況下使用自動機器人或腳本訪問我們的平台',
+      't7-li8':'對我們的安全系統進行逆向工程、黑客攻擊或嘗試破壞',
+      't7-p1':'違反上述禁止規定可能導致帳戶立即終止、資金凍結，並向相關執法機構舉報。',
+      't8-title':'8. 風險披露',
+      't8-warning':'<strong>加密貨幣交易涉及重大財務損失風險。在交易前，請仔細考慮您的投資目標、經驗水平和風險承受能力。</strong>',
+      't8-intro':'具體風險包括但不限於：',
+      't8-li1':'<strong>價格波動：</strong>加密貨幣價格可能在短時間內劇烈波動',
+      't8-li2':'<strong>流動性風險：</strong>在極端市場條件下，您可能無法以理想匯率交易',
+      't8-li3':'<strong>監管風險：</strong>香港或國際法規的變化可能影響我們的運營',
+      't8-li4':'<strong>技術風險：</strong>系統故障、網絡擁塞或網絡攻擊可能影響服務可用性',
+      't8-li5':'<strong>對手方風險：</strong>儘管我們盡力而為，仍可能發生結算延誤或失敗',
+      't8-li6':'<strong>稅務影響：</strong>加密貨幣收益可能須繳稅，請諮詢合資格稅務顧問',
+      't8-p1':'過往表現不代表未來結果。請勿以超出您承受能力的資金進行交易。',
+      't9-title':'9. 知識產權',
+      't9-p1':'HKOTC.io上的所有內容，包括但不限於文字、圖形、標誌、軟件及匯率數據，均為HKOTC Limited或其授權方的財產，受香港及國際知識產權法律保護。',
+      't9-p2':'未經我們事先書面同意，您不得複製、再製、分發或創作衍生作品。',
+      't10-title':'10. 責任限制',
+      't10-intro':'在法律允許的最大範圍內，HKOTC.io及其董事、高管、員工和代理人不承擔以下責任：',
+      't10-li1':'任何間接、附帶、特殊、衍生性或懲罰性損害',
+      't10-li2':'利潤、收入、數據或商業機會的損失',
+      't10-li3':'因約定交易匯率到期後市場波動引起的損失',
+      't10-li4':'因系統停機、網絡故障或不可抗力事件造成的損失',
+      't10-li5':'監管機構就您的帳戶或資產採取的行動',
+      't10-p1':'我們因本條款引起的任何索賠的總責任，不超過索賠發生前30天您向我們支付的費用。',
+      't11-title':'11. 賠償',
+      't11-intro':'您同意就以下原因引起的任何索賠、損害、損失、責任、費用及開支（包括法律費用）對HKOTC.io及其附屬公司進行賠償、辯護及免責：',
+      't11-li1':'您違反本條款',
+      't11-li2':'您違反任何適用的法律或法規',
+      't11-li3':'您侵犯任何第三方的權利',
+      't11-li4':'您向我們提供的任何虛假或誤導性資料',
+      't12-title':'12. 終止',
+      't12-intro':'我們可在任何時候，無論是否提前通知，在以下情況下暫停或終止您的帳戶：',
+      't12-li1':'違反本條款',
+      't12-li2':'未能通過或維持KYC/AML要求',
+      't12-li3':'可疑或潛在的欺詐活動',
+      't12-li4':'監管機構或執法機構的指示',
+      't12-li5':'長期不活躍（超過24個月）',
+      't12-p1':'您可隨時聯絡我們的支援團隊關閉帳戶。任何未完成的交易將在關閉前結算。本條款在帳戶終止後繼續有效。',
+      't13-title':'13. 爭議解決',
+      't13-p1':'如發生爭議，我們建議您先聯絡我們 <strong>legal@hkotc.io</strong>，我們將盡力在14個工作天內解決爭議。',
+      't13-p2':'如爭議無法友好解決，應根據香港國際仲裁中心（HKIAC）的規則提交香港進行有約束力的仲裁，以英語進行。',
+      't13-p3':'您放棄針對HKOTC.io參與集體訴訟的任何權利。',
+      't14-title':'14. 適用法律',
+      't14-p1':'本條款受香港特別行政區法律管轄並依其解釋，不考慮其法律衝突條款。',
+      't14-p2':'對於不受仲裁約束的事項，您同意服從香港法院的專屬管轄。',
+      't15-title':'15. 條款修改',
+      't15-intro':'我們保留隨時修改本條款的權利。重大變更將通過以下方式通知：',
+      't15-li1':'向您的註冊電郵地址發送電郵通知',
+      't15-li2':'應用程式內或平台內通知',
+      't15-li3':'WhatsApp或Telegram廣播（適用於已訂閱用戶）',
+      't15-p1':'變更在通知後14天生效。在生效日期後繼續使用服務，即表示您接受新的條款。',
+      't16-title':'16. 聯絡資料',
+      't16-intro':'如對本服務條款有任何疑問，請聯絡我們：',
+      't16-li1':'<strong>法律事務：</strong>legal@hkotc.io',
+      't16-li2':'<strong>客戶支援：</strong>support@hkotc.io',
+      't16-li3':'<strong>WhatsApp：</strong>+852 9876 5432',
+      't16-li4':'<strong>Telegram：</strong>@hkotcio',
+      'cta-title':'對我們的條款有疑問？',
+      'cta-sub':'我們的合規團隊隨時為您解答條款中的任何疑問。',
+      'cta-wa':'WhatsApp聯絡','cta-tg':'Telegram',
+      'ft-home':'主頁','ft-terms':'服務條款','ft-privacy':'私隱政策','ft-blog':'博客',
+      'ft-copy':'© 2025 HKOTC.io. 版權所有。',
+    }
+  };
+
+  let currentLang = localStorage.getItem('lang') || 'en';
+
+  function applyLang(lang) {
+    document.documentElement.lang = lang === 'zh' ? 'zh-HK' : 'en-HK';
+    const t = LANG[lang];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (!t[key]) return;
+      el.innerHTML = t[key];
+    });
+    const lc = document.getElementById('lang-current');
+    if (lc) lc.textContent = lang === 'en' ? 'EN' : '中文';
+    document.querySelectorAll('.lang-option[data-lang]').forEach(opt => {
+      opt.classList.toggle('active', opt.dataset.lang === lang);
+    });
+  }
+
+  function toggleLangMenu() {
+    document.getElementById('lang-menu').classList.toggle('open');
+  }
+
+  function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('lang', lang);
+    applyLang(lang);
+    const m = document.getElementById('lang-menu');
+    if (m) m.classList.remove('open');
+  }
+
+  document.addEventListener('click', function(e) {
+    const dd = document.getElementById('lang-dropdown');
+    if (dd && !dd.contains(e.target)) {
+      const m = document.getElementById('lang-menu');
+      if (m) m.classList.remove('open');
+    }
+  });
+
+  applyLang(currentLang);
+</script>
+</body>
+</html>

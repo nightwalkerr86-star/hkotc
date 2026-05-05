@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en-HK">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Blog — HKOTC | Hong Kong Crypto &amp; USDT/HKD OTC News</title>
+  <meta name="description" content="Stay up to date with Hong Kong crypto news, USDT/HKD market insights, OTC trading tips, and regulatory updates from HKOTC — Hong Kong's trusted crypto OTC desk.">
+  <meta name="keywords" content="Hong Kong crypto news, USDT HKD news, crypto OTC Hong Kong blog, Bitcoin Hong Kong, Ethereum HKD, HKMA crypto, 香港加密貨幣新聞">
+  <meta name="author" content="HKOTC">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <link rel="canonical" href="https://hkotc.io/blog.html">
+  <link rel="alternate" hreflang="en-HK" href="https://hkotc.io/blog.html">
+  <link rel="alternate" hreflang="x-default" href="https://hkotc.io/blog.html">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://hkotc.io/blog.html">
+  <meta property="og:site_name" content="HKOTC">
+  <meta property="og:title" content="Blog — HKOTC | Hong Kong Crypto &amp; OTC News">
+  <meta property="og:description" content="Hong Kong crypto news, USDT/HKD market insights, OTC trading tips, and regulatory updates.">
+  <meta property="og:image" content="https://hkotc.io/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Blog — HKOTC | Hong Kong Crypto &amp; OTC News">
+  <meta name="twitter:image" content="https://hkotc.io/og-image.jpg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Blog","name":"HKOTC Blog","url":"https://hkotc.io/blog.html","publisher":{"@type":"Organization","name":"HKOTC","url":"https://hkotc.io"}}</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #07090f; --bg2: #0d1120; --bg3: #131829;
+      --surface: rgba(255,255,255,0.04); --border: rgba(255,255,255,0.08);
+      --gold: #f5a623; --gold2: #ffcc66; --green: #00d4aa;
+      --text: #f0f2ff; --muted: #8892a8;
+      --radius: 16px; --radius-sm: 10px;
+      --shadow: 0 20px 60px rgba(0,0,0,0.5);
+      --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: none; outline: none; }
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    .gradient-text { background: linear-gradient(135deg, var(--gold), var(--gold2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    /* ── NAVBAR (same as homepage) ── */
+    #navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 999; transition: var(--transition); }
+    #navbar.scrolled { background: rgba(7,9,15,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); box-shadow: 0 4px 30px rgba(0,0,0,0.3); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; max-width: 1200px; margin: 0 auto; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+    .nav-logo .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--gold), #e8921b); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #07090f; flex-shrink: 0; }
+    .nav-links { display: none; list-style: none; gap: 32px; }
+    .nav-links a { font-size: 14px; font-weight: 500; color: var(--muted); transition: color 0.2s; position: relative; padding-bottom: 3px; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a::after { content: ''; position: absolute; left: 0; bottom: -2px; width: 100%; height: 2px; background: var(--gold); border-radius: 2px; transform: scaleX(0); transition: transform 0.2s ease; }
+    .nav-links a.active { color: var(--text); font-weight: 600; }
+    .nav-links a.active::after { transform: scaleX(1); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .hamburger { display: flex; flex-direction: column; gap: 5px; background: none; padding: 8px; border-radius: 8px; transition: background 0.2s; }
+    .hamburger:hover { background: var(--surface); }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: var(--transition); }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu { display: none; flex-direction: column; background: rgba(7,9,15,0.98); backdrop-filter: blur(30px); border-bottom: 1px solid var(--border); padding: 20px; position: fixed; top: 70px; left: 0; right: 0; z-index: 998; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { padding: 14px 0; font-size: 16px; font-weight: 500; color: var(--text); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+    .mobile-menu a svg { opacity: 0.7; flex-shrink: 0; }
+    .nav-btn { display:inline-flex; align-items:center; justify-content:center; gap:5px; padding:7px 11px; border-radius:8px; background:var(--surface); border:1px solid var(--border); color:var(--text); font-size:12px; font-weight:700; transition:var(--transition); cursor:pointer; line-height:1; font-family:inherit; }
+    .nav-btn:hover { border-color:var(--gold); color:var(--gold); }
+    .lang-dropdown { position:relative; display:inline-flex; }
+    .lang-menu { display:none; position:absolute; top:calc(100% + 6px); right:0; background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:5px; min-width:130px; z-index:300; box-shadow:0 8px 28px rgba(0,0,0,0.35); }
+    .lang-menu.open { display:flex; flex-direction:column; gap:2px; }
+    .lang-option { display:flex; align-items:center; gap:8px; width:100%; padding:8px 10px; border-radius:7px; border:none; background:transparent; color:var(--text); cursor:pointer; font-size:13px; font-weight:600; font-family:inherit; transition:background 0.15s; text-align:left; }
+    .lang-option:hover { background:var(--surface); }
+    .lang-option.active { background:rgba(245,166,35,0.15); color:var(--gold); }
+    .nav-btn[data-lang].active { background:rgba(245,166,35,0.15); border-color:var(--gold); color:var(--gold); }
+    html.light { --bg: #f0f4ff; --bg2: #e6ecff; --bg3: #dde5ff; --surface: rgba(0,0,0,0.04); --border: rgba(0,0,0,0.12); --text: #0d1120; --muted: #5a6480; }
+    html.light #navbar.scrolled { background: rgba(240,244,255,0.95); }
+    html.light .mobile-menu { background: rgba(240,244,255,0.98); }
+    @media (min-width: 768px) { .nav-links { display: flex; } .hamburger { display: none; } }
+
+    /* ── HERO ── */
+    .blog-hero { padding: 130px 24px 48px; text-align: center; background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(245,166,35,0.08) 0%, transparent 70%); }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(245,166,35,0.1); border: 1px solid rgba(245,166,35,0.2); color: var(--gold); font-size: 12px; font-weight: 700; padding: 6px 14px; border-radius: 100px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.8px; }
+    .blog-hero h1 { font-size: clamp(28px, 5vw, 52px); font-weight: 900; letter-spacing: -1.5px; margin-bottom: 14px; line-height: 1.1; }
+    .blog-hero h1 span { background: linear-gradient(135deg,var(--gold),var(--gold2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .blog-hero p { font-size: 16px; color: var(--muted); max-width: 520px; margin: 0 auto 28px; }
+
+
+    /* ── CHANNEL POSTS SECTION ── */
+    .channel-section { max-width: 1200px; margin: 0 auto; padding: 0 24px 28px; }
+    .ch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .ch-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; transition: all 0.22s; position: relative; cursor: pointer; }
+    .ch-card:hover { border-color: rgba(245,166,35,0.3); transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
+    .ch-card-link { position: absolute; inset: 0; z-index: 1; }
+    .ch-tg-btn { position: relative; z-index: 2; }
+    .ch-media { width: 100%; aspect-ratio: 16/9; overflow: hidden; background: var(--surface); position: relative; flex-shrink: 0; }
+    .ch-media img, .ch-media video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.35s; }
+    .ch-card:hover .ch-media img { transform: scale(1.04); }
+    .ch-media-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg,#0d1829 0%,#1a0f2e 100%); display: flex; align-items: center; justify-content: center; opacity: 0.6; }
+    .ch-body { padding: 18px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .ch-channel { display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 800; color: var(--gold); }
+    .ch-channel-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; flex-shrink: 0; }
+    .ch-text { font-size: 13.5px; line-height: 1.65; color: var(--text); display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; white-space: pre-line; flex: 1; }
+    .ch-hashtags { font-size: 12px; color: #4a9eff; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .ch-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
+    .ch-date { font-size: 11px; color: var(--muted); }
+    .ch-tg-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: #2AABEE; text-decoration: none; transition: opacity 0.2s; }
+    .ch-tg-btn:hover { opacity: 0.8; }
+    .ch-tg-btn svg { flex-shrink: 0; }
+    @media (max-width: 900px) { .ch-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 580px) { .ch-grid { grid-template-columns: 1fr; } }
+
+    /* Skeleton loader */
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+    .skel { background: linear-gradient(90deg,var(--surface) 25%,rgba(255,255,255,0.05) 50%,var(--surface) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 6px; }
+    /* Load more */
+    .load-more-wrap { text-align: center; padding-bottom: 12px; }
+    .load-more-btn { padding: 11px 32px; border-radius: 100px; font-size: 13px; font-weight: 700; background: var(--surface); border: 1px solid var(--border); color: var(--muted); cursor: pointer; transition: all 0.2s; font-family: inherit; }
+    .load-more-btn:hover { border-color: rgba(245,166,35,0.3); color: var(--gold); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 32px 24px; margin-top: 16px; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-brand { font-size: 18px; font-weight: 900; background: linear-gradient(135deg,var(--gold),var(--gold2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 13px; color: var(--muted); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-copy { font-size: 12px; color: var(--muted); width: 100%; text-align: center; padding-top: 16px; border-top: 1px solid var(--border); margin-top: 8px; }
+
+  </style>
+</head>
+<body>
+
+<!-- SVG symbols -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="ico-swap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></symbol>
+</svg>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">
+        <svg width="20" height="20"><use href="#ico-swap"/></svg>
+      </div>
+      <span>HKOTC<span class="gradient-text">.io</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#calculator" data-i18n="nav-exchange">Exchange</a></li>
+      <li><a href="index.html#features" data-i18n="nav-features">Features</a></li>
+      <li><a href="index.html#how" data-i18n="nav-how">How It Works</a></li>
+      <li><a href="index.html#contact" data-i18n="nav-contact">Contact</a></li>
+      <li><a href="blog.html" class="active" data-i18n="nav-blog">Blog</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="lang-dropdown" id="lang-dropdown">
+        <button class="nav-btn" id="lang-btn" onclick="toggleLangMenu()">
+          <span id="lang-current">EN</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="flex-shrink:0"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="lang-menu" id="lang-menu">
+          <button class="lang-option" data-lang="en" onclick="setLang('en')">
+            <img src="https://flagcdn.com/w20/gb.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> English
+          </button>
+          <button class="lang-option" data-lang="zh" onclick="setLang('zh')">
+            <img src="https://flagcdn.com/w20/hk.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> 中文
+          </button>
+        </div>
+      </div>
+      <button class="nav-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle dark/light mode">
+        <svg id="theme-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html#calculator" onclick="closeMenu()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+    <span data-i18n="nav-exchange">Exchange</span>
+  </a>
+  <a href="index.html#features" onclick="closeMenu()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    <span data-i18n="nav-features">Features</span>
+  </a>
+  <a href="index.html#how" onclick="closeMenu()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+    <span data-i18n="nav-how">How It Works</span>
+  </a>
+  <a href="index.html#contact" onclick="closeMenu()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <span data-i18n="nav-contact">Contact Us</span>
+  </a>
+  <a href="blog.html" onclick="closeMenu()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+    <span data-i18n="nav-blog">Blog</span>
+  </a>
+  <div style="display:flex;gap:10px;padding-top:16px">
+    <button class="nav-btn lang-option" data-lang="en" style="flex:1;justify-content:center;padding:12px" onclick="setLang('en');closeMenu()">
+      <img src="https://flagcdn.com/w20/gb.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> EN
+    </button>
+    <button class="nav-btn lang-option" data-lang="zh" style="flex:1;justify-content:center;padding:12px" onclick="setLang('zh');closeMenu()">
+      <img src="https://flagcdn.com/w20/hk.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> 中文
+    </button>
+    <button class="nav-btn" style="flex:1;justify-content:center;gap:8px;padding:12px" onclick="toggleTheme()">
+      <svg id="theme-icon-m" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <span id="theme-label-m">Light</span>
+    </button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="blog-hero">
+  <div class="hero-badge">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+    <span data-i18n="hero-badge">HKOTC Blog</span>
+  </div>
+  <h1 data-i18n="hero-title">Hong Kong <span>Crypto News</span><br>&amp; Insights</h1>
+  <p data-i18n="hero-sub">Market updates, OTC guides, regulatory news, and expert analysis from HK's crypto OTC desk.</p>
+</section>
+
+
+
+<!-- CHANNEL POSTS SECTION -->
+<div class="channel-section">
+  <div class="section-head">
+    <span class="section-head-title" data-i18n="ch-section-title">📢 From Our Channel</span>
+  </div>
+  <div class="ch-grid" id="ch-grid">
+    <!-- populated by JS -->
+  </div>
+  <div class="load-more-wrap" id="ch-load-more-wrap" style="display:none">
+    <button class="load-more-btn" id="ch-load-more-btn" onclick="loadMoreChannel()" data-i18n="ch-load-more">Load More</button>
+  </div>
+</div>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">HKOTC</a>
+    <div class="footer-links">
+      <a href="index.html" data-i18n="ft-home">Home</a>
+      <a href="index.html#calculator" data-i18n="nav-exchange">Exchange</a>
+      <a href="index.html#contact" data-i18n="nav-contact">Contact</a>
+      <a href="privacy.html" data-i18n="ft-privacy">Privacy</a>
+      <a href="terms.html" data-i18n="ft-terms">Terms</a>
+      <a href="blog.html" data-i18n="nav-blog">Blog</a>
+    </div>
+    <p class="footer-copy" data-i18n="ft-copy">© 2025 HKOTC.io. All rights reserved. Not financial advice.</p>
+  </div>
+</footer>
+
+<script>
+  const LANG = {
+    en: {
+      'nav-exchange':'Exchange','nav-features':'Features','nav-how':'How It Works','nav-contact':'Contact','nav-blog':'Blog',
+      'nav-cta': 'Trade Now →',
+      'hero-badge': 'HKOTC Blog',
+      'hero-title': 'Hong Kong <span>Crypto News</span><br>&amp; Insights',
+      'hero-sub': "Market updates, OTC guides, regulatory news, and expert analysis from HK's crypto OTC desk.",
+      'ch-section-title':'📢 From Our Channel',
+      'ch-load-more':'Load More',
+      'ft-home':'Home','ft-privacy':'Privacy','ft-terms':'Terms',
+      'ft-copy':'© 2025 HKOTC.io. All rights reserved. Not financial advice.',
+    },
+    zh: {
+      'nav-exchange':'兌換','nav-features':'特色','nav-how':'如何運作','nav-contact':'聯絡我們','nav-blog':'博客',
+      'nav-cta': '立即交易 →',
+      'hero-badge': 'HKOTC 博客',
+      'hero-title': '香港<span>加密貨幣資訊</span><br>與市場分析',
+      'hero-sub': '市場動態、OTC交易指南、監管新聞及香港加密貨幣場外交易台的專業分析。',
+      'ch-section-title':'📢 頻道最新貼文',
+      'ch-load-more':'載入更多',
+      'ft-home':'主頁','ft-privacy':'私隱','ft-terms':'條款',
+      'ft-copy':'© 2025 HKOTC.io. 版權所有。內容不構成財務建議。',
+    }
+  };
+
+  let currentTheme = localStorage.getItem('theme') || 'dark';
+  let currentLang = localStorage.getItem('lang') || 'en';
+
+  const SUN_SVG  = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+  const MOON_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      document.documentElement.classList.add('light');
+      document.getElementById('theme-btn').innerHTML = SUN_SVG;
+      const lbl = document.getElementById('theme-label-m'); if (lbl) lbl.textContent = 'Dark';
+    } else {
+      document.documentElement.classList.remove('light');
+      document.getElementById('theme-btn').innerHTML = MOON_SVG;
+      const lbl = document.getElementById('theme-label-m'); if (lbl) lbl.textContent = 'Light';
+    }
+  }
+  function toggleTheme() {
+    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', currentTheme);
+    applyTheme(currentTheme);
+  }
+  function toggleMenu() {
+    document.getElementById('mobile-menu').classList.toggle('open');
+    document.getElementById('hamburger').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('mobile-menu').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+  }
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20));
+  applyTheme(currentTheme);
+
+  function applyLang(lang) {
+    document.documentElement.lang = lang === 'zh' ? 'zh-HK' : 'en-HK';
+    const t = LANG[lang];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (t[key] !== undefined) el.innerHTML = t[key];
+    });
+    const lc = document.getElementById('lang-current');
+    if (lc) lc.textContent = lang === 'en' ? 'EN' : '中文';
+    document.querySelectorAll('.lang-option[data-lang]').forEach(opt => {
+      opt.classList.toggle('active', opt.dataset.lang === lang);
+    });
+  }
+
+  function toggleLangMenu() { document.getElementById('lang-menu').classList.toggle('open'); }
+
+  function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('lang', lang);
+    applyLang(lang);
+    const m = document.getElementById('lang-menu');
+    if (m) m.classList.remove('open');
+  }
+
+  document.addEventListener('click', function(e) {
+    const dd = document.getElementById('lang-dropdown');
+    if (dd && !dd.contains(e.target)) {
+      const m = document.getElementById('lang-menu');
+      if (m) m.classList.remove('open');
+    }
+  });
+
+  applyLang(currentLang);
+
+
+  // ── CHANNEL POSTS ─────────────────────────────────────────────────────────
+  // ⚙️  PASTE YOUR JSONBIN URL HERE after setup (see README or guide)
+  // Example: 'https://api.jsonbin.io/v3/b/YOUR_BIN_ID/latest'
+  const CHANNEL_POSTS_URL = 'https://raw.githubusercontent.com/nightwalkerr86-star/otc-web/master/channel-posts.json';
+  const CH_PER_PAGE = 6;
+  let allChannelPosts = [];
+  let chPage = 0;
+
+  const TG_SVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>`;
+
+  function chCardHTML(post) {
+    // Accept Unix timestamp (number), ISO string, or any date string
+    const d = typeof post.date === 'number' ? new Date(post.date * 1000) : new Date(post.date);
+    const dateStr = isNaN(d) ? '' : d.toLocaleDateString('en-HK', { day:'numeric', month:'short', year:'numeric' });
+    // Split text into body + hashtags
+    const lines = (post.text || '').split('\n');
+    const hashIdx = lines.findIndex(l => /^#\S/.test(l.trim()));
+    const bodyLines = hashIdx > -1 ? lines.slice(0, hashIdx) : lines;
+    const hashLines = hashIdx > -1 ? lines.slice(hashIdx) : [];
+    const bodyText = bodyLines.join('\n').trim();
+    const hashText = hashLines.join(' ').trim();
+
+    // Media
+    let mediaHTML = '';
+    if (post.photo) {
+      mediaHTML = `<div class="ch-media"><img src="${post.photo}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\"ch-media-placeholder\\"><svg width=40 height=40 viewBox=\\"0 0 24 24\\" fill=\\"none\\" stroke=\\"currentColor\\" stroke-width=\\"1\\"><rect x=\\"3\\" y=\\"3\\" width=\\"18\\" height=\\"18\\" rx=\\"2\\"/><circle cx=\\"8.5\\" cy=\\"8.5\\" r=\\"1.5\\"/><polyline points=\\"21 15 16 10 5 21\\"/></svg></div>'"></div>`;
+    } else if (post.video_thumb) {
+      mediaHTML = `<div class="ch-media" style="position:relative"><img src="${post.video_thumb}" alt="" loading="lazy"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><div style="width:44px;height:44px;background:rgba(0,0,0,0.6);border-radius:50%;display:flex;align-items:center;justify-content:center"><svg width=18 height=18 viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div></div>`;
+    }
+
+    const tgLink = post.message_link || `https://t.me/${post.channel || 'hkotcdesk'}`;
+
+    return `<div class="ch-card">
+      <a href="post.html?type=channel&id=${post.message_id}" class="ch-card-link" aria-label="Read post"></a>
+      ${mediaHTML}
+      <div class="ch-body">
+        <div class="ch-channel">
+          <span class="ch-channel-dot"></span>
+          港汇加密交易台 | HK OTC Desk
+        </div>
+        ${bodyText ? `<div class="ch-text">${bodyText.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>` : ''}
+        ${hashText ? `<div class="ch-hashtags">${hashText.replace(/</g,'&lt;')}</div>` : ''}
+        <div class="ch-footer">
+          <span class="ch-date">${dateStr}</span>
+          <a class="ch-tg-btn" href="${tgLink}" target="_blank" rel="noopener noreferrer">
+            ${TG_SVG} View on Telegram
+          </a>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function chSkelHTML() {
+    return `<div class="ch-card" style="pointer-events:none">
+      <div class="ch-media"><div class="skel" style="width:100%;height:100%"></div></div>
+      <div class="ch-body">
+        <div class="skel" style="height:12px;width:160px;border-radius:4px"></div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex:1">
+          <div class="skel" style="height:13px;width:100%;border-radius:4px"></div>
+          <div class="skel" style="height:13px;width:90%;border-radius:4px"></div>
+          <div class="skel" style="height:13px;width:80%;border-radius:4px"></div>
+          <div class="skel" style="height:13px;width:70%;border-radius:4px"></div>
+        </div>
+        <div class="skel" style="height:11px;width:80px;border-radius:4px"></div>
+      </div>
+    </div>`;
+  }
+
+  function renderChannelSlice() {
+    const grid = document.getElementById('ch-grid');
+    const start = chPage * CH_PER_PAGE;
+    const slice = allChannelPosts.slice(start, start + CH_PER_PAGE);
+    if (chPage === 0) grid.innerHTML = slice.map(chCardHTML).join('');
+    else grid.innerHTML += slice.map(chCardHTML).join('');
+    chPage++;
+    const wrap = document.getElementById('ch-load-more-wrap');
+    if (wrap) wrap.style.display = chPage * CH_PER_PAGE < allChannelPosts.length ? 'block' : 'none';
+  }
+
+  function loadMoreChannel() { renderChannelSlice(); }
+
+  async function initChannelPosts() {
+    const grid = document.getElementById('ch-grid');
+    grid.innerHTML = Array(3).fill(chSkelHTML()).join('');
+    try {
+      const res = await fetch(CHANNEL_POSTS_URL + (CHANNEL_POSTS_URL.includes('?') ? '&' : '?') + 't=' + Date.now());
+      const data = await res.json();
+      // Handle JSONBin format { "record": [...] } or plain array
+      allChannelPosts = Array.isArray(data) ? data : (data.record || data.posts || []);
+      if (!allChannelPosts.length) throw new Error('empty');
+      chPage = 0;
+      renderChannelSlice();
+    } catch {
+      grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;padding:36px 0;color:var(--muted);font-size:14px">
+        No channel posts yet. Posts will appear here once the bot is running.
+      </p>`;
+    }
+  }
+
+  initChannelPosts();
+</script>
+</body>
+</html>
