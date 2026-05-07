@@ -12,6 +12,7 @@
   <link rel="canonical" href="https://hkotc.io/">
   <link rel="alternate" hreflang="en-HK" href="https://hkotc.io/">
   <link rel="alternate" hreflang="zh-HK" href="https://hkotc.io/?lang=zh">
+  <link rel="alternate" hreflang="km-KH" href="https://hkotc.io/?lang=km">
   <link rel="alternate" hreflang="x-default" href="https://hkotc.io/">
 
   <!-- Open Graph -->
@@ -122,7 +123,7 @@
         "name": "What is the USDT to HKD exchange rate today?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "HKOTC offers live USDT/HKD rates updated every 30 seconds from global markets. Our buy rate (HKD → USDT) is +0.6% above market, and our sell rate (USDT → HKD) is −0.6% below market, giving a competitive 1.2% total spread."
+          "text": "HKOTC offers current desk rates for HKD cash, HKD bank transfer, and USD bank transfer to USDT. Contact us for RMB, TWD, KHR, and other currency quotes."
         }
       },
       {
@@ -165,6 +166,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://flagcdn.com">
   <link rel="preconnect" href="https://assets.coingecko.com">
+  <link rel="preconnect" href="https://www.okx.com">
   <link rel="dns-prefetch" href="https://t.me">
   <link rel="dns-prefetch" href="https://wa.me">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -584,6 +586,9 @@
           <button class="lang-option" data-lang="zh" onclick="setLang('zh')">
             <img src="https://flagcdn.com/w20/hk.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> 中文
           </button>
+          <button class="lang-option" data-lang="km" onclick="setLang('km')">
+            <img src="https://flagcdn.com/w20/kh.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> ខ្មែរ
+          </button>
         </div>
       </div>
       <button class="nav-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle dark/light mode">
@@ -620,6 +625,9 @@
     </button>
     <button class="nav-btn lang-option" data-lang="zh" style="flex:1;justify-content:center;padding:12px" onclick="setLang('zh');closeMenu()">
       <img src="https://flagcdn.com/w20/hk.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> 中文
+    </button>
+    <button class="nav-btn lang-option" data-lang="km" style="flex:1;justify-content:center;padding:12px" onclick="setLang('km');closeMenu()">
+      <img src="https://flagcdn.com/w20/kh.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> ខ្មែរ
     </button>
     <button class="nav-btn" style="flex:1;justify-content:center;gap:8px;padding:12px" onclick="toggleTheme()">
       <svg id="theme-icon-m" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -687,7 +695,7 @@
         <svg width="13" height="13"><use href="#ico-chart"/></svg> <span data-i18n="calc-badge">Live Calculator</span>
       </div>
       <h2 class="section-title" data-i18n="calc-title">Real-Time <span class="gradient-text">Exchange Calculator</span></h2>
-      <p class="section-sub" data-i18n="calc-sub">Get an instant quote. Our rates update every 30 seconds from global markets.</p>
+      <p class="section-sub" data-i18n="calc-sub">Get an instant quote. Our rates update every 30 seconds from OKX markets.</p>
     </div>
     <div class="calc-wrapper">
       <div class="calc-header">
@@ -1030,7 +1038,7 @@
       'hero-wa':'WhatsApp Us','hero-tg':'Telegram','hero-rate-btn':'Check Rate',
       'calc-badge':'Live Calculator',
       'calc-title':'Real-Time <span class="gradient-text">Exchange Calculator</span>',
-      'calc-sub':'Get an instant quote. Our rates update every 30 seconds from global markets.',
+      'calc-sub':'Get an instant quote. Our rates update every 30 seconds from OKX markets.',
       'calc-header':'USDT ↔ HKD Converter','calc-live':'Live Rates',
       'tab-buy':'Buy USDT','tab-sell':'Sell USDT',
       'from-buy':'You Pay (HKD)','to-buy':'You Receive (USDT)',
@@ -1081,7 +1089,7 @@
       'hero-wa':'WhatsApp 聯絡','hero-tg':'Telegram','hero-rate-btn':'查看匯率',
       'calc-badge':'即時計算器',
       'calc-title':'即時<span class="gradient-text">兌換計算器</span>',
-      'calc-sub':'即時報價，每30秒從全球市場更新匯率。',
+      'calc-sub':'取得即時報價。我們的匯率每 30 秒根據 OKX 市場更新。',
       'calc-header':'USDT ↔ 港幣兌換器','calc-live':'即時匯率',
       'tab-buy':'買入 USDT','tab-sell':'賣出 USDT',
       'from-buy':'您支付（港幣）','to-buy':'您收取（USDT）',
@@ -1121,11 +1129,104 @@
       'legal-privacy':'私隱','legal-terms':'條款','nav-blog':'博客',
       'footer-copy':'© 2025 HKOTC.io. 版權所有。',
       'footer-disclaimer':'風險聲明：加密貨幣交易存在重大虧損風險。加密貨幣價值可升可跌，過往表現不代表未來結果。HKOTC.io 是根據香港法規持牌運營的場外交易平台。交易服務僅向已完成KYC的認證客戶提供。本網站僅供參考，不構成財務建議。',
+    },
+    km: {
+      'nav-exchange': 'ប្តូរប្រាក់',
+      'nav-features': 'លក្ខណៈពិសេស',
+      'nav-how': 'របៀបដំណើរការ',
+      'nav-contact': 'ទំនាក់ទំនង',
+      'nav-blog': 'ប្លុក',
+      'trust-1': 'សុវត្ថិភាពកម្រិតធនាគារ',
+      'trust-2': 'ទូទាត់ក្នុង 15 នាទី',
+      'trust-3': 'មានមូលដ្ឋាននៅហុងកុង',
+      'trust-4': 'បានផ្ទៀងផ្ទាត់ KYC',
+      'trust-5': 'បម្រើការ 24/7',
+      'hero-badge': 'តុជួញដូរ OTC គ្រីបតូឈានមុខនៅហុងកុង',
+      'hero-title': 'ទិញ និងលក់ USDT<br>ក្នុង<span class=\'gradient-text\'>អត្រាល្អបំផុត</span>',
+      'hero-sub': 'ការជួញដូរ OTC គ្រីបតូរហ័ស ឯកជន និងសុវត្ថិភាព។ ប្តូរ USDT ទៅ HKD និង HKD ទៅ USDT ដោយគ្មាន slippage និងទូទាត់ក្នុងថ្ងៃតែមួយ។',
+      'rate-label': '1 USDT =',
+      'live-rate': 'អត្រាបន្តផ្ទាល់',
+      'hero-wa': 'ទាក់ទងតាម WhatsApp',
+      'hero-tg': 'Telegram',
+      'hero-rate-btn': 'ពិនិត្យអត្រា',
+      'calc-badge': 'ម៉ាស៊ីនគណនាបន្តផ្ទាល់',
+      'calc-title': 'ម៉ាស៊ីនគណនា<span class=\'gradient-text\'>អត្រាប្តូរប្រាក់</span>',
+      'calc-sub': 'ទទួលបានសម្រង់តម្លៃភ្លាមៗ។ អត្រារបស់យើងធ្វើបច្ចុប្បន្នភាពរៀងរាល់ 30 វិនាទីពីទីផ្សារ OKX។',
+      'calc-header': 'កម្មវិធីបម្លែង USDT ↔ HKD',
+      'calc-live': 'អត្រាបន្តផ្ទាល់',
+      'tab-buy': 'ទិញ USDT',
+      'tab-sell': 'លក់ USDT',
+      'from-buy': 'អ្នកបង់ (HKD)',
+      'to-buy': 'អ្នកទទួល (USDT)',
+      'from-sell': 'អ្នកបង់ (USDT)',
+      'to-sell': 'អ្នកទទួល (HKD)',
+      'buy-rate-label': 'អត្រាទិញ (ក្នុងមួយ USDT)',
+      'sell-rate-label': 'អត្រាលក់ (ក្នុងមួយ USDT)',
+      'order-btn': 'ដាក់បញ្ជាទិញតាម Telegram',
+      'calc-note': 'បញ្ចូលចំនួនខាងលើ រួចចុច \'ដាក់បញ្ជាទិញ\' ដើម្បីផ្ញើព័ត៌មានទៅតុ Telegram របស់យើង។',
+      'feat-badge': 'ហេតុអ្វីជ្រើសរើសយើង',
+      'feat-title': 'បង្កើតសម្រាប់<span class=\'gradient-text\'>អ្នកជួញដូរយ៉ាងម៉ឺងម៉ាត់</span>',
+      'feat-sub': 'សេវា OTC វិជ្ជាជីវៈ ជាមួយល្បឿន និងភាពជឿទុកចិត្តដែលហុងកុងត្រូវការ។',
+      'feat-1-t': 'ទូទាត់លឿនខ្លាំង',
+      'feat-1-d': 'ទូទាត់បានលឿនបំផុតត្រឹម 15 នាទី។ ផ្ទេរធនាគារ FPS ឬ USDT លើបណ្តាញ blockchain ជម្រើស និងល្បឿនស្ថិតនៅលើអ្នក។',
+      'feat-2-t': 'សុវត្ថិភាពកម្រិតធនាគារ',
+      'feat-2-d': '2FA ការផ្ទៀងផ្ទាត់ KYC និង cold wallet storage។ ទ្រព្យសម្បត្តិរបស់អ្នកត្រូវបានការពារនៅគ្រប់ជំហាន។',
+      'feat-3-t': 'អត្រាទីផ្សារល្អបំផុត',
+      'feat-3-d': 'យើងប្រមូលអត្រាពីបណ្តាញប្តូរប្រាក់ 10+ ដើម្បីធានាអត្រា USDT/HKD ល្អបំផុតនៅហុងកុង។',
+      'feat-4-t': 'តុ OTC ផ្ទាល់ខ្លួន',
+      'feat-4-d': 'មានអ្នកគ្រប់គ្រងគណនីផ្ទាល់សម្រាប់ការជួញដូរលើស HK$100,000។ ពិគ្រោះឯកជនដោយគ្មានផលប៉ះពាល់លើទីផ្សារ។',
+      'feat-5-t': 'បម្រើការ 24/7',
+      'feat-5-d': 'គ្រីបតូមិនដែលដេក ហើយយើងក៏ដូចគ្នា។ ទាក់ទងតុជំនួយរបស់យើងគ្រប់ពេលតាម WhatsApp ឬ Telegram។',
+      'feat-6-t': 'អនុលោមតាមច្បាប់ពេញលេញ',
+      'feat-6-d': 'អនុលោមតាមគោលការណ៍ណែនាំ HKMA ជាមួយប្រតិបត្តិការមានអាជ្ញាប័ណ្ណ និងកំណត់ត្រាត្រួតពិនិត្យច្បាស់លាស់សម្រាប់រាល់ការជួញដូរ។',
+      'stat-1': 'បរិមាណជួញដូរសរុប',
+      'stat-2': 'អតិថិជនពេញចិត្ត',
+      'stat-3': 'ការវាយតម្លៃអតិថិជន',
+      'stat-4': 'ពេលវេលាទូទាត់មធ្យម',
+      'how-badge': 'ដំណើរការ',
+      'how-title': 'ជួញដូរ​ក្នុង<span class=\'gradient-text\'> 3 ជំហានងាយៗ</span>',
+      'how-sub': 'ដំណើរការរបស់យើងធានាឱ្យរាល់ប្រតិបត្តិការរហ័ស សុវត្ថិភាព និងងាយស្រួល។',
+      'step-1-t': 'បញ្ចូលចំនួន និងទទួលបានតម្លៃ',
+      'step-1-d': 'ប្រើម៉ាស៊ីនគណនាបន្តផ្ទាល់ខាងលើ ដើម្បីបញ្ចូលចំនួន។ ចុច \'ដាក់បញ្ជាទិញតាម Telegram\' ហើយចំនួន និងអត្រារបស់អ្នកនឹងត្រូវផ្ញើទៅតុ Telegram @jin_bao0x។',
+      'step-2-t': 'ផ្ទៀងផ្ទាត់ និងបញ្ជាក់ការជួញដូរ',
+      'step-2-d': 'អតិថិជនថ្មីបំពេញ KYC រហ័ស (ប្រហែល 5 នាទី)។ បញ្ជាក់ចំនួនជួញដូរ និងចាក់សោអត្រា។ យើងទទួល FPS ផ្ទេរធនាគារ និងសាច់ប្រាក់សម្រាប់ផ្នែក HKD។',
+      'step-3-t': 'ទូទាត់ក្នុង 15 នាទី',
+      'step-3-d': 'បន្ទាប់ពីយើងបញ្ជាក់ការទូទាត់ USDT នឹងត្រូវផ្ញើទៅកាបូបរបស់អ្នក។ សម្រាប់ការទូទាត់ HKD ទឹកប្រាក់នឹងមកដល់តាម FPS ក្នុងប៉ុន្មាននាទី។ មានវិក័យប័ត្រសម្រាប់រាល់ប្រតិបត្តិការ។',
+      'rev-badge': 'មតិយោបល់អតិថិជន',
+      'rev-title': 'អតិថិជន<span class=\'gradient-text\'>និយាយអ្វីខ្លះ</span>',
+      'contact-badge': 'ទំនាក់ទំនង',
+      'contact-title': 'ត្រៀម<span class=\'gradient-text\'>ជួញដូរហើយឬនៅ?</span>',
+      'contact-sub': 'តុជំនួយរបស់យើងបើក 24/7។ ទទួលបានតម្លៃបន្តផ្ទាល់ក្នុងក្រោម 60 វិនាទី។',
+      'desk-status': 'តុជំនួយ ONLINE — អាចប្រើបានឥឡូវនេះ',
+      'wa-title': 'WhatsApp',
+      'wa-desc': 'ផ្ញើសារមកយើងដោយផ្ទាល់សម្រាប់តម្លៃភ្លាមៗ ជំនួយ និងការជួញដូរ។ ជាធម្មតាឆ្លើយតបក្នុងក្រោម 2 នាទី។',
+      'wa-btn': 'បើកការជជែក WhatsApp →',
+      'tg-title': 'Telegram',
+      'tg-desc': 'ជជែកផ្ទាល់លើ Telegram។ ប្រើម៉ាស៊ីនគណនាដើម្បីបំពេញការបញ្ជាទិញជាមុន ហើយយើងនឹងបញ្ជាក់អត្រា និងទូទាត់ឱ្យលឿន។',
+      'tg-btn': 'បើក Telegram →',
+      'footer-desc': 'តុ OTC គ្រីបតូដែលគួរឱ្យទុកចិត្តបំផុតនៅហុងកុង។ ជួញដូរ USDT ↔ HKD រហ័ស ឯកជន និងសុវត្ថិភាពតាំងពីឆ្នាំ 2020។',
+      'footer-trading': 'ការជួញដូរ',
+      'footer-company': 'ក្រុមហ៊ុន',
+      'footer-contact': 'ទំនាក់ទំនង',
+      'footer-rate': 'អត្រា USDT/HKD',
+      'footer-calc': 'ម៉ាស៊ីនគណនា',
+      'footer-how': 'របៀបដំណើរការ',
+      'footer-start': 'ចាប់ផ្តើមជួញដូរ',
+      'footer-about': 'អំពីយើង',
+      'footer-testimonials': 'មតិយោបល់',
+      'footer-terms': 'លក្ខខណ្ឌសេវាកម្ម',
+      'footer-privacy': 'គោលការណ៍ឯកជនភាព',
+      'footer-email': 'ផ្ញើអ៊ីមែលមកយើង',
+      'legal-privacy': 'ឯកជនភាព',
+      'legal-terms': 'លក្ខខណ្ឌ',
+      'footer-copy': '© 2025 HKOTC.io. រក្សាសិទ្ធិគ្រប់យ៉ាង។',
+      'footer-disclaimer': 'ការបញ្ជាក់ហានិភ័យ៖ ការជួញដូរគ្រីបតូមានហានិភ័យខាតបង់ខ្ពស់។ តម្លៃគ្រីបតូអាចឡើង ឬចុះ ហើយលទ្ធផលកន្លងមកមិនធានាលទ្ធផលអនាគតទេ។ HKOTC.io ជា OTC exchange ដែលមានអាជ្ញាប័ណ្ណ និងប្រតិបត្តិការតាមបទប្បញ្ញត្តិហុងកុង។ សេវាជួញដូរមានសម្រាប់តែអតិថិជនដែលបានបញ្ចប់ KYC ប៉ុណ្ណោះ។ គេហទំព័រនេះសម្រាប់ព័ត៌មានប៉ុណ្ណោះ មិនមែនជាការណែនាំហិរញ្ញវត្ថុទេ។'
     }
   };
 
   function applyLang(lang) {
-    document.documentElement.lang = lang === 'zh' ? 'zh-HK' : 'en-HK';
+    if (!LANG[lang]) lang = 'en';
+    document.documentElement.lang = ({ en:'en-HK', zh:'zh-HK', km:'km-KH' })[lang];
     const t = LANG[lang];
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.dataset.i18n;
@@ -1140,7 +1241,7 @@
     document.getElementById('to-label').textContent   = t[toKey];
     // Update dropdown trigger label
     const lc = document.getElementById('lang-current');
-    if (lc) lc.textContent = lang === 'en' ? 'EN' : '中文';
+    if (lc) lc.textContent = ({ en:'EN', zh:'中文', km:'ខ្មែរ' })[lang];
     // Highlight active option in dropdown + mobile buttons
     document.querySelectorAll('.lang-option[data-lang]').forEach(opt => {
       opt.classList.toggle('active', opt.dataset.lang === lang);
@@ -1155,6 +1256,7 @@
     currentLang = lang;
     localStorage.setItem('lang', lang);
     applyLang(lang);
+    if (typeof updateRateDisplay === 'function') updateRateDisplay();
     const m = document.getElementById('lang-menu');
     if (m) m.classList.remove('open');
   }
@@ -1200,8 +1302,8 @@
   const CONFIG = {
     whatsapp: 'https://wa.me/qr/K3GYC3HRQVYSI1',
     telegram: 'jin_bao0x',
-    buySpread: 0.006,   // 0.6% — HKD → USDT (sell price +0.6%)
-    sellSpread: 0.006,  // 0.6% — USDT → HKD (buy price −0.6%)
+    buySpread: 0.0049,  // 0.49% — HKD → USDT (sell price +0.49%)
+    sellSpread: 0.0049, // 0.49% — USDT → HKD (buy price −0.49%)
   };
 
   let liveRate = 7.78;
@@ -1228,21 +1330,24 @@
     setTimeout(() => t.classList.remove('show'), duration);
   }
 
-  // Live rate
+  // Live rate from OKX P2P via the local server proxy.
   async function fetchRate() {
     try {
-      const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether&vs_currencies=hkd&include_24hr_change=true', { cache: 'no-cache' });
+      const res = await fetch('/api/okx-rate', { cache: 'no-cache' });
+      if (!res.ok) throw new Error('rate request failed');
       const data = await res.json();
-      if (data.tether?.hkd) {
-        liveRate = data.tether.hkd;
-        updateRateDisplay(liveRate, data.tether.hkd_24h_change || 0);
+      if (data.rate) {
+        liveRate = Number(data.rate);
+        updateRateDisplay(liveRate, data.change || 0);
         updateCalc();
         updateTicker();
       }
-    } catch { updateRateDisplay(liveRate, 0); }
+    } catch {
+      updateRateDisplay(liveRate, 0);
+    }
   }
 
-  function updateRateDisplay(rate, change) {
+  function updateRateDisplay(rate = liveRate, change = 0) {
     document.getElementById('hero-rate').textContent = `${rate.toFixed(4)} HKD`;
     const el = document.getElementById('hero-change');
     const sign = change >= 0 ? '+' : '';
@@ -1304,7 +1409,7 @@
     const rate    = getRate();
 
     if (!fromVal && !toVal) {
-      showToast(currentLang === 'zh' ? '請先輸入金額' : 'Please enter an amount first');
+      showToast(currentLang === 'zh' ? '請先輸入金額' : currentLang === 'km' ? 'សូមបញ្ចូលចំនួនជាមុន' : 'Please enter an amount first');
       return;
     }
 
@@ -1317,10 +1422,13 @@
 
     const divider = '━━━━━━━━━━━━━━';
     const isZH = currentLang === 'zh';
+    const isKM = currentLang === 'km';
 
     const action = isZH
       ? (calcMode === 'buy' ? '買入 USDT' : '賣出 USDT')
-      : (calcMode === 'buy' ? 'BUY USDT'  : 'SELL USDT');
+      : isKM
+        ? (calcMode === 'buy' ? 'ទិញ USDT' : 'លក់ USDT')
+        : (calcMode === 'buy' ? 'BUY USDT'  : 'SELL USDT');
 
     const msg = isZH
 ? `🛒 訂單請求
@@ -1329,16 +1437,26 @@ ${divider}
 操作：${action}
 數量：${usdtAmt.toFixed(2)} USDT
 匯率：${rate.toFixed(4)} 港幣/USDT
-總額：HK$${hkdAmt.toLocaleString('en-HK', {minimumFractionDigits:2, maximumFractionDigits:2})}
+總額：HK${hkdAmt.toLocaleString('en-HK', {minimumFractionDigits:2, maximumFractionDigits:2})}
 ${divider}
 您好！我想下此訂單，請確認可用性及匯率。`
+: isKM
+? `🛒 សំណើបញ្ជាទិញ
+${divider}
+ផលិតផល៖ USDT/HKD OTC Exchange
+ប្រតិបត្តិការ៖ ${action}
+ចំនួន៖ ${usdtAmt.toFixed(2)} USDT
+អត្រា៖ ${rate.toFixed(4)} HKD/USDT
+សរុប៖ HK${hkdAmt.toLocaleString('en-HK', {minimumFractionDigits:2, maximumFractionDigits:2})}
+${divider}
+សួស្តី! ខ្ញុំចង់ដាក់បញ្ជាទិញនេះ។ សូមបញ្ជាក់ភាពអាចប្រើបាន និងអត្រា។`
 : `🛒 Order Request
 ${divider}
 Product: USDT/HKD OTC Exchange
 Action: ${action}
 Amount: ${usdtAmt.toFixed(2)} USDT
 Rate: ${rate.toFixed(4)} HKD/USDT
-Total: HK$${hkdAmt.toLocaleString('en-HK', {minimumFractionDigits:2, maximumFractionDigits:2})}
+Total: HK${hkdAmt.toLocaleString('en-HK', {minimumFractionDigits:2, maximumFractionDigits:2})}
 ${divider}
 Hello! I would like to place this order. Please confirm availability and rate.`;
 
