@@ -106,7 +106,7 @@
 </div>
 
 <script>
-  const DEFAULT_REPO = 'nightwalkerr86-star/otc-web';
+  const DEFAULT_REPO = 'nightwalkerr86-star/hkotc';
   const DEFAULT_BRANCH = 'master';
   const DEFAULT_BLOG_PATH = 'otc-web/blog-posts.json';
   const DEFAULT_CHANNEL_PATH = 'otc-web/channel-posts.json';
@@ -178,6 +178,32 @@
   function fmtDate(ts) {
     const d = typeof ts === 'number' ? new Date(ts * 1000) : new Date(ts);
     return isNaN(d) ? '' : d.toLocaleDateString('en-HK', {day:'numeric',month:'long',year:'numeric'});
+  }
+
+  function setBlogPostingSchema(p, type) {
+    document.querySelectorAll('script[data-dynamic-schema]').forEach(el => el.remove());
+    const title = p.title || (p.text || '').slice(0, 80) || 'HKOTC Post';
+    const description = p.excerpt || (p.body || p.text || '').slice(0, 180);
+    const id = p.id || p.message_id || '';
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': type === 'channel' ? 'SocialMediaPosting' : 'BlogPosting',
+      headline: title,
+      description,
+      image: p.photo ? [p.photo] : ['https://hkotc.io/og-image.jpg'],
+      datePublished: typeof p.date === 'number' ? new Date(p.date * 1000).toISOString() : p.date,
+      dateModified: typeof p.date === 'number' ? new Date(p.date * 1000).toISOString() : p.date,
+      author: { '@type': 'Organization', name: 'HKOTC', url: 'https://hkotc.io/' },
+      publisher: { '@type': 'Organization', name: 'HKOTC', url: 'https://hkotc.io/', logo: { '@type': 'ImageObject', url: 'https://hkotc.io/og-image.jpg' } },
+      mainEntityOfPage: { '@type': 'WebPage', '@id': `https://hkotc.io/post.html?type=${type}&id=${id}` },
+      articleSection: p.category || type,
+      keywords: Array.isArray(p.tags) ? p.tags.join(', ') : ''
+    };
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.dataset.dynamicSchema = 'post';
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
   }
 
   function renderBlogPost(p) {
@@ -273,8 +299,9 @@
 
       if (!post) { showNotFound(); return; }
 
-      // Update page title
+      // Update page title and structured data
       document.title = (post.title || post.text?.slice(0,60) || 'Post') + ' — HKOTC';
+      setBlogPostingSchema(post, type);
 
       document.getElementById('post-container').innerHTML =
         type === 'channel' ? renderChannelPost(post) : renderBlogPost(post);
