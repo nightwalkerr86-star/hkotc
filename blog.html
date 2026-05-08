@@ -404,13 +404,28 @@
     return localStorage.getItem('gh_repo') || DEFAULT_REPO;
   }
 
+  function githubContentSource(repo, filePath) {
+    const token = localStorage.getItem('gh_token') || '';
+    if (!token || !repo) return null;
+    return {
+      kind: 'github-content',
+      token,
+      url: `https://api.github.com/repos/${repo}/contents/${filePath.replace(/^\/+/, '')}`
+    };
+  }
+
   function blogPostUrls() {
     const repo = blogRepo();
-    return [...new Set([
+    const sources = [
+      githubContentSource(repo, DEFAULT_BLOG_PATH),
       rawGithubUrl(repo, DEFAULT_BLOG_PATH),
       rawGithubUrl(DEFAULT_REPO, DEFAULT_BLOG_PATH),
       'blog-posts.json'
-    ])];
+    ].filter(Boolean);
+    return sources.filter((source, index, list) => {
+      const key = typeof source === 'string' ? source : source.url;
+      return list.findIndex(item => (typeof item === 'string' ? item : item.url) === key) === index;
+    });
   }
   const CH_PER_PAGE = 6;
   let allChannelPosts = [];
@@ -448,14 +463,27 @@
     </article>`;
   }
 
+  function decodeBase64Utf8(base64) {
+    const binary = atob(String(base64 || '').replace(/\n/g, ''));
+    const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  }
+
   async function fetchFirstJson(urls) {
     let lastError;
-    for (const url of urls) {
+    for (const source of urls) {
+      const isObjectSource = typeof source === 'object';
+      const url = isObjectSource ? source.url : source;
       try {
-        const res = await fetch(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now());
+        const res = await fetch(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now(), {
+          headers: isObjectSource && source.token ? { Authorization: `Bearer ${source.token}`, Accept: 'application/vnd.github+json' } : {}
+        });
         if (!res.ok) throw new Error(res.status);
         const data = await res.json();
-        const posts = Array.isArray(data) ? data : (data.record || data.posts || []);
+        const payload = isObjectSource && source.kind === 'github-content'
+          ? JSON.parse(decodeBase64Utf8(data.content))
+          : data;
+        const posts = Array.isArray(payload) ? payload : (payload.record || payload.posts || []);
         if (Array.isArray(posts)) return posts;
       } catch (error) {
         lastError = error;
