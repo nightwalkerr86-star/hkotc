@@ -1,0 +1,21 @@
+# HKOTC
+
+HKOTC is a Hong Kong crypto OTC desk for USDT/HKD conversion.
+
+Core pages:
+- https://hkotc.io/ — live USDT/HKD calculator, trading process and contact options.
+- https://hkotc.io/blog.html — Hong Kong crypto, USDT/HKD OTC and stablecoin market news.
+- https://hkotc.io/terms.html — service terms.
+- https://hkotc.io/privacy.html — privacy policy.
+
+Primary topics:
+- Buy USDT with HKD in Hong Kong
+- Sell USDT for HKD in Hong Kong
+- USDT/HKD OTC rates
+- OKX-based live market rates
+- Same-day crypto OTC settlement
+- FPS, bank transfer, cash and USDT settlement options
+
+Contact:
+- Telegram: https://t.me/jin_bao0x
+- WhatsApp: https://wa.me/qr/K3GYC3HRQVYSI1

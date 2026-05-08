@@ -4,33 +4,38 @@
 
   <url>
     <loc>https://hkotc.io/</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-05-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en-HK" href="https://hkotc.io/"/>
     <xhtml:link rel="alternate" hreflang="zh-HK" href="https://hkotc.io/?lang=zh"/>
+    <xhtml:link rel="alternate" hreflang="km-KH" href="https://hkotc.io/?lang=km"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://hkotc.io/"/>
   </url>
 
   <url>
+    <loc>https://hkotc.io/blog.html</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en-HK" href="https://hkotc.io/blog.html"/>
+    <xhtml:link rel="alternate" hreflang="zh-HK" href="https://hkotc.io/blog.html?lang=zh"/>
+    <xhtml:link rel="alternate" hreflang="km-KH" href="https://hkotc.io/blog.html?lang=km"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://hkotc.io/blog.html"/>
+  </url>
+
+  <url>
     <loc>https://hkotc.io/privacy.html</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
 
   <url>
     <loc>https://hkotc.io/terms.html</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
-  </url>
-
-  <url>
-    <loc>https://hkotc.io/blog.html</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
   </url>
 
 </urlset>
