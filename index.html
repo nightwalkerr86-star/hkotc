@@ -376,7 +376,8 @@
     .payment-card { display:flex; align-items:center; gap:12px; min-width:0; padding:14px 16px; border-radius:14px; background:rgba(255,255,255,0.025); border:1px solid var(--border); color:var(--muted); text-align:left; transition:var(--transition); }
     .payment-card:hover { border-color:rgba(245,166,35,.28); color:var(--text); }
     .payment-card.active { color:var(--text); border-color:var(--gold); background:linear-gradient(135deg,rgba(245,166,35,.14),rgba(245,166,35,.04)); box-shadow:0 0 0 1px rgba(245,166,35,.15), 0 12px 32px rgba(245,166,35,.14); }
-    .payment-icon { font-size:24px; line-height:1; flex-shrink:0; filter:saturate(1.12); }
+    .payment-icon { width:28px; height:28px; flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; color:var(--gold); }
+    .payment-icon svg { width:28px; height:28px; display:block; }
     .payment-name { display:block; font-size:15px; line-height:1.2; font-weight:800; color:var(--text); }
     .payment-spread { display:block; margin-top:3px; font-size:12px; line-height:1.2; font-weight:700; color:var(--muted); }
     .payment-card.active .payment-spread { color:var(--gold); }
@@ -515,7 +516,7 @@
       .coin-img { width: 22px; height: 22px; }
       .payment-methods { gap:8px; }
       .payment-card { padding:12px 10px; gap:9px; }
-      .payment-icon { font-size:20px; }
+      .payment-icon, .payment-icon svg { width:24px; height:24px; }
       .payment-name { font-size:13px; }
       .payment-spread { font-size:11px; }
       .calc-rates { gap: 8px; }
@@ -784,14 +785,30 @@
           <span class="payment-method-label" data-i18n="payment-method-label">Payment Method</span>
           <div class="payment-methods" role="group" aria-label="Payment Method">
             <button class="payment-card active" type="button" data-method="cash" onclick="setPaymentMethod('cash', this)">
-              <span class="payment-icon" aria-hidden="true">💵</span>
+              <span class="payment-icon" aria-hidden="true">
+                <svg viewBox="0 0 32 32" fill="none">
+                  <rect x="4" y="8" width="24" height="16" rx="3" fill="rgba(16,185,129,.16)" stroke="currentColor" stroke-width="1.6"/>
+                  <rect x="7.5" y="11.5" width="17" height="9" rx="2" fill="rgba(245,166,35,.18)" stroke="rgba(245,166,35,.9)" stroke-width="1.2"/>
+                  <circle cx="16" cy="16" r="3.6" fill="rgba(16,185,129,.28)" stroke="currentColor" stroke-width="1.3"/>
+                  <path d="M16 13.9v4.2M14.7 15h2.1a1.2 1.2 0 0 1 0 2.4h-1.6" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+                  <path d="M7.5 13.5h2.2M22.3 18.5h2.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                </svg>
+              </span>
               <span>
                 <span class="payment-name" data-i18n="payment-cash">現金交易</span>
                 <span class="payment-spread"><span data-i18n="payment-spread">Spread</span> 0.80%</span>
               </span>
             </button>
             <button class="payment-card" type="button" data-method="transfer" onclick="setPaymentMethod('transfer', this)">
-              <span class="payment-icon" aria-hidden="true">🏦</span>
+              <span class="payment-icon" aria-hidden="true">
+                <svg viewBox="0 0 32 32" fill="none">
+                  <path d="M5 13.2 16 7l11 6.2v2H5v-2Z" fill="rgba(245,166,35,.2)" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                  <path d="M8 15.2v8M13.3 15.2v8M18.7 15.2v8M24 15.2v8" stroke="rgba(229,236,255,.82)" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M6.5 24h19M5.5 27h21" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                  <circle cx="16" cy="11.7" r="2.2" fill="rgba(16,185,129,.22)" stroke="currentColor" stroke-width="1.2"/>
+                  <path d="M16 10.6v2.2M15.2 11.2h1.2a.7.7 0 0 1 0 1.4h-.9" stroke="currentColor" stroke-width=".8" stroke-linecap="round"/>
+                </svg>
+              </span>
               <span>
                 <span class="payment-name" data-i18n="payment-transfer">銀行轉賬</span>
                 <span class="payment-spread"><span data-i18n="payment-spread">Spread</span> 0.50%</span>
