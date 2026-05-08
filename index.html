@@ -370,6 +370,16 @@
     .calc-tab { flex: 1; padding: 10px 8px; border-radius: 8px; font-size: 14px; font-weight: 600; color: var(--muted); background: none; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 6px; }
     .calc-tab.active { background: #f5a623; color: #07090f; box-shadow: 0 2px 12px rgba(245,166,35,0.35); }
     .calc-tab svg { flex-shrink: 0; }
+    .payment-method-wrap { margin: -6px 0 22px; }
+    .payment-method-label { display:block; font-size:12px; font-weight:700; color:var(--muted); letter-spacing:.5px; text-transform:uppercase; margin-bottom:10px; }
+    .payment-methods { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .payment-card { display:flex; align-items:center; gap:12px; min-width:0; padding:14px 16px; border-radius:14px; background:rgba(255,255,255,0.025); border:1px solid var(--border); color:var(--muted); text-align:left; transition:var(--transition); }
+    .payment-card:hover { border-color:rgba(245,166,35,.28); color:var(--text); }
+    .payment-card.active { color:var(--text); border-color:var(--gold); background:linear-gradient(135deg,rgba(245,166,35,.14),rgba(245,166,35,.04)); box-shadow:0 0 0 1px rgba(245,166,35,.15), 0 12px 32px rgba(245,166,35,.14); }
+    .payment-icon { font-size:24px; line-height:1; flex-shrink:0; filter:saturate(1.12); }
+    .payment-name { display:block; font-size:15px; line-height:1.2; font-weight:800; color:var(--text); }
+    .payment-spread { display:block; margin-top:3px; font-size:12px; line-height:1.2; font-weight:700; color:var(--muted); }
+    .payment-card.active .payment-spread { color:var(--gold); }
     .calc-field { margin-bottom: 16px; }
     .calc-field label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; }
     .calc-input-wrap { display: flex; align-items: center; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: border-color 0.2s; }
@@ -503,6 +513,11 @@
       .calc-input-wrap input { font-size: 18px; padding: 12px 12px; }
       .calc-currency { padding: 0 10px; gap: 5px; font-size: 12px; }
       .coin-img { width: 22px; height: 22px; }
+      .payment-methods { gap:8px; }
+      .payment-card { padding:12px 10px; gap:9px; }
+      .payment-icon { font-size:20px; }
+      .payment-name { font-size:13px; }
+      .payment-spread { font-size:11px; }
       .calc-rates { gap: 8px; }
       .calc-rate-label { font-size: 10px; }
       .calc-rate-value { font-size: 14px; }
@@ -764,6 +779,25 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>
             <span data-i18n="tab-sell">Sell USDT</span>
           </button>
+        </div>
+        <div class="payment-method-wrap">
+          <span class="payment-method-label" data-i18n="payment-method-label">Payment Method</span>
+          <div class="payment-methods" role="group" aria-label="Payment Method">
+            <button class="payment-card active" type="button" data-method="cash" onclick="setPaymentMethod('cash', this)">
+              <span class="payment-icon" aria-hidden="true">💵</span>
+              <span>
+                <span class="payment-name" data-i18n="payment-cash">現金交易</span>
+                <span class="payment-spread"><span data-i18n="payment-spread">Spread</span> 0.80%</span>
+              </span>
+            </button>
+            <button class="payment-card" type="button" data-method="transfer" onclick="setPaymentMethod('transfer', this)">
+              <span class="payment-icon" aria-hidden="true">🏦</span>
+              <span>
+                <span class="payment-name" data-i18n="payment-transfer">銀行轉賬</span>
+                <span class="payment-spread"><span data-i18n="payment-spread">Spread</span> 0.50%</span>
+              </span>
+            </button>
+          </div>
         </div>
         <div class="calc-field">
           <label id="from-label">You Pay (HKD)</label>
@@ -1096,6 +1130,7 @@
       'from-buy':'You Pay (HKD)','to-buy':'You Receive (USDT)',
       'from-sell':'You Pay (USDT)','to-sell':'You Receive (HKD)',
       'buy-rate-label':'Buy Rate (per USDT)','sell-rate-label':'Sell Rate (per USDT)',
+      'payment-method-label':'Payment Method','payment-cash':'Cash','payment-transfer':'Bank Transfer','payment-spread':'Spread',
       'order-btn':'Place Order via Telegram',
       'calc-note':'Enter amount above, then tap "Place Order" to send details to our Telegram desk.',
       'feat-badge':'Why Choose Us',
@@ -1147,6 +1182,7 @@
       'from-buy':'您支付（港幣）','to-buy':'您收取（USDT）',
       'from-sell':'您支付（USDT）','to-sell':'您收取（港幣）',
       'buy-rate-label':'買入匯率（每USDT）','sell-rate-label':'賣出匯率（每USDT）',
+      'payment-method-label':'付款方式','payment-cash':'現金交易','payment-transfer':'銀行轉賬','payment-spread':'差價',
       'order-btn':'透過 Telegram 下單',
       'calc-note':'輸入金額後，點擊「下單」將詳情發送至我們的Telegram服務台。',
       'feat-badge':'為何選擇我們',
@@ -1214,6 +1250,10 @@
       'to-sell': 'អ្នកទទួល (HKD)',
       'buy-rate-label': 'អត្រាទិញ (ក្នុងមួយ USDT)',
       'sell-rate-label': 'អត្រាលក់ (ក្នុងមួយ USDT)',
+      'payment-method-label': 'វិធីទូទាត់',
+      'payment-cash': 'សាច់ប្រាក់',
+      'payment-transfer': 'ផ្ទេរធនាគារ',
+      'payment-spread': 'Spread',
       'order-btn': 'ដាក់បញ្ជាទិញតាម Telegram',
       'calc-note': 'បញ្ចូលចំនួនខាងលើ រួចចុច \'ដាក់បញ្ជាទិញ\' ដើម្បីផ្ញើព័ត៌មានទៅតុ Telegram របស់យើង។',
       'feat-badge': 'ហេតុអ្វីជ្រើសរើសយើង',
@@ -1354,13 +1394,16 @@
   const CONFIG = {
     whatsapp: 'https://wa.me/qr/K3GYC3HRQVYSI1',
     telegram: 'jin_bao0x',
-    buySpread: 0.005,  // 0.50% — HKD → USDT (sell price +0.50%)
-    sellSpread: 0.005, // 0.50% — USDT → HKD (buy price −0.50%)
+    paymentMethods: {
+      cash: { label: 'Cash', zh: '現金交易', km: 'សាច់ប្រាក់', buyRate: 7.8030, sellRate: 7.7270, spread: 0.008 },
+      transfer: { label: 'Bank Transfer', zh: '銀行轉賬', km: 'ផ្ទេរធនាគារ', buyRate: 7.8380, sellRate: 7.7970, spread: 0.005 },
+    }
   };
 
   let liveRate = 7.78;
   let calcMode = 'buy';
   let calcDirection = 'from';
+  let paymentMethod = 'cash';
 
   // Navbar scroll
   const navbar = document.getElementById('navbar');
@@ -1405,13 +1448,40 @@
     const sign = change >= 0 ? '+' : '';
     el.textContent = `${sign}${change.toFixed(2)}% (24h)`;
     el.style.color = change >= 0 ? 'var(--green)' : 'var(--red)';
-    document.getElementById('buy-rate-display').textContent = `${(rate * (1 + CONFIG.buySpread)).toFixed(4)} HKD`;
-    document.getElementById('sell-rate-display').textContent = `${(rate * (1 - CONFIG.sellSpread)).toFixed(4)} HKD`;
+    updateCalculatorRateCards();
   }
 
   // Calculator
+  function getPaymentConfig() {
+    return CONFIG.paymentMethods[paymentMethod] || CONFIG.paymentMethods.cash;
+  }
+
+  function getBuyRate() {
+    return getPaymentConfig().buyRate;
+  }
+
+  function getSellRate() {
+    return getPaymentConfig().sellRate;
+  }
+
   function getRate() {
-    return calcMode === 'buy' ? liveRate * (1 + CONFIG.buySpread) : liveRate * (1 - CONFIG.sellSpread);
+    return calcMode === 'buy' ? getBuyRate() : getSellRate();
+  }
+
+  function updateCalculatorRateCards() {
+    const buyEl = document.getElementById('buy-rate-display');
+    const sellEl = document.getElementById('sell-rate-display');
+    if (!buyEl || !sellEl) return;
+    buyEl.textContent = `${getBuyRate().toFixed(4)} HKD`;
+    sellEl.textContent = `${getSellRate().toFixed(4)} HKD`;
+  }
+
+  function setPaymentMethod(method, el) {
+    paymentMethod = method;
+    document.querySelectorAll('.payment-card').forEach(card => card.classList.remove('active'));
+    if (el) el.classList.add('active');
+    updateCalculatorRateCards();
+    updateCalc();
   }
 
   function setCalcMode(mode, el) {
@@ -1475,21 +1545,30 @@
     const divider = '━━━━━━━━━━━━━━';
     const isZH = currentLang === 'zh';
     const isKM = currentLang === 'km';
+    const method = getPaymentConfig();
+    const methodLabel = isZH ? method.zh : isKM ? method.km : method.label;
+    const enteredAmount = calcMode === 'buy'
+      ? `HK${hkdAmt.toLocaleString('en-HK', {minimumFractionDigits:2, maximumFractionDigits:2})}`
+      : `${usdtAmt.toFixed(2)} USDT`;
+    const estimatedReceived = calcMode === 'buy'
+      ? `${usdtAmt.toFixed(2)} USDT`
+      : `HK${hkdAmt.toLocaleString('en-HK', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
 
     const action = isZH
       ? (calcMode === 'buy' ? '買入 USDT' : '賣出 USDT')
       : isKM
         ? (calcMode === 'buy' ? 'ទិញ USDT' : 'លក់ USDT')
-        : (calcMode === 'buy' ? 'BUY USDT'  : 'SELL USDT');
+        : (calcMode === 'buy' ? 'Buy USDT'  : 'Sell USDT');
 
     const msg = isZH
 ? `🛒 訂單請求
 ${divider}
 產品：USDT/港幣場外交易
 操作：${action}
-數量：${usdtAmt.toFixed(2)} USDT
-匯率：${rate.toFixed(4)} 港幣/USDT
-總額：HK${hkdAmt.toLocaleString('en-HK', {minimumFractionDigits:2, maximumFractionDigits:2})}
+付款方式：${methodLabel}
+輸入金額：${enteredAmount}
+使用匯率：${rate.toFixed(4)} 港幣/USDT
+預計收到：${estimatedReceived}
 ${divider}
 您好！我想下此訂單，請確認可用性及匯率。`
 : isKM
@@ -1497,18 +1576,20 @@ ${divider}
 ${divider}
 ផលិតផល៖ USDT/HKD OTC Exchange
 ប្រតិបត្តិការ៖ ${action}
-ចំនួន៖ ${usdtAmt.toFixed(2)} USDT
-អត្រា៖ ${rate.toFixed(4)} HKD/USDT
-សរុប៖ HK${hkdAmt.toLocaleString('en-HK', {minimumFractionDigits:2, maximumFractionDigits:2})}
+វិធីទូទាត់៖ ${methodLabel}
+ចំនួនដែលបានបញ្ចូល៖ ${enteredAmount}
+អត្រាដែលប្រើ៖ ${rate.toFixed(4)} HKD/USDT
+ចំនួនប៉ាន់ស្មានទទួលបាន៖ ${estimatedReceived}
 ${divider}
 សួស្តី! ខ្ញុំចង់ដាក់បញ្ជាទិញនេះ។ សូមបញ្ជាក់ភាពអាចប្រើបាន និងអត្រា។`
 : `🛒 Order Request
 ${divider}
 Product: USDT/HKD OTC Exchange
 Action: ${action}
-Amount: ${usdtAmt.toFixed(2)} USDT
-Rate: ${rate.toFixed(4)} HKD/USDT
-Total: HK${hkdAmt.toLocaleString('en-HK', {minimumFractionDigits:2, maximumFractionDigits:2})}
+Payment method: ${methodLabel}
+Amount entered: ${enteredAmount}
+Rate used: ${rate.toFixed(4)} HKD/USDT
+Estimated received: ${estimatedReceived}
 ${divider}
 Hello! I would like to place this order. Please confirm availability and rate.`;
 
