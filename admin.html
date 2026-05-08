@@ -80,6 +80,13 @@
     .flabel{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);display:block;margin-bottom:7px}
     .finput,.fselect,textarea{width:100%;padding:11px 14px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border-color .2s}
     .finput:focus,.fselect:focus,textarea:focus{border-color:rgba(245,166,35,0.45)}
+    .upload-drop{border:1.5px dashed rgba(245,166,35,.42);border-radius:12px;background:rgba(255,255,255,.025);color:var(--muted);min-height:132px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;margin-bottom:12px;transition:border-color .2s,background .2s,box-shadow .2s}
+    .upload-drop:hover{border-color:rgba(245,166,35,.75);background:rgba(245,166,35,.055);box-shadow:0 0 0 3px rgba(245,166,35,.05)}
+    .upload-drop svg{width:34px;height:34px;color:rgba(245,166,35,.82)}
+    .upload-drop-main{font-size:14px;font-weight:700;color:var(--text)}
+    .upload-drop-or{font-size:11px;color:var(--muted)}
+    .upload-browse{padding:7px 14px;border-radius:8px;border:1px solid rgba(245,166,35,.55);background:rgba(245,166,35,.12);color:var(--gold);font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .2s,border-color .2s,transform .2s}
+    .upload-browse:hover{background:rgba(245,166,35,.2);border-color:var(--gold);transform:translateY(-1px)}
     .finput::placeholder,textarea::placeholder{color:var(--muted)}
     textarea{resize:vertical;line-height:1.65;min-height:160px}
     .fselect{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238892a8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px}
@@ -338,6 +345,17 @@
               <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.6">
                 Paste a direct image link. Upload to <a href="https://imgur.com/upload" target="_blank" style="color:var(--gold)">Imgur.com</a> to get a free permanent URL.
               </div>
+              <div class="upload-drop" role="button" tabindex="0" onclick="document.getElementById('bp-photo-file').click()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('bp-photo-file').click()}">
+                <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M23 46H17a11 11 0 0 1 0-22 16 16 0 0 1 30-5 13 13 0 0 1 1 26h-7"/>
+                  <path d="M32 50V28"/>
+                  <path d="M23 37l9-9 9 9"/>
+                </svg>
+                <div class="upload-drop-main">Drag&Drop files here</div>
+                <div class="upload-drop-or">or</div>
+                <button class="upload-browse" type="button">Browse Files</button>
+                <input id="bp-photo-file" type="file" accept="image/*" onchange="handleImgFile(event,'bp')" hidden>
+              </div>
               <input class="finput" id="bp-photo" type="url" placeholder="https://i.imgur.com/xxxxxxx.jpg" oninput="onImgUrl('bp')">
               <div class="img-preview-wrap" id="bp-img-preview-wrap" style="margin-top:10px">
                 <img id="bp-img-preview" alt="">
@@ -368,6 +386,17 @@
               <div style="font-size:12px;color:var(--muted);margin-bottom:8px;line-height:1.6">
                 Paste an image link. To get the Telegram image URL: open Telegram Web → right-click the photo → Copy image address.<br>
                 Or upload to <a href="https://imgur.com/upload" target="_blank" style="color:var(--gold)">Imgur.com</a> and paste the direct link here.
+              </div>
+              <div class="upload-drop" role="button" tabindex="0" onclick="document.getElementById('cp-photo-file').click()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('cp-photo-file').click()}">
+                <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M23 46H17a11 11 0 0 1 0-22 16 16 0 0 1 30-5 13 13 0 0 1 1 26h-7"/>
+                  <path d="M32 50V28"/>
+                  <path d="M23 37l9-9 9 9"/>
+                </svg>
+                <div class="upload-drop-main">Drag&Drop files here</div>
+                <div class="upload-drop-or">or</div>
+                <button class="upload-browse" type="button">Browse Files</button>
+                <input id="cp-photo-file" type="file" accept="image/*" onchange="handleImgFile(event,'cp')" hidden>
               </div>
               <input class="finput" id="cp-photo" type="url" placeholder="https://i.imgur.com/xxxxxxx.jpg" oninput="onImgUrl('cp')">
               <div class="img-preview-wrap" id="cp-img-preview-wrap" style="margin-top:10px">
@@ -468,11 +497,11 @@
             </div>
             <div class="frow" style="margin:0">
               <label class="flabel">Blog posts file path</label>
-              <input class="finput" id="s-blog-path" type="text" placeholder="otc-web/blog-posts.json">
+              <input class="finput" id="s-blog-path" type="text" value="otc-web/blog-posts.json" readonly>
             </div>
             <div class="frow" style="margin:0">
               <label class="flabel">Channel posts file path</label>
-              <input class="finput" id="s-ch-path" type="text" placeholder="otc-web/channel-posts.json">
+              <input class="finput" id="s-ch-path" type="text" value="otc-web/channel-posts.json" readonly>
             </div>
           </div>
           <div class="btn-row" style="margin-top:16px">
@@ -540,11 +569,15 @@ function pk(k) {
   for (let i=0;i<4;i++) document.getElementById('pd'+i).classList.toggle('on', i<pinBuf.length);
   if (pinBuf.length===4) { setTimeout(checkPIN,120); }
 }
+function unlockAdmin() {
+  document.getElementById('lock').style.display='none';
+  const sh=document.getElementById('shell'); sh.classList.add('on');
+  initApp();
+}
 function checkPIN() {
   if (pinBuf===PIN) {
-    document.getElementById('lock').style.display='none';
-    const sh=document.getElementById('shell'); sh.classList.add('on');
-    initApp();
+    sessionStorage.setItem('admin_unlocked','1');
+    unlockAdmin();
   } else {
     document.getElementById('pin-err').textContent='Wrong PIN';
     setTimeout(()=>{ pinBuf=''; for(let i=0;i<4;i++) document.getElementById('pd'+i).classList.remove('on'); document.getElementById('pin-err').textContent=''; }, 900);
@@ -572,12 +605,15 @@ function nav(id) {
 // ═══════════════════════════════════════════════════════════
 //  SETTINGS
 // ═══════════════════════════════════════════════════════════
+const BLOG_POSTS_PATH = 'otc-web/blog-posts.json';
+const CHANNEL_POSTS_PATH = 'otc-web/channel-posts.json';
+
 function cfg() {
   return {
     token:    localStorage.getItem('gh_token')||'',
     repo:     localStorage.getItem('gh_repo')||'',
-    blogPath: localStorage.getItem('gh_blog_path')||'otc-web/blog-posts.json',
-    chPath:   localStorage.getItem('gh_ch_path')||'otc-web/channel-posts.json',
+    blogPath: BLOG_POSTS_PATH,
+    chPath:   CHANNEL_POSTS_PATH,
   };
 }
 function saveSettings() {
@@ -588,16 +624,16 @@ function saveSettings() {
   if (!t||!r) { showStatus('s-status','Please fill in Token and Repository.','err'); return; }
   localStorage.setItem('gh_token', t);
   localStorage.setItem('gh_repo', r);
-  localStorage.setItem('gh_blog_path', bp||'otc-web/blog-posts.json');
-  localStorage.setItem('gh_ch_path', cp||'otc-web/channel-posts.json');
+  localStorage.setItem('gh_blog_path', BLOG_POSTS_PATH);
+  localStorage.setItem('gh_ch_path', CHANNEL_POSTS_PATH);
   showStatus('s-status','✅ Settings saved!','ok');
 }
 function loadSettings() {
   const c=cfg();
   if (c.token) document.getElementById('s-token').value=c.token;
   if (c.repo)  document.getElementById('s-repo').value=c.repo;
-  document.getElementById('s-blog-path').value=c.blogPath;
-  document.getElementById('s-ch-path').value=c.chPath;
+  document.getElementById('s-blog-path').value=BLOG_POSTS_PATH;
+  document.getElementById('s-ch-path').value=CHANNEL_POSTS_PATH;
 }
 async function testConnection() {
   const c=cfg();
@@ -606,9 +642,13 @@ async function testConnection() {
   try {
     const res=await fetch(`https://api.github.com/repos/${c.repo}`,{headers:{Authorization:`Bearer ${c.token}`}});
     const d=await res.json();
-    if (d.full_name) showStatus('s-status',`✅ Connected to ${d.full_name}`,'ok');
-    else showStatus('s-status','❌ Could not access repo. Check token + repo name.','err');
-  } catch(e) { showStatus('s-status','❌ '+e.message,'err'); }
+    if (!d.full_name) {
+      showStatus('s-status','❌ Could not access repo. Check token + repo name.','err');
+      return;
+    }
+    await checkContentAccess(c.blogPath);
+    showStatus('s-status',`✅ Connected to ${d.full_name}. Contents permission OK.`,'ok');
+  } catch(e) { showStatus('s-status','❌ '+friendlyGitHubError(e.message),'err'); }
 }
 function changePIN() {
   const p=document.getElementById('new-pin').value;
@@ -619,6 +659,32 @@ function changePIN() {
   showStatus('pin-change-status','✅ PIN updated!','ok');
 }
 
+function friendlyGitHubError(message) {
+  if (/Resource not accessible by personal access token/i.test(message)) {
+    return 'Token permission problem: edit your GitHub token and set Repository permissions → Contents → Read and write, and make sure this repo is selected.';
+  }
+  if (/Bad credentials/i.test(message)) {
+    return 'Bad token. Copy a new GitHub token and paste it in Settings.';
+  }
+  if (/Not Found|GitHub read 404/i.test(message)) {
+    return 'Repo or file path not found. Check Repository and the JSON file path in Settings.';
+  }
+  if (/GitHub read 403/i.test(message)) {
+    return 'Token cannot read this repo. Select this repository in the token settings and allow Contents read/write.';
+  }
+  return message;
+}
+
+async function checkContentAccess(path) {
+  const c=cfg();
+  const res=await fetch(`https://api.github.com/repos/${c.repo}/contents/${path}`,{
+    headers:{Authorization:`Bearer ${c.token}`,Accept:'application/vnd.github+json'}
+  });
+  if (res.ok || res.status===404) return;
+  const e=await res.json().catch(()=>({message:`GitHub read ${res.status}`}));
+  throw new Error(e.message||`GitHub read ${res.status}`);
+}
+
 // ═══════════════════════════════════════════════════════════
 //  GITHUB API
 // ═══════════════════════════════════════════════════════════
@@ -627,15 +693,28 @@ async function ghGet(path) {
   const res=await fetch(`https://api.github.com/repos/${c.repo}/contents/${path}`,{
     headers:{Authorization:`Bearer ${c.token}`,Accept:'application/vnd.github+json'}
   });
-  if (!res.ok) throw new Error(`GitHub read ${res.status}`);
+  if (!res.ok){ const e=await res.json().catch(()=>({message:`GitHub read ${res.status}`})); throw new Error(e.message||`GitHub read ${res.status}`); }
   return res.json();
 }
+function encodeBase64Utf8(text) {
+  const bytes = new TextEncoder().encode(text);
+  let binary = '';
+  bytes.forEach(byte => binary += String.fromCharCode(byte));
+  return btoa(binary);
+}
+
+function decodeBase64Utf8(base64) {
+  const binary = atob(base64.replace(/\n/g, ''));
+  const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+
 async function ghPut(path, content, sha, msg) {
   const c=cfg();
   const res=await fetch(`https://api.github.com/repos/${c.repo}/contents/${path}`,{
     method:'PUT',
     headers:{Authorization:`Bearer ${c.token}`,Accept:'application/vnd.github+json','Content-Type':'application/json'},
-    body:JSON.stringify({message:msg, content:btoa(unescape(encodeURIComponent(JSON.stringify(content,null,2)))), sha})
+    body:JSON.stringify({message:msg, content:encodeBase64Utf8(JSON.stringify(content,null,2)), sha})
   });
   if (!res.ok){ const e=await res.json(); throw new Error(e.message||res.status); }
   return res.json();
@@ -643,7 +722,7 @@ async function ghPut(path, content, sha, msg) {
 async function readFile(path) {
   try {
     const f=await ghGet(path);
-    const data=JSON.parse(atob(f.content.replace(/\n/g,'')));
+    const data=JSON.parse(decodeBase64Utf8(f.content));
     return {data, sha:f.sha};
   } catch { return {data:[], sha:null}; }
 }
@@ -665,6 +744,8 @@ function handleImgFile(e, prefix) {
     const url=ev.target.result;
     document.getElementById(prefix+'-photo').value=url;
     showImgPreview(prefix, url);
+    if (prefix==='cp') cpPreview();
+    if (prefix==='bp') bpPreview();
   };
   reader.readAsDataURL(file);
 }
@@ -739,7 +820,7 @@ async function publishChannelPost() {
     await writeFile(c.chPath,updated,sha,`📢 Channel post — ${new Date().toISOString().slice(0,10)}`);
     showStatus('cp-status','✅ Published! Live on blog now.','ok');
     cpClear(); loadAllPosts();
-  } catch(e){ showStatus('cp-status','❌ '+e.message,'err'); }
+  } catch(e){ showStatus('cp-status','❌ '+friendlyGitHubError(e.message),'err'); }
   setBtnLoading('cp-publish-btn',false);
 }
 
@@ -769,7 +850,7 @@ async function publishBlogPost() {
     ['bp-title','bp-body','bp-excerpt','bp-tags','bp-photo'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('bp-img-preview-wrap').style.display='none';
     updateBpChar(); loadAllPosts();
-  } catch(e){ showStatus('bp-status','❌ '+e.message,'err'); }
+  } catch(e){ showStatus('bp-status','❌ '+friendlyGitHubError(e.message),'err'); }
   setBtnLoading('bp-publish-btn',false);
 }
 
@@ -804,7 +885,7 @@ function renderPostsTable(filter) {
       <td><span class="pt-cat cat-${cat}">${cat}</span></td>
       <td style="font-size:12px;color:var(--muted);white-space:nowrap">${fmtDate(p.date)}</td>
       <td><div class="pt-actions">
-        ${p._type==='blog'?`<button class="btn btn-ghost btn-sm" onclick="previewPost(${JSON.stringify(p).replace(/"/g,'&quot;')})">View</button>`:''}
+        ${p._type==='blog'?`<button class="btn btn-ghost btn-sm" onclick="previewPostByIndex(${p._idx})">View</button>`:''}
         <button class="btn btn-danger btn-sm" onclick="deletePost('${p._type}',${p._idx})">Delete</button>
       </div></td>
     </tr>`;
@@ -845,6 +926,11 @@ function renderDashboard() {
 }
 
 // ── PREVIEW MODAL ──
+function previewPostByIndex(idx) {
+  const p = allPostsCache.blog[idx];
+  if (p) previewPost(p);
+}
+
 function previewPost(p) {
   document.getElementById('pm-img').src=p.photo||''; document.getElementById('pm-img').style.display=p.photo?'block':'none';
   document.getElementById('pm-cat').textContent=p.category||'';
@@ -880,6 +966,10 @@ async function initApp() {
   document.getElementById('stat-blog').textContent=allPostsCache.blog.length;
   document.getElementById('stat-ch').textContent=allPostsCache.channel.length;
   document.getElementById('stat-total').textContent=allPostsCache.blog.length+allPostsCache.channel.length;
+}
+
+if (sessionStorage.getItem('admin_unlocked')==='1') {
+  unlockAdmin();
 }
 </script>
 </body>
