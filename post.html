@@ -24,9 +24,9 @@
     .nav-back:hover{color:var(--gold);border-color:rgba(245,166,35,0.3)}
 
     /* ── HERO IMAGE ── */
-    .post-hero{width:100%;max-height:480px;overflow:hidden;position:relative;background:var(--bg2)}
-    .post-hero img{width:100%;height:480px;object-fit:cover;display:block}
-    .post-hero-gradient{position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(to top,var(--bg),transparent)}
+    .post-hero{width:min(100% - 48px,960px);margin:28px auto 0;overflow:hidden;position:relative;background:var(--bg2);border:1px solid var(--border);border-radius:16px}
+    .post-hero img{width:100%;max-height:520px;object-fit:contain;display:block;background:var(--bg2)}
+    .post-hero-gradient{display:none}
     .post-hero-fallback{width:100%;height:260px;background:linear-gradient(135deg,#0d1829 0%,#1a0f2e 50%,#0a1a10 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
     .post-hero-fallback::before{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(245,166,35,0.12) 0%,transparent 70%);top:-100px;left:-100px}
     .post-hero-fallback::after{content:'';position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(42,171,238,0.1) 0%,transparent 70%);bottom:-80px;right:-80px}
@@ -83,6 +83,7 @@
     .not-found{text-align:center;padding:80px 24px}
     .not-found h2{font-size:24px;font-weight:800;margin-bottom:8px}
     .not-found p{color:var(--muted);margin-bottom:24px}
+
   </style>
 </head>
 <body>
@@ -105,8 +106,44 @@
 </div>
 
 <script>
-  const BLOG_URL    = 'https://raw.githubusercontent.com/nightwalkerr86-star/otc-web/master/blog-posts.json';
-  const CHANNEL_URL = 'https://raw.githubusercontent.com/nightwalkerr86-star/otc-web/master/channel-posts.json';
+  const DEFAULT_REPO = 'nightwalkerr86-star/otc-web';
+  const DEFAULT_BRANCH = 'master';
+  const DEFAULT_BLOG_PATH = 'otc-web/blog-posts.json';
+  const DEFAULT_CHANNEL_PATH = 'otc-web/channel-posts.json';
+
+  function rawGithubUrl(repo, filePath) {
+    return `https://raw.githubusercontent.com/${repo}/${DEFAULT_BRANCH}/${filePath.replace(/^\/+/, '')}`;
+  }
+
+  function contentRepo() {
+    return localStorage.getItem('gh_repo') || DEFAULT_REPO;
+  }
+
+  function postUrls(type) {
+    const repo = contentRepo();
+    const defaultPath = type === 'channel' ? DEFAULT_CHANNEL_PATH : DEFAULT_BLOG_PATH;
+    return [...new Set([
+      rawGithubUrl(repo, defaultPath),
+      rawGithubUrl(DEFAULT_REPO, defaultPath),
+      type === 'channel' ? 'channel-posts.json' : 'blog-posts.json'
+    ])];
+  }
+
+  async function fetchFirstJson(urls) {
+    let lastError;
+    for (const url of urls) {
+      try {
+        const res = await fetch(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now());
+        if (!res.ok) throw new Error(res.status);
+        const data = await res.json();
+        const posts = Array.isArray(data) ? data : (data.record || data.posts || []);
+        if (Array.isArray(posts)) return posts;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+    throw lastError || new Error('No posts found');
+  }
 
   const CAT_LABELS = {market:'Market',regulation:'Regulation',guide:'OTC Guide',defi:'DeFi',news:'News',channel:'Channel'};
 
@@ -203,9 +240,7 @@
     showSkeleton();
 
     try {
-      const url  = type === 'channel' ? CHANNEL_URL : BLOG_URL;
-      const res  = await fetch(url + '?t=' + Date.now());
-      const posts = await res.json();
+      const posts = await fetchFirstJson(postUrls(type));
       const post  = posts.find(p => String(p.id || p.message_id) === String(id));
 
       if (!post) { showNotFound(); return; }

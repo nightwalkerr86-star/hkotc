@@ -129,6 +129,9 @@
         <button class="lang-option" data-lang="zh" onclick="setLang('zh')">
           <img src="https://flagcdn.com/w20/hk.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> 中文
         </button>
+        <button class="lang-option" data-lang="km" onclick="setLang('km')">
+          <img src="https://flagcdn.com/w20/kh.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> ខ្មែរ
+        </button>
       </div>
     </div>
     <a href="index.html" class="nav-back" data-i18n="nav-back">← Back to Home</a>
@@ -664,10 +667,13 @@
     }
   };
 
+  LANG.km = { ...LANG.en, 'nav-back':"← ត្រឡប់ទៅទំព័រដើម", 'page-badge':"ឯកសារផ្លូវច្បាប់", 'page-title':"លក្ខខណ្ឌសេវាកម្ម", 'page-meta':"បានធ្វើបច្ចុប្បន្នភាពចុងក្រោយ៖ 1 មករា 2025 · ចូលជាធរមាន៖ 1 មករា 2025", 'toc-title':"មាតិកា", 'ft-home':"ទំព័រដើម", 'ft-terms':"លក្ខខណ្ឌសេវាកម្ម", 'ft-privacy':"គោលការណ៍ឯកជនភាព", 'ft-blog':"ប្លុក", 'ft-copy':"© 2025 HKOTC.io. រក្សាសិទ្ធិគ្រប់យ៉ាង។", 'intro':"សូមអានលក្ខខណ្ឌទាំងនេះដោយប្រុងប្រយ័ត្ន មុនពេលប្រើសេវាកម្ម HKOTC.io។", 'cta-title':"មានសំណួរអំពីលក្ខខណ្ឌរបស់យើង?", 'cta-sub':"ក្រុម compliance របស់យើងអាចជួយពន្យល់ចំណុចណាមួយនៅក្នុងលក្ខខណ្ឌទាំងនេះ។", 'cta-wa':"ទាក់ទងតាម WhatsApp", 'cta-tg':"Telegram" };
+
   let currentLang = localStorage.getItem('lang') || 'en';
 
   function applyLang(lang) {
-    document.documentElement.lang = lang === 'zh' ? 'zh-HK' : 'en-HK';
+    if (!LANG[lang]) lang = 'en';
+    document.documentElement.lang = ({ en:'en-HK', zh:'zh-HK', km:'km-KH' })[lang];
     const t = LANG[lang];
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.dataset.i18n;
@@ -675,7 +681,7 @@
       el.innerHTML = t[key];
     });
     const lc = document.getElementById('lang-current');
-    if (lc) lc.textContent = lang === 'en' ? 'EN' : '中文';
+    if (lc) lc.textContent = ({ en:'EN', zh:'中文', km:'ខ្មែរ' })[lang];
     document.querySelectorAll('.lang-option[data-lang]').forEach(opt => {
       opt.classList.toggle('active', opt.dataset.lang === lang);
     });
