@@ -451,6 +451,20 @@
     .review-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #e8921b); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; color: #07090f; flex-shrink: 0; }
     .review-name { font-size: 14px; font-weight: 700; }
     .review-meta { font-size: 12px; color: var(--muted); }
+    .comment-panel { margin-top: 28px; display: grid; grid-template-columns: 1fr; gap: 18px; }
+    .comment-panel .reviews-grid { grid-template-columns: 1fr; }
+    @media (min-width: 720px) { .comment-panel .reviews-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (min-width: 980px) { .comment-panel { grid-template-columns: minmax(0, 1fr) 360px; align-items: start; } }
+    .comment-empty { padding: 22px; border-radius: 18px; background: var(--bg); border: 1px dashed var(--border); color: var(--muted); font-size: 14px; text-align: center; }
+    .comment-form { padding: 22px; border-radius: 20px; background: var(--bg); border: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px; }
+    .comment-form-title { font-size: 16px; font-weight: 850; }
+    .comment-field { display: flex; flex-direction: column; gap: 6px; }
+    .comment-field label { font-size: 11px; color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: .5px; }
+    .comment-field input, .comment-field textarea, .comment-field select { width: 100%; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text); padding: 12px 13px; font: inherit; font-size: 14px; outline: none; }
+    .comment-field textarea { min-height: 112px; resize: vertical; line-height: 1.6; }
+    .comment-field input:focus, .comment-field textarea:focus, .comment-field select:focus { border-color: rgba(245,166,35,.5); box-shadow: 0 0 0 3px rgba(245,166,35,.10); }
+    .comment-submit { justify-content: center; margin-top: 4px; }
+    .comment-note { color: var(--muted); font-size: 12px; line-height: 1.5; }
 
     /* ─── CONTACT ── */
     #contact { padding: 80px 0; }
@@ -957,32 +971,37 @@
   <div class="container">
     <div class="section-header">
       <div class="badge" style="margin-bottom:14px">
-        <svg width="13" height="13"><use href="#ico-star"/></svg> <span data-i18n="rev-badge">Testimonials</span>
+        <svg width="13" height="13"><use href="#ico-star"/></svg> <span data-i18n="rev-badge">Customer Comments</span>
       </div>
       <h2 class="section-title" data-i18n="rev-title">What Our Clients <span class="gradient-text">Say</span></h2>
+      <p class="section-sub" data-i18n="rev-sub">Share your experience with HKOTC. New comments appear on this device instantly.</p>
     </div>
-    <div class="reviews-grid">
-      <div class="review-card">
-        <div class="review-stars">
-          <svg width="16" height="16"><use href="#ico-star"/></svg><svg width="16" height="16"><use href="#ico-star"/></svg><svg width="16" height="16"><use href="#ico-star"/></svg><svg width="16" height="16"><use href="#ico-star"/></svg><svg width="16" height="16"><use href="#ico-star"/></svg>
-        </div>
-        <div class="review-text">"Converted HK$500,000 to USDT in under 20 minutes. The rate was better than any exchange I've used. Super responsive on Telegram."</div>
-        <div class="review-author"><div class="review-avatar">M</div><div><div class="review-name">Michael T.</div><div class="review-meta">Investor · Hong Kong</div></div></div>
+    <div class="comment-panel">
+      <div>
+        <div class="reviews-grid" id="customer-comments"></div>
+        <div class="comment-empty" id="comment-empty" data-i18n="comment-empty">No customer comments yet. Be the first to leave one.</div>
       </div>
-      <div class="review-card">
-        <div class="review-stars">
-          <svg width="16" height="16"><use href="#ico-star"/></svg><svg width="16" height="16"><use href="#ico-star"/></svg><svg width="16" height="16"><use href="#ico-star"/></svg><svg width="16" height="16"><use href="#ico-star"/></svg><svg width="16" height="16"><use href="#ico-star"/></svg>
+      <form class="comment-form" id="comment-form">
+        <div class="comment-form-title" data-i18n="comment-title">Leave a Comment</div>
+        <div class="comment-field">
+          <label for="comment-name" data-i18n="comment-name">Name</label>
+          <input id="comment-name" type="text" maxlength="40" required data-i18n-placeholder="comment-name-ph" placeholder="Your name">
         </div>
-        <div class="review-text">"Best OTC desk in HK. I've traded with them for 2 years — always fair rates, instant settlement, and genuine customer service. Highly recommended."</div>
-        <div class="review-author"><div class="review-avatar">S</div><div><div class="review-name">Sarah K.</div><div class="review-meta">Business Owner · Kowloon</div></div></div>
-      </div>
-      <div class="review-card">
-        <div class="review-stars">
-          <svg width="16" height="16"><use href="#ico-star"/></svg><svg width="16" height="16"><use href="#ico-star"/></svg><svg width="16" height="16"><use href="#ico-star"/></svg><svg width="16" height="16"><use href="#ico-star"/></svg><svg width="16" height="16"><use href="#ico-star"/></svg>
+        <div class="comment-field">
+          <label for="comment-rating" data-i18n="comment-rating">Rating</label>
+          <select id="comment-rating">
+            <option value="5">★★★★★ 5</option>
+            <option value="4">★★★★☆ 4</option>
+            <option value="3">★★★☆☆ 3</option>
+          </select>
         </div>
-        <div class="review-text">"Needed to sell a large USDT position quickly. They handled my HK$2M trade without moving the market. Professional, discreet, and fast."</div>
-        <div class="review-author"><div class="review-avatar">J</div><div><div class="review-name">Jason L.</div><div class="review-meta">Fund Manager · Central</div></div></div>
-      </div>
+        <div class="comment-field">
+          <label for="comment-text" data-i18n="comment-message">Comment</label>
+          <textarea id="comment-text" maxlength="260" required data-i18n-placeholder="comment-message-ph" placeholder="Write your comment..."></textarea>
+        </div>
+        <button class="btn btn-primary comment-submit" type="submit" data-i18n="comment-submit">Post Comment</button>
+        <div class="comment-note" data-i18n="comment-note">Comments are saved locally in this browser.</div>
+      </form>
     </div>
   </div>
 </section>
@@ -1188,7 +1207,8 @@
       'step-2-t':'Verify & Confirm Trade','step-2-d':'Complete a quick KYC check for new clients (takes 5 minutes). Confirm the trade amount and lock in your rate. We accept FPS, bank transfer, and cash for HKD side.',
       'step-3-t':'Settlement Within 15 Min','step-3-d':'Once we confirm your payment, USDT is sent directly to your wallet. For HKD payouts, funds arrive via FPS in minutes. Trade receipt provided for all transactions.',
       'rev-badge':'Testimonials',
-      'rev-title':'What Our Clients <span class="gradient-text">Say</span>',
+      'rev-title':'What Our Clients <span class="gradient-text">Say</span>','rev-sub':'Share your experience with HKOTC. New comments appear on this device instantly.',
+      'comment-title':'Leave a Comment','comment-name':'Name','comment-name-ph':'Your name','comment-rating':'Rating','comment-message':'Comment','comment-message-ph':'Write your comment...','comment-submit':'Post Comment','comment-note':'Comments are saved locally in this browser.','comment-empty':'No customer comments yet. Be the first to leave one.','comment-saved':'Comment posted',
       'contact-badge':'Contact',
       'contact-title':'Ready to <span class="gradient-text">Trade?</span>',
       'contact-sub':'Our desk is open 24/7. Get a live quote in under 60 seconds.',
@@ -1240,7 +1260,8 @@
       'step-2-t':'驗證並確認交易','step-2-d':'新客戶完成快速KYC驗證（約5分鐘）。確認交易金額並鎖定匯率，港幣端接受FPS、銀行轉帳及現金。',
       'step-3-t':'15分鐘內完成結算','step-3-d':'確認付款後，USDT直接發送至您的錢包。港幣出款透過FPS數分鐘到帳，所有交易提供收據。',
       'rev-badge':'客戶評價',
-      'rev-title':'客戶<span class="gradient-text">怎麼說</span>',
+      'rev-title':'客戶<span class="gradient-text">怎麼說</span>','rev-sub':'分享你對 HKOTC 的使用體驗，新留言會即時顯示在此裝置上。',
+      'comment-title':'留下評價','comment-name':'名稱','comment-name-ph':'你的名稱','comment-rating':'評分','comment-message':'留言','comment-message-ph':'寫下你的評價...','comment-submit':'發佈留言','comment-note':'留言會儲存在此瀏覽器。','comment-empty':'暫時未有客戶留言，歡迎成為第一位。','comment-saved':'留言已發佈',
       'contact-badge':'聯絡',
       'contact-title':'準備好<span class="gradient-text">交易了嗎？</span>',
       'contact-sub':'服務台全天候開放，60秒內獲取即時報價。',
@@ -1323,7 +1344,8 @@
       'step-3-t': 'ទូទាត់ក្នុង 15 នាទី',
       'step-3-d': 'បន្ទាប់ពីយើងបញ្ជាក់ការទូទាត់ USDT នឹងត្រូវផ្ញើទៅកាបូបរបស់អ្នក។ សម្រាប់ការទូទាត់ HKD ទឹកប្រាក់នឹងមកដល់តាម FPS ក្នុងប៉ុន្មាននាទី។ មានវិក័យប័ត្រសម្រាប់រាល់ប្រតិបត្តិការ។',
       'rev-badge': 'មតិយោបល់អតិថិជន',
-      'rev-title': 'អតិថិជន<span class=\'gradient-text\'>និយាយអ្វីខ្លះ</span>',
+      'rev-title': 'អតិថិជន<span class=\'gradient-text\'>និយាយអ្វីខ្លះ</span>','rev-sub': 'ចែករំលែកបទពិសោធន៍របស់អ្នកជាមួយ HKOTC។ មតិថ្មីនឹងបង្ហាញភ្លាមៗលើឧបករណ៍នេះ។',
+      'comment-title': 'ទុកមតិយោបល់','comment-name': 'ឈ្មោះ','comment-name-ph': 'ឈ្មោះរបស់អ្នក','comment-rating': 'ការវាយតម្លៃ','comment-message': 'មតិយោបល់','comment-message-ph': 'សរសេរមតិយោបល់របស់អ្នក...','comment-submit': 'បង្ហោះមតិ','comment-note': 'មតិយោបល់ត្រូវបានរក្សាទុកក្នុង browser នេះ។','comment-empty': 'មិនទាន់មានមតិអតិថិជនទេ។ សូមធ្វើជាមនុស្សដំបូង។','comment-saved': 'បានបង្ហោះមតិយោបល់',
       'contact-badge': 'ទំនាក់ទំនង',
       'contact-title': 'ត្រៀម<span class=\'gradient-text\'>ជួញដូរហើយឬនៅ?</span>',
       'contact-sub': 'តុជំនួយរបស់យើងបើក 24/7។ ទទួលបានតម្លៃបន្តផ្ទាល់ក្នុងក្រោម 60 វិនាទី។',
@@ -1363,6 +1385,10 @@
       if (!t[key]) return;
       if (t[key].includes('<')) el.innerHTML = t[key];
       else el.textContent = t[key];
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.dataset.i18nPlaceholder;
+      if (t[key]) el.placeholder = t[key];
     });
     // Calculator labels depend on current mode
     const fromKey = calcMode === 'buy' ? 'from-buy' : 'from-sell';
@@ -1706,6 +1732,63 @@ Hello! I would like to place this order. Please confirm availability and rate.`;
     }
   }
 
+  const defaultComments = [
+    { name: 'Michael T.', meta: 'Investor · Hong Kong', rating: 5, text: 'Converted HK$500,000 to USDT in under 20 minutes. Super responsive on Telegram.' },
+    { name: 'Sarah K.', meta: 'Business Owner · Kowloon', rating: 5, text: 'Always fair rates, fast settlement, and genuine customer service.' },
+    { name: 'Jason L.', meta: 'Fund Manager · Central', rating: 5, text: 'Professional, discreet, and fast for large USDT trades.' }
+  ];
+
+  function escapeHtml(value) {
+    return String(value || '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char]));
+  }
+
+  function getSavedComments() {
+    try { return JSON.parse(localStorage.getItem('hkotc_customer_comments') || '[]'); }
+    catch { return []; }
+  }
+
+  function saveComment(comment) {
+    const comments = getSavedComments();
+    comments.unshift(comment);
+    localStorage.setItem('hkotc_customer_comments', JSON.stringify(comments.slice(0, 20)));
+  }
+
+  function commentCard(comment) {
+    const rating = Math.max(3, Math.min(5, Number(comment.rating) || 5));
+    const stars = Array.from({ length: rating }, () => '<svg width="16" height="16"><use href="#ico-star"/></svg>').join('');
+    const initial = escapeHtml((comment.name || 'C').trim().charAt(0).toUpperCase());
+    return `<div class="review-card">
+      <div class="review-stars">${stars}</div>
+      <div class="review-text">"${escapeHtml(comment.text)}"</div>
+      <div class="review-author"><div class="review-avatar">${initial}</div><div><div class="review-name">${escapeHtml(comment.name)}</div><div class="review-meta">${escapeHtml(comment.meta || 'Customer')}</div></div></div>
+    </div>`;
+  }
+
+  function renderCustomerComments() {
+    const grid = document.getElementById('customer-comments');
+    const empty = document.getElementById('comment-empty');
+    if (!grid || !empty) return;
+    const comments = [...getSavedComments(), ...defaultComments];
+    grid.innerHTML = comments.map(commentCard).join('');
+    empty.style.display = comments.length ? 'none' : 'block';
+  }
+
+  function setupCommentForm() {
+    const form = document.getElementById('comment-form');
+    if (!form) return;
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const name = document.getElementById('comment-name').value.trim();
+      const text = document.getElementById('comment-text').value.trim();
+      const rating = document.getElementById('comment-rating').value;
+      if (!name || !text) return;
+      saveComment({ name, text, rating, meta: new Date().toLocaleDateString('en-HK', { day:'numeric', month:'short', year:'numeric' }) });
+      form.reset();
+      renderCustomerComments();
+      showToast((LANG[currentLang] && LANG[currentLang]['comment-saved']) || 'Comment posted');
+    });
+  }
+
   // Ticker
   let tickerData = {
     'USDT/HKD': { price: 7.78, change: 0.02 },
@@ -1728,6 +1811,8 @@ Hello! I would like to place this order. Please confirm availability and rate.`;
   }
 
   applyLang(currentLang);
+  renderCustomerComments();
+  setupCommentForm();
   window.addEventListener('pageshow', () => {
     if (document.activeElement && document.activeElement.classList?.contains('mobile-bottom-item')) {
       document.activeElement.blur();
