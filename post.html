@@ -93,7 +93,7 @@
   <a href="index.html" class="nav-logo">HKOTC<span style="-webkit-text-fill-color:rgba(245,166,35,.5)">.io</span></a>
   <a href="blog.html" class="nav-back">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-    Back to Blog
+    <span data-post-i18n="back">Back to Blog</span>
   </a>
 </nav>
 
@@ -102,7 +102,7 @@
 <div class="back-section">
   <button class="back-btn" onclick="history.back()">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-    Back to Blog
+    <span data-post-i18n="back">Back to Blog</span>
   </button>
 </div>
 
@@ -111,6 +111,46 @@
   const DEFAULT_BRANCH = 'master';
   const DEFAULT_BLOG_PATH = 'otc-web/blog-posts.json';
   const DEFAULT_CHANNEL_PATH = 'otc-web/channel-posts.json';
+  const currentLang = localStorage.getItem('lang') || 'en';
+  const POST_I18N = {
+    en: {
+      back: 'Back to Blog',
+      share: 'Share:',
+      notFoundTitle: 'Post not found',
+      notFoundText: 'This post may have been removed or the link is incorrect.',
+      officialChannel: 'Official Channel',
+      locale: 'en-HK',
+      dateOptions: { day:'numeric', month:'long', year:'numeric' },
+      cats: { market:'Market', regulation:'Regulation', guide:'OTC Guide', defi:'DeFi', news:'News', channel:'Channel' }
+    },
+    zh: {
+      back: '返回博客',
+      share: '分享：',
+      notFoundTitle: '找不到文章',
+      notFoundText: '此文章可能已被移除，或連結不正確。',
+      officialChannel: '官方頻道',
+      locale: 'zh-HK',
+      dateOptions: { year:'numeric', month:'long', day:'numeric' },
+      cats: { market:'市場', regulation:'監管', guide:'OTC 指南', defi:'DeFi', news:'新聞', channel:'頻道' }
+    },
+    km: {
+      back: 'ត្រឡប់ទៅព័ត៌មាន',
+      share: 'ចែករំលែក៖',
+      notFoundTitle: 'រកមិនឃើញអត្ថបទ',
+      notFoundText: 'អត្ថបទនេះអាចត្រូវបានលុប ឬតំណមិនត្រឹមត្រូវ។',
+      officialChannel: 'ឆានែលផ្លូវការ',
+      locale: 'km-KH',
+      dateOptions: { day:'numeric', month:'long', year:'numeric' },
+      cats: { market:'ទីផ្សារ', regulation:'បទប្បញ្ញត្តិ', guide:'មគ្គុទ្ទេសក៍ OTC', defi:'DeFi', news:'ព័ត៌មាន', channel:'ឆានែល' }
+    }
+  };
+  const postLang = POST_I18N[currentLang] || POST_I18N.en;
+
+  function applyPostLanguage() {
+    document.documentElement.lang = currentLang === 'zh' ? 'zh-HK' : currentLang === 'km' ? 'km-KH' : 'en-HK';
+    document.querySelectorAll('[data-post-i18n="back"]').forEach(el => { el.textContent = postLang.back; });
+  }
+  applyPostLanguage();
 
   function rawGithubUrl(repo, filePath) {
     return `https://raw.githubusercontent.com/${repo}/${DEFAULT_BRANCH}/${filePath.replace(/^\/+/, '')}`;
@@ -174,11 +214,13 @@
     throw lastError || new Error('No posts found');
   }
 
-  const CAT_LABELS = {market:'Market',regulation:'Regulation',guide:'OTC Guide',defi:'DeFi',news:'News',channel:'Channel'};
+  function categoryLabel(cat) {
+    return postLang.cats[cat] || cat;
+  }
 
   function fmtDate(ts) {
     const d = typeof ts === 'number' ? new Date(ts * 1000) : new Date(ts);
-    return isNaN(d) ? '' : d.toLocaleDateString('en-HK', {day:'numeric',month:'long',year:'numeric'});
+    return isNaN(d) ? '' : d.toLocaleDateString(postLang.locale, postLang.dateOptions);
   }
 
   function setBlogPostingSchema(p, type) {
@@ -212,7 +254,7 @@
     const text = encodeURIComponent(title || 'HKOTC');
     return `
         <div class="post-actions">
-          <span class="share-label">Share:</span>
+          <span class="share-label">${postLang.share}</span>
           <a href="https://www.facebook.com/sharer/sharer.php?u=${url}" target="_blank" rel="noopener" class="share-icon share-fb" aria-label="Share on Facebook">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 8.5h3V5h-3c-3.1 0-5 1.9-5 5v2H6v3.6h3V23h4v-7.4h3.1l.6-3.6H13v-1.7c0-1.1.4-1.8 1-1.8Z"/></svg>
           </a>
@@ -232,7 +274,7 @@
       ${p.photo ? `<div class="post-hero"><img src="${p.photo}" alt="${p.title}" onerror="this.parentElement.style.display='none'"><div class="post-hero-gradient"></div></div>` : ''}
       <div class="article-wrap">
         <div class="article-meta">
-          <span class="art-cat cat-${cat}">${CAT_LABELS[cat]||cat}</span>
+          <span class="art-cat cat-${cat}">${categoryLabel(cat)}</span>
           <span class="art-date">${fmtDate(p.date)}</span>
           <span class="art-source">HKOTC</span>
         </div>
@@ -260,7 +302,7 @@
           <div class="ch-avatar">港</div>
           <div>
             <div class="ch-name">港汇加密交易台 | HK OTC Desk</div>
-            <div class="ch-live"><span class="ch-live-dot"></span> Official Channel</div>
+            <div class="ch-live"><span class="ch-live-dot"></span> ${postLang.officialChannel}</div>
           </div>
         </div>
         <div class="art-body" style="font-size:17px;line-height:1.85">${body.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
@@ -285,9 +327,9 @@
   function showNotFound() {
     document.getElementById('post-container').innerHTML = `
       <div class="not-found">
-        <h2>Post not found</h2>
-        <p>This post may have been removed or the link is incorrect.</p>
-        <a href="blog.html" class="back-btn">← Back to Blog</a>
+        <h2>${postLang.notFoundTitle}</h2>
+        <p>${postLang.notFoundText}</p>
+        <a href="blog.html" class="back-btn">← ${postLang.back}</a>
       </div>`;
   }
 
