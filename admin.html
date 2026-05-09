@@ -150,6 +150,17 @@
     .cat-news{background:rgba(239,68,68,.15);color:#f87171}
     .cat-channel{background:rgba(42,171,238,.15);color:#2AABEE}
     .pt-actions{display:flex;gap:6px}
+    .comment-admin-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:start}
+    .comment-list{display:grid;gap:12px}
+    .comment-admin-card{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
+    .comment-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 auto;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#07090f;font-weight:900}
+    .comment-admin-body{flex:1;min-width:0}
+    .comment-admin-head{display:flex;justify-content:space-between;gap:12px;margin-bottom:4px}
+    .comment-admin-name{font-size:13px;font-weight:800}
+    .comment-admin-meta{font-size:11px;color:var(--muted);margin-top:2px}
+    .comment-admin-text{font-size:13px;line-height:1.6;color:rgba(240,242,255,.82);white-space:pre-wrap;margin-top:8px}
+    .comment-admin-stars{font-size:12px;color:var(--gold);white-space:nowrap}
+    @media(max-width:900px){.comment-admin-grid{grid-template-columns:1fr}}
 
     /* ── STATS GRID ── */
     .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
@@ -251,6 +262,11 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
         All Posts
         <span class="sb-badge" id="posts-count">0</span>
+      </button>
+      <button class="sb-item" onclick="nav('comments')" id="nav-comments">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
+        Customer Comments
+        <span class="sb-badge" id="comments-count">0</span>
       </button>
 
       <div class="sb-section">Settings</div>
@@ -474,6 +490,49 @@
         </div>
       </div>
 
+      <!-- ── CUSTOMER COMMENTS ── -->
+      <div class="panel" id="panel-comments">
+        <div class="page-hd" style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
+          <div>
+            <h1>Customer Comments</h1>
+            <p>Publish approved customer feedback to the homepage. Visitors cannot post here.</p>
+          </div>
+          <a href="index.html#reviews" class="btn btn-ghost btn-sm" target="_blank">View on Home</a>
+        </div>
+        <div class="comment-admin-grid">
+          <div class="card">
+            <div class="card-title">Published Comments</div>
+            <div class="comment-list" id="admin-comments-list"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Add Customer Comment</div>
+            <div class="frow">
+              <label class="flabel">Customer Name *</label>
+              <input class="finput" id="cm-name" type="text" maxlength="40" placeholder="e.g. Michael T.">
+            </div>
+            <div class="frow">
+              <label class="flabel">Customer Info</label>
+              <input class="finput" id="cm-meta" type="text" maxlength="60" placeholder="e.g. Investor · Hong Kong">
+            </div>
+            <div class="frow">
+              <label class="flabel">Rating</label>
+              <select class="fselect" id="cm-rating">
+                <option value="5">★★★★★ 5</option>
+                <option value="4">★★★★☆ 4</option>
+                <option value="3">★★★☆☆ 3</option>
+              </select>
+            </div>
+            <div class="frow">
+              <label class="flabel">Comment *</label>
+              <textarea id="cm-text" maxlength="260" placeholder="Write the customer comment..." style="min-height:120px"></textarea>
+              <div class="char-hint"><span id="cm-char">0</span> / 260</div>
+            </div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="publishCustomerComment()">Publish Comment</button>
+            <div class="status" id="cm-status"></div>
+          </div>
+        </div>
+      </div>
+
       <!-- ── SETTINGS ── -->
       <div class="panel" id="panel-settings">
         <div class="page-hd">
@@ -599,6 +658,7 @@ function nav(id) {
   document.getElementById('panel-'+id)?.classList.add('active');
   document.getElementById('nav-'+id)?.classList.add('active');
   if (id==='all-posts') renderPostsTable('all');
+  if (id==='comments') renderAdminComments();
   if (id==='dashboard') renderDashboard();
 }
 
@@ -855,6 +915,79 @@ async function publishBlogPost() {
 }
 
 // ═══════════════════════════════════════════════════════════
+//  CUSTOMER COMMENTS
+// ═══════════════════════════════════════════════════════════
+const CUSTOMER_COMMENTS_KEY = 'hkotc_customer_comments';
+function escapeHtml(value) {
+  return String(value || '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char]));
+}
+function getCustomerComments() {
+  try { return JSON.parse(localStorage.getItem(CUSTOMER_COMMENTS_KEY) || '[]'); }
+  catch { return []; }
+}
+function setCustomerComments(comments) {
+  localStorage.setItem(CUSTOMER_COMMENTS_KEY, JSON.stringify(comments.slice(0, 30)));
+  updateCommentsCount();
+}
+function updateCommentsCount() {
+  const badge = document.getElementById('comments-count');
+  if (badge) badge.textContent = getCustomerComments().length;
+}
+function renderAdminComments() {
+  const list = document.getElementById('admin-comments-list');
+  if (!list) return;
+  const comments = getCustomerComments();
+  updateCommentsCount();
+  if (!comments.length) {
+    list.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:18px;text-align:center;border:1px dashed var(--border);border-radius:14px">No customer comments yet.</div>';
+    return;
+  }
+  list.innerHTML = comments.map((comment, index) => {
+    const rating = Math.max(3, Math.min(5, Number(comment.rating) || 5));
+    const stars = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+    const initial = escapeHtml((comment.name || 'C').trim().charAt(0).toUpperCase());
+    return `<div class="comment-admin-card">
+      <div class="comment-avatar">${initial}</div>
+      <div class="comment-admin-body">
+        <div class="comment-admin-head">
+          <div><div class="comment-admin-name">${escapeHtml(comment.name)}</div><div class="comment-admin-meta">${escapeHtml(comment.meta || 'Customer')}</div></div>
+          <div class="comment-admin-stars">${stars}</div>
+        </div>
+        <div class="comment-admin-text">${escapeHtml(comment.text)}</div>
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="deleteCustomerComment(${index})">Delete</button>
+    </div>`;
+  }).join('');
+}
+function publishCustomerComment() {
+  const name = document.getElementById('cm-name').value.trim();
+  const meta = document.getElementById('cm-meta').value.trim();
+  const rating = document.getElementById('cm-rating').value;
+  const text = document.getElementById('cm-text').value.trim();
+  if (!name || !text) { showStatus('cm-status','Name and comment are required.','err'); return; }
+  const comments = getCustomerComments();
+  comments.unshift({ name, meta: meta || 'Customer', rating, text, date: Date.now() });
+  setCustomerComments(comments);
+  ['cm-name','cm-meta','cm-text'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('cm-rating').value = '5';
+  document.getElementById('cm-char').textContent = '0';
+  renderAdminComments();
+  showStatus('cm-status','✅ Comment published to homepage.','ok');
+}
+function deleteCustomerComment(index) {
+  if (!confirm('Delete this customer comment?')) return;
+  const comments = getCustomerComments();
+  comments.splice(index, 1);
+  setCustomerComments(comments);
+  renderAdminComments();
+}
+document.addEventListener('input', event => {
+  if (event.target && event.target.id === 'cm-text') {
+    document.getElementById('cm-char').textContent = event.target.value.length;
+  }
+});
+
+// ═══════════════════════════════════════════════════════════
 //  ALL POSTS + DASHBOARD
 // ═══════════════════════════════════════════════════════════
 let allPostsCache={blog:[],channel:[]};
@@ -959,6 +1092,7 @@ function setBtnLoading(id,loading) {
 }
 async function initApp() {
   loadSettings();
+  updateCommentsCount();
   const c=cfg();
   if (!c.token||!c.repo) { nav('settings'); return; }
   await loadAllPosts();
