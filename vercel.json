@@ -29,5 +29,67 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/blog",
+      "destination": "/blog.html"
+    },
+    {
+      "source": "/blogs",
+      "destination": "/blog.html"
+    },
+    {
+      "source": "/post",
+      "destination": "/post.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms.html"
+    },
+    {
+      "source": "/zh",
+      "destination": "/index.html?lang=zh"
+    },
+    {
+      "source": "/zh/blog",
+      "destination": "/blog.html?lang=zh"
+    },
+    {
+      "source": "/zh/blogs",
+      "destination": "/blog.html?lang=zh"
+    },
+    {
+      "source": "/zh/privacy",
+      "destination": "/privacy.html?lang=zh"
+    },
+    {
+      "source": "/zh/terms",
+      "destination": "/terms.html?lang=zh"
+    },
+    {
+      "source": "/km",
+      "destination": "/index.html?lang=km"
+    },
+    {
+      "source": "/km/blog",
+      "destination": "/blog.html?lang=km"
+    },
+    {
+      "source": "/km/blogs",
+      "destination": "/blog.html?lang=km"
+    },
+    {
+      "source": "/km/privacy",
+      "destination": "/privacy.html?lang=km"
+    },
+    {
+      "source": "/km/terms",
+      "destination": "/terms.html?lang=km"
+    }
   ]
 }
