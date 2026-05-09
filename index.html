@@ -457,6 +457,14 @@
     @media (min-width: 980px) { .comment-panel { grid-template-columns: minmax(0, 1fr) 360px; align-items: start; } }
     .comment-empty { padding: 22px; border-radius: 18px; background: var(--bg); border: 1px dashed var(--border); color: var(--muted); font-size: 14px; text-align: center; }
 
+
+    /* ─── ANTI-SCAM ── */
+    #security-warning { padding: 64px 0; background: var(--bg); border-top: 1px solid var(--border); }
+    .warning-card { max-width: 900px; margin: 0 auto; padding: 26px; border-radius: 20px; background: linear-gradient(135deg, rgba(245,166,35,.10), rgba(255,77,109,.06)); border: 1px solid rgba(245,166,35,.24); }
+    .warning-title { display:flex; align-items:center; gap:10px; font-size:22px; font-weight:900; margin-bottom:12px; color:var(--text); }
+    .warning-list { display:grid; gap:10px; color:var(--muted); font-size:14px; line-height:1.65; }
+    .warning-list li { margin-left: 20px; }
+
     /* ─── CONTACT ── */
     #contact { padding: 80px 0; }
     .contact-grid { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 900px; margin: 0 auto; }
@@ -648,7 +656,7 @@
 <!-- ─── NAVBAR ── -->
 <nav id="navbar">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">
+    <a href="/" class="nav-logo">
       <div class="logo-icon">
         <svg width="20" height="20"><use href="#ico-swap"/></svg>
       </div>
@@ -659,7 +667,7 @@
       <li><a href="#features" data-i18n="nav-features">Features</a></li>
       <li><a href="#how" data-i18n="nav-how">How It Works</a></li>
       <li><a href="#contact" data-i18n="nav-contact">Contact</a></li>
-      <li><a href="blog.html" data-i18n="nav-blog">Blog</a></li>
+      <li><a href="/blog" data-i18n="nav-blog">Blog</a></li>
     </ul>
     <div class="nav-actions">
       <div class="lang-dropdown" id="lang-dropdown">
@@ -707,7 +715,7 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     <span data-i18n="nav-contact">Contact</span>
   </a>
-  <a href="blog.html" class="mobile-bottom-item" data-mobile-tab="blog">
+  <a href="/blog" class="mobile-bottom-item" data-mobile-tab="blog">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
     <span data-i18n="nav-blog">Blog</span>
   </a>
@@ -715,7 +723,7 @@
 
 <!-- ─── TRUST BAR ── -->
 <div class="trust-bar" style="padding-top:80px">
-  <div class="trust-item"><svg width="12" height="12"><use href="#ico-lock"/></svg><span data-i18n="trust-1">Bank-grade Security</span></div>
+  <div class="trust-item"><svg width="12" height="12"><use href="#ico-lock"/></svg><span data-i18n="trust-1">Security-focused</span></div>
   <div class="trust-item"><svg width="12" height="12"><use href="#ico-bolt"/></svg><span data-i18n="trust-2">Settlement in 15 min</span></div>
   <div class="trust-item"><svg width="12" height="12"><use href="#ico-hk"/></svg><span data-i18n="trust-3">Hong Kong Based</span></div>
   <div class="trust-item"><svg width="12" height="12"><use href="#ico-check"/></svg><span data-i18n="trust-4">KYC Verified</span></div>
@@ -749,11 +757,11 @@
     </div>
 
     <div class="hero-ctas">
-      <a href="https://wa.me/qr/K3GYC3HRQVYSI1" target="_blank" class="btn btn-whatsapp btn-lg">
+      <a href="https://wa.me/qr/K3GYC3HRQVYSI1" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-lg">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         <span data-i18n="hero-wa">WhatsApp Us</span>
       </a>
-      <a href="https://t.me/jin_bao0x" target="_blank" class="btn btn-telegram btn-lg">
+      <a href="https://t.me/jin_bao0x" target="_blank" rel="noopener noreferrer" class="btn btn-telegram btn-lg">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
         <span data-i18n="hero-tg">Telegram</span>
       </a>
@@ -882,13 +890,13 @@
       </div>
       <div class="feature-card">
         <div class="feature-icon"><svg width="24" height="24"><use href="#ico-lock"/></svg></div>
-        <div class="feature-title" data-i18n="feat-2-t">Bank-Grade Security</div>
+        <div class="feature-title" data-i18n="feat-2-t">Security-Focused Process</div>
         <div class="feature-desc" data-i18n="feat-2-d">2FA, KYC verification, and cold wallet storage. Your assets are protected at every step of the process.</div>
       </div>
       <div class="feature-card">
         <div class="feature-icon"><svg width="24" height="24"><use href="#ico-money"/></svg></div>
         <div class="feature-title" data-i18n="feat-3-t">Best Market Rates</div>
-        <div class="feature-desc" data-i18n="feat-3-d">We aggregate rates from 10+ exchanges to guarantee you the best USDT/HKD rate available in Hong Kong.</div>
+        <div class="feature-desc" data-i18n="feat-3-d">We reference major market venues and confirm the final USDT/HKD quote with you before settlement.</div>
       </div>
       <div class="feature-card">
         <div class="feature-icon"><svg width="24" height="24"><use href="#ico-users"/></svg></div>
@@ -902,8 +910,8 @@
       </div>
       <div class="feature-card">
         <div class="feature-icon"><svg width="24" height="24"><use href="#ico-shield"/></svg></div>
-        <div class="feature-title" data-i18n="feat-6-t">Full Compliance</div>
-        <div class="feature-desc" data-i18n="feat-6-d">Fully compliant with HKMA guidelines. Licensed operation with transparent audit trail for all trades.</div>
+        <div class="feature-title" data-i18n="feat-6-t">Clear Trade Records</div>
+        <div class="feature-desc" data-i18n="feat-6-d">We keep clear trade records, confirm counterparties, and provide receipts for completed transactions.</div>
       </div>
     </div>
   </div>
@@ -976,6 +984,21 @@
   </div>
 </section>
 
+
+<!-- ─── ANTI-SCAM WARNING ── -->
+<section id="security-warning">
+  <div class="container">
+    <div class="warning-card">
+      <div class="warning-title"><svg width="22" height="22"><use href="#ico-lock"/></svg><span data-i18n="scam-title">Anti-Scam Warning</span></div>
+      <ul class="warning-list">
+        <li data-i18n="scam-1">Only contact us through our official Telegram: @jin_bao0x.</li>
+        <li data-i18n="scam-2">We will never ask for your seed phrase, private key, exchange password, or remote access.</li>
+        <li data-i18n="scam-3">Always confirm the rate, payment method, and wallet address before sending funds.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <!-- ─── CONTACT ── -->
 <section id="contact" style="padding:80px 0">
   <div class="container">
@@ -998,7 +1021,7 @@
         <div class="contact-card-handle">
           <svg width="15" height="15"><use href="#ico-phone"/></svg> wa.me/qr/K3GYC3HRQVYSI1
         </div>
-        <a href="https://wa.me/qr/K3GYC3HRQVYSI1" target="_blank" class="btn btn-whatsapp btn-lg">
+        <a href="https://wa.me/qr/K3GYC3HRQVYSI1" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-lg">
           <span data-i18n="wa-btn">Open WhatsApp Chat →</span>
         </a>
       </div>
@@ -1009,7 +1032,7 @@
         <div class="contact-card-handle">
           <svg width="15" height="15"><use href="#ico-send"/></svg> @jin_bao0x
         </div>
-        <a href="https://t.me/jin_bao0x" target="_blank" class="btn btn-telegram btn-lg">
+        <a href="https://t.me/jin_bao0x" target="_blank" rel="noopener noreferrer" class="btn btn-telegram btn-lg">
           <span data-i18n="tg-btn">Open Telegram →</span>
         </a>
       </div>
@@ -1046,15 +1069,15 @@
         <ul>
           <li><a href="#features" data-i18n="footer-about">About Us</a></li>
           <li><a href="#reviews" data-i18n="footer-testimonials">Testimonials</a></li>
-          <li><a href="terms.html" data-i18n="footer-terms">Terms of Service</a></li>
-          <li><a href="privacy.html" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/privacy" data-i18n="footer-privacy">Privacy Policy</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4 data-i18n="footer-contact">Contact</h4>
         <ul>
-          <li><a href="https://wa.me/qr/K3GYC3HRQVYSI1" target="_blank">WhatsApp</a></li>
-          <li><a href="https://t.me/jin_bao0x" target="_blank">Telegram @jin_bao0x</a></li>
+          <li><a href="https://wa.me/qr/K3GYC3HRQVYSI1" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+          <li><a href="https://t.me/jin_bao0x" target="_blank" rel="noopener noreferrer">Telegram @jin_bao0x</a></li>
           <li><a href="mailto:support@hkotc.io" data-i18n="footer-email">Email Us</a></li>
         </ul>
       </div>
@@ -1062,12 +1085,12 @@
     <div class="footer-bottom">
       <div class="footer-copy" data-i18n="footer-copy">© 2025 HKOTC.io. All rights reserved.</div>
       <div class="footer-legal">
-        <a href="privacy.html" data-i18n="legal-privacy">Privacy</a>
-        <a href="terms.html" data-i18n="legal-terms">Terms</a>
-        <a href="blog.html" data-i18n="nav-blog">Blog</a>
+        <a href="/privacy" data-i18n="legal-privacy">Privacy</a>
+        <a href="/terms" data-i18n="legal-terms">Terms</a>
+        <a href="/blog" data-i18n="nav-blog">Blog</a>
       </div>
     </div>
-    <div class="footer-disclaimer" data-i18n="footer-disclaimer">Risk Disclaimer: Cryptocurrency trading involves significant risk of loss. The value of cryptocurrencies can go up or down and past performance is not indicative of future results. HKOTC.io is a licensed OTC exchange operating under Hong Kong regulations. Trading services are only available to verified clients who have completed KYC.</div>
+    <div class="footer-disclaimer" data-i18n="footer-disclaimer">Risk Disclaimer: Cryptocurrency trading involves significant risk of loss. The value of cryptocurrencies can go up or down and past performance is not indicative of future results. HKOTC.io provides OTC quote and settlement support only after manual confirmation. Trading services are available only to verified clients.</div>
   </div>
 </footer>
 
@@ -1085,7 +1108,7 @@
       <button class="rate-bot-chip" type="button" onclick="rateBotReply('cash')">Cash rate</button>
       <button class="rate-bot-chip" type="button" onclick="rateBotReply('transfer')">Bank rate</button>
     </div>
-    <a href="https://t.me/jin_bao0x" target="_blank" class="btn btn-telegram rate-bot-open">
+    <a href="https://t.me/jin_bao0x" target="_blank" rel="noopener noreferrer" class="btn btn-telegram rate-bot-open">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
       Open Telegram
     </a>
@@ -1096,7 +1119,7 @@
     <div class="float-tooltip">Rate Bot</div>
     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
   </button>
-  <a href="https://wa.me/qr/K3GYC3HRQVYSI1" target="_blank" class="float-btn float-wa">
+  <a href="https://wa.me/qr/K3GYC3HRQVYSI1" target="_blank" rel="noopener noreferrer" class="float-btn float-wa">
     <div class="float-tooltip">WhatsApp</div>
     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   </a>
@@ -1125,7 +1148,7 @@
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         Copy Message
       </button>
-      <a id="order-tg-link" href="https://t.me/jin_bao0x" target="_blank" class="btn btn-telegram btn-full" style="font-size:15px">
+      <a id="order-tg-link" href="https://t.me/jin_bao0x" target="_blank" rel="noopener noreferrer" class="btn btn-telegram btn-full" style="font-size:15px">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
         Open Telegram @jin_bao0x
       </a>
@@ -1143,7 +1166,7 @@
   const LANG = {
     en: {
       'nav-exchange':'Exchange','nav-features':'Features','nav-how':'How It Works','nav-contact':'Contact','nav-blog':'Blog',
-      'trust-1':'Bank-grade Security','trust-2':'Settlement in 15 min','trust-3':'Hong Kong Based','trust-4':'KYC Verified','trust-5':'24/7 Available',
+      'trust-1':'Security-focused','trust-2':'Settlement in 15 min','trust-3':'Hong Kong Based','trust-4':'KYC Verified','trust-5':'24/7 Available',
       'hero-badge':"Hong Kong's #1 OTC Crypto Desk",
       'hero-title':'Buy & Sell USDT<br>at <span class="gradient-text">Best Rates</span>',
       'hero-sub':'Fast, private, and secure crypto OTC trading. Convert USDT to HKD and HKD to USDT with zero slippage and same-day settlement.',
@@ -1164,11 +1187,11 @@
       'feat-title':'Built for <span class="gradient-text">Serious Traders</span>',
       'feat-sub':'Professional OTC service with the speed and reliability Hong Kong demands.',
       'feat-1-t':'Lightning Fast Settlement','feat-1-d':'Settlement in as little as 15 minutes. FPS bank transfer or USDT on-chain — your choice, your speed.',
-      'feat-2-t':'Bank-Grade Security','feat-2-d':'2FA, KYC verification, and cold wallet storage. Your assets are protected at every step of the process.',
-      'feat-3-t':'Best Market Rates','feat-3-d':'We aggregate rates from 10+ exchanges to guarantee you the best USDT/HKD rate available in Hong Kong.',
+      'feat-2-t':'Security-Focused Process','feat-2-d':'We use identity checks, manual confirmation, and careful settlement procedures to reduce operational risk.',
+      'feat-3-t':'Competitive Market Rates','feat-3-d':'We reference major market venues and confirm the final USDT/HKD quote with you before settlement.',
       'feat-4-t':'Personal OTC Desk','feat-4-d':'Dedicated account manager for trades over HK$100,000. Private consultation with zero market impact.',
       'feat-5-t':'24/7 Availability','feat-5-d':'Crypto never sleeps and neither do we. Reach our desk any time via WhatsApp or Telegram.',
-      'feat-6-t':'Full Compliance','feat-6-d':'Fully compliant with HKMA guidelines. Licensed operation with transparent audit trail for all trades.',
+      'feat-6-t':'Clear Trade Records','feat-6-d':'We keep clear trade records, confirm counterparties, and provide receipts for completed transactions.',
       'stat-1':'Total Volume Traded','stat-2':'Happy Clients','stat-3':'Customer Rating','stat-4':'Avg Settlement Time',
       'how-badge':'Process',
       'how-title':'Trade in <span class="gradient-text">3 Simple Steps</span>',
@@ -1179,6 +1202,7 @@
       'rev-badge':'Testimonials',
       'rev-title':'What Our Clients <span class="gradient-text">Say</span>','rev-sub':'Real customer feedback published by the HKOTC admin team.',
       'comment-empty':'No customer comments yet.',
+      'scam-title':'Anti-Scam Warning','scam-1':'Only contact us through our official Telegram: @jin_bao0x.','scam-2':'We will never ask for your seed phrase, private key, exchange password, or remote access.','scam-3':'Always confirm the rate, payment method, and wallet address before sending funds.',
       'contact-badge':'Contact',
       'contact-title':'Ready to <span class="gradient-text">Trade?</span>',
       'contact-sub':'Our desk is open 24/7. Get a live quote in under 60 seconds.',
@@ -1192,11 +1216,11 @@
       'footer-email':'Email Us',
       'legal-privacy':'Privacy','legal-terms':'Terms','nav-blog':'Blog',
       'footer-copy':'© 2025 HKOTC.io. All rights reserved.',
-      'footer-disclaimer':'Risk Disclaimer: Cryptocurrency trading involves significant risk of loss. The value of cryptocurrencies can go up or down and past performance is not indicative of future results. HKOTC.io is a licensed OTC exchange operating under Hong Kong regulations. Trading services are only available to verified clients who have completed KYC.',
+      'footer-disclaimer':'Risk Disclaimer: Cryptocurrency trading involves significant risk of loss. The value of cryptocurrencies can go up or down and past performance is not indicative of future results. HKOTC.io provides OTC quote and settlement support only after manual confirmation. Trading services are available only to verified clients.',
     },
     zh: {
       'nav-exchange':'兌換','nav-features':'特色','nav-how':'如何運作','nav-contact':'聯絡我們','nav-blog':'博客',
-      'trust-1':'銀行級安全','trust-2':'15分鐘結算','trust-3':'香港本地','trust-4':'KYC認證','trust-5':'全天候服務',
+      'trust-1':'重視安全','trust-2':'15分鐘結算','trust-3':'香港本地','trust-4':'KYC認證','trust-5':'全天候服務',
       'hero-badge':'香港第一OTC加密貨幣平台',
       'hero-title':'買賣 USDT<br>以<span class="gradient-text">最優惠匯率</span>',
       'hero-sub':'快速、私隱、安全的加密貨幣場外交易。以零滑點將USDT兌換成港幣，當日結算。',
@@ -1217,11 +1241,11 @@
       'feat-title':'為<span class="gradient-text">專業交易者</span>而設',
       'feat-sub':'專業場外交易服務，具備香港要求的速度和可靠性。',
       'feat-1-t':'閃電快速結算','feat-1-d':'最快15分鐘結算。FPS銀行轉帳或USDT鏈上轉帳，由您選擇。',
-      'feat-2-t':'銀行級安全','feat-2-d':'雙重驗證、KYC認證及冷錢包儲存，每個步驟保護您的資產。',
-      'feat-3-t':'最優市場匯率','feat-3-d':'整合10+交易所匯率，保證提供香港最優惠的USDT/港幣匯率。',
+      'feat-2-t':'重視安全流程','feat-2-d':'我們透過身份核對、人工確認及審慎結算流程，降低操作風險。',
+      'feat-3-t':'具競爭力市場匯率','feat-3-d':'我們參考主要市場報價，並在結算前與你確認最終 USDT/港幣報價。',
       'feat-4-t':'專屬場外交易台','feat-4-d':'港幣10萬以上大額交易設專屬客戶經理，零市場影響私密諮詢。',
       'feat-5-t':'全天候服務','feat-5-d':'加密貨幣不眠不休，我們亦如是。隨時透過WhatsApp或Telegram聯絡服務台。',
-      'feat-6-t':'全面合規','feat-6-d':'完全符合金管局指引，持牌運營，所有交易均有透明審計記錄。',
+      'feat-6-t':'清晰交易記錄','feat-6-d':'我們保留清晰交易記錄、核對交易對手，並為已完成交易提供收據。',
       'stat-1':'總交易量','stat-2':'滿意客戶','stat-3':'客戶評分','stat-4':'平均結算時間',
       'how-badge':'流程',
       'how-title':'<span class="gradient-text">三步</span>完成交易',
@@ -1232,6 +1256,7 @@
       'rev-badge':'客戶評價',
       'rev-title':'客戶<span class="gradient-text">怎麼說</span>','rev-sub':'由 HKOTC 管理員發佈的真實客戶回饋。',
       'comment-empty':'暫時未有客戶留言。',
+      'scam-title':'防詐騙提醒','scam-1':'只透過官方 Telegram 聯絡我們：@jin_bao0x。','scam-2':'我們絕不會要求你的助記詞、私鑰、交易所密碼或遠端控制權限。','scam-3':'轉帳前請務必確認匯率、付款方式及錢包地址。',
       'contact-badge':'聯絡',
       'contact-title':'準備好<span class="gradient-text">交易了嗎？</span>',
       'contact-sub':'服務台全天候開放，60秒內獲取即時報價。',
@@ -1245,7 +1270,7 @@
       'footer-email':'電郵聯絡',
       'legal-privacy':'私隱','legal-terms':'條款','nav-blog':'博客',
       'footer-copy':'© 2025 HKOTC.io. 版權所有。',
-      'footer-disclaimer':'風險聲明：加密貨幣交易存在重大虧損風險。加密貨幣價值可升可跌，過往表現不代表未來結果。HKOTC.io 是根據香港法規持牌運營的場外交易平台。交易服務僅向已完成KYC的認證客戶提供。',
+      'footer-disclaimer':'風險聲明：加密貨幣交易存在重大虧損風險。加密貨幣價值可升可跌，過往表現不代表未來結果。HKOTC.io 僅在人工確認後提供場外交易報價及結算支援。交易服務僅向已驗證客戶提供。',
     },
     km: {
       'nav-exchange': 'ប្តូរ USDT',
@@ -1253,7 +1278,7 @@
       'nav-how': 'របៀបប្រើ',
       'nav-contact': 'ទាក់ទងយើង',
       'nav-blog': 'ព័ត៌មាន',
-      'trust-1': 'សុវត្ថិភាពកម្រិតធនាគារ',
+      'trust-1': 'ផ្តោតលើសុវត្ថិភាព',
       'trust-2': 'ទូទាត់ក្នុង 15 នាទី',
       'trust-3': 'មានមូលដ្ឋាននៅហុងកុង',
       'trust-4': 'បានផ្ទៀងផ្ទាត់ KYC',
@@ -1290,16 +1315,16 @@
       'feat-sub': 'សេវា OTC វិជ្ជាជីវៈ ជាមួយល្បឿន និងភាពជឿទុកចិត្តដែលហុងកុងត្រូវការ។',
       'feat-1-t': 'ទូទាត់លឿនខ្លាំង',
       'feat-1-d': 'ទូទាត់បានលឿនបំផុតត្រឹម 15 នាទី។ ផ្ទេរធនាគារ FPS ឬ USDT លើបណ្តាញ blockchain ជម្រើស និងល្បឿនស្ថិតនៅលើអ្នក។',
-      'feat-2-t': 'សុវត្ថិភាពកម្រិតធនាគារ',
-      'feat-2-d': '2FA ការផ្ទៀងផ្ទាត់ KYC និង cold wallet storage។ ទ្រព្យសម្បត្តិរបស់អ្នកត្រូវបានការពារនៅគ្រប់ជំហាន។',
-      'feat-3-t': 'អត្រាទីផ្សារល្អបំផុត',
-      'feat-3-d': 'យើងប្រមូលអត្រាពីបណ្តាញប្តូរប្រាក់ 10+ ដើម្បីធានាអត្រា USDT/HKD ល្អបំផុតនៅហុងកុង។',
+      'feat-2-t': 'ដំណើរការផ្តោតលើសុវត្ថិភាព',
+      'feat-2-d': 'យើងប្រើការផ្ទៀងផ្ទាត់អត្តសញ្ញាណ ការបញ្ជាក់ដោយមនុស្ស និងនីតិវិធីទូទាត់ប្រុងប្រយ័ត្ន ដើម្បីកាត់បន្ថយហានិភ័យប្រតិបត្តិការ។',
+      'feat-3-t': 'អត្រាទីផ្សារប្រកួតប្រជែង',
+      'feat-3-d': 'យើងយោងតាមទីផ្សារសំខាន់ៗ ហើយបញ្ជាក់តម្លៃ USDT/HKD ចុងក្រោយជាមួយអ្នក មុនពេលទូទាត់។',
       'feat-4-t': 'តុ OTC ផ្ទាល់ខ្លួន',
       'feat-4-d': 'មានអ្នកគ្រប់គ្រងគណនីផ្ទាល់សម្រាប់ការជួញដូរលើស HK$100,000។ ពិគ្រោះឯកជនដោយគ្មានផលប៉ះពាល់លើទីផ្សារ។',
       'feat-5-t': 'បម្រើការ 24/7',
       'feat-5-d': 'គ្រីបតូមិនដែលដេក ហើយយើងក៏ដូចគ្នា។ ទាក់ទងតុជំនួយរបស់យើងគ្រប់ពេលតាម WhatsApp ឬ Telegram។',
-      'feat-6-t': 'អនុលោមតាមច្បាប់ពេញលេញ',
-      'feat-6-d': 'អនុលោមតាមគោលការណ៍ណែនាំ HKMA ជាមួយប្រតិបត្តិការមានអាជ្ញាប័ណ្ណ និងកំណត់ត្រាត្រួតពិនិត្យច្បាស់លាស់សម្រាប់រាល់ការជួញដូរ។',
+      'feat-6-t': 'កំណត់ត្រាជួញដូរច្បាស់លាស់',
+      'feat-6-d': 'យើងរក្សាកំណត់ត្រាជួញដូរច្បាស់លាស់ បញ្ជាក់ភាគីជួញដូរ និងផ្តល់បង្កាន់ដៃសម្រាប់ប្រតិបត្តិការដែលបានបញ្ចប់។',
       'stat-1': 'បរិមាណជួញដូរសរុប',
       'stat-2': 'អតិថិជនពេញចិត្ត',
       'stat-3': 'ការវាយតម្លៃអតិថិជន',
@@ -1316,6 +1341,7 @@
       'rev-badge': 'មតិយោបល់អតិថិជន',
       'rev-title': 'អតិថិជន<span class=\'gradient-text\'>និយាយអ្វីខ្លះ</span>','rev-sub': 'មតិអតិថិជនពិត ដែលបានបង្ហោះដោយក្រុមគ្រប់គ្រង HKOTC។',
       'comment-empty': 'មិនទាន់មានមតិអតិថិជនទេ។',
+      'scam-title': 'ការព្រមានប្រឆាំងការបោកប្រាស់','scam-1': 'សូមទាក់ទងយើងតាម Telegram ផ្លូវការតែប៉ុណ្ណោះ៖ @jin_bao0x។','scam-2': 'យើងមិនដែលស្នើសុំ seed phrase, private key, ពាក្យសម្ងាត់ exchange ឬការចូលប្រើពីចម្ងាយឡើយ។','scam-3': 'មុនផ្ញើប្រាក់ សូមបញ្ជាក់អត្រា វិធីទូទាត់ និងអាសយដ្ឋាន wallet ជានិច្ច។',
       'contact-badge': 'ទំនាក់ទំនង',
       'contact-title': 'ត្រៀម<span class=\'gradient-text\'>ជួញដូរហើយឬនៅ?</span>',
       'contact-sub': 'តុជំនួយរបស់យើងបើក 24/7។ ទទួលបានតម្លៃបន្តផ្ទាល់ក្នុងក្រោម 60 វិនាទី។',
@@ -1342,7 +1368,7 @@
       'legal-privacy': 'ឯកជនភាព',
       'legal-terms': 'លក្ខខណ្ឌ',
       'footer-copy': '© 2025 HKOTC.io. រក្សាសិទ្ធិគ្រប់យ៉ាង។',
-      'footer-disclaimer': 'ការបញ្ជាក់ហានិភ័យ៖ ការជួញដូរគ្រីបតូមានហានិភ័យខាតបង់ខ្ពស់។ តម្លៃគ្រីបតូអាចឡើង ឬចុះ ហើយលទ្ធផលកន្លងមកមិនធានាលទ្ធផលអនាគតទេ។ HKOTC.io ជា OTC exchange ដែលមានអាជ្ញាប័ណ្ណ និងប្រតិបត្តិការតាមបទប្បញ្ញត្តិហុងកុង។ សេវាជួញដូរមានសម្រាប់តែអតិថិជនដែលបានបញ្ចប់ KYC ប៉ុណ្ណោះ។'
+      'footer-disclaimer': 'ការបញ្ជាក់ហានិភ័យ៖ ការជួញដូរគ្រីបតូមានហានិភ័យខាតបង់ខ្ពស់។ តម្លៃគ្រីបតូអាចឡើង ឬចុះ ហើយលទ្ធផលកន្លងមកមិនធានាលទ្ធផលអនាគតទេ។ HKOTC.io ផ្តល់ជំនួយតម្លៃ និងទូទាត់ OTC បន្ទាប់ពីការបញ្ជាក់ដោយមនុស្សប៉ុណ្ណោះ។ សេវាជួញដូរមានសម្រាប់តែអតិថិជនដែលបានផ្ទៀងផ្ទាត់។'
     }
   };
 
@@ -1583,16 +1609,24 @@
   function calcFrom() { calcDirection = 'from'; updateCalc(); }
   function calcTo()   { calcDirection = 'to';   updateCalc(); }
 
+  function sanitizeAmountInput(input) {
+    const cleaned = String(input.value || '').replace(/,/g, '').replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 18);
+    if (input.value !== cleaned) input.value = cleaned;
+    const value = Number.parseFloat(cleaned);
+    if (!Number.isFinite(value) || value <= 0 || value > 1000000000000) return 0;
+    return value;
+  }
+
   function updateCalc() {
     const rate = getRate();
     const fi = document.getElementById('from-input');
     const ti = document.getElementById('to-input');
     if (calcDirection === 'from') {
-      const v = parseFloat(fi.value);
-      ti.value = (!isNaN(v) && v > 0) ? (calcMode === 'buy' ? (v / rate).toFixed(2) : (v * rate).toFixed(2)) : '';
+      const v = sanitizeAmountInput(fi);
+      ti.value = v ? (calcMode === 'buy' ? (v / rate).toFixed(2) : (v * rate).toFixed(2)) : '';
     } else {
-      const v = parseFloat(ti.value);
-      fi.value = (!isNaN(v) && v > 0) ? (calcMode === 'buy' ? (v * rate).toFixed(2) : (v / rate).toFixed(2)) : '';
+      const v = sanitizeAmountInput(ti);
+      fi.value = v ? (calcMode === 'buy' ? (v * rate).toFixed(2) : (v / rate).toFixed(2)) : '';
     }
   }
 
@@ -1603,8 +1637,8 @@
 
   // ── ORDER ON TELEGRAM ────────────────────────────────────────────────
   function orderOnTelegram() {
-    const fromVal = parseFloat(document.getElementById('from-input').value);
-    const toVal   = parseFloat(document.getElementById('to-input').value);
+    const fromVal = sanitizeAmountInput(document.getElementById('from-input'));
+    const toVal   = sanitizeAmountInput(document.getElementById('to-input'));
     const rate    = getRate();
 
     if (!fromVal && !toVal) {
@@ -1671,7 +1705,8 @@ ${divider}
 Hello! I would like to place this order. Please confirm availability and rate.`;
 
     const encoded = encodeURIComponent(msg);
-    window.open(`https://t.me/jin_bao0x?text=${encoded}`, '_blank');
+    const orderWindow = window.open(`https://t.me/jin_bao0x?text=${encoded}`, '_blank', 'noopener,noreferrer');
+    if (orderWindow) orderWindow.opener = null;
   }
 
   function closeOrderModal() {
