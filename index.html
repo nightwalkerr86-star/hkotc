@@ -278,25 +278,14 @@
     .nav-actions .btn { padding: 9px 18px; font-size: 14px; }
     .hamburger { width:40px; height:40px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; background:var(--surface); border:1px solid var(--border); padding:0; border-radius:12px; transition:var(--transition); }
     .hamburger:hover { background: var(--bg3); }
-    .hamburger span { display: block; width:18px; height:2px; background: var(--text); border-radius:2px; transition: var(--transition); }
+    .hamburger span { display: block; width:22px; height:2px; background: var(--text); border-radius:2px; transition: var(--transition); }
     .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
     .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
     .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-    .mobile-menu { display:flex; flex-direction:column; gap:4px; background:rgba(7,9,15,0.96); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border:1px solid var(--border); border-radius:18px; padding:8px; position:fixed; top:76px; right:20px; left:auto; width:min(280px, calc(100vw - 40px)); z-index:998; box-shadow:0 18px 50px rgba(0,0,0,.34); opacity:0; pointer-events:none; transform:translateY(-8px) scale(.96); transform-origin:top right; transition:opacity .18s, transform .18s; }
-    .mobile-menu.open { opacity:1; pointer-events:auto; transform:translateY(0) scale(1); }
-    .mobile-menu a { min-height:46px; padding:0 12px; font-size:14px; font-weight:750; color:var(--text); border-bottom:0; border-radius:12px; display:flex; align-items:center; gap:11px; }
-    .mobile-menu a:hover { background:var(--surface); }
-    .mobile-menu a svg { width:17px; height:17px; opacity:.72; flex-shrink:0; }
-    .mobile-bottom-nav { display:none; }
-    @media (max-width: 767px) {
-      .hamburger { display:none; }
-      .mobile-menu { top:auto; right:12px; left:12px; bottom:82px; width:auto; transform:translateY(10px) scale(.98); transform-origin:bottom center; }
-      .mobile-menu.open { transform:translateY(0) scale(1); }
-      .mobile-bottom-nav { position:fixed; left:0; right:0; bottom:0; z-index:999; display:grid; grid-template-columns:repeat(3,1fr); height:72px; padding:8px max(12px, env(safe-area-inset-left)) calc(8px + env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-right)); background:rgba(7,9,15,.96); backdrop-filter:blur(22px); -webkit-backdrop-filter:blur(22px); border-top:1px solid var(--border); box-shadow:0 -12px 34px rgba(0,0,0,.24); }
-      .mobile-bottom-item { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; min-width:0; border:0; border-radius:14px; background:transparent; color:var(--muted); font-family:inherit; font-size:11px; font-weight:750; line-height:1.1; }
-      .mobile-bottom-item svg { width:21px; height:21px; display:block; }
-      .mobile-bottom-item.active, .mobile-bottom-item:hover { color:var(--gold); background:rgba(245,166,35,.09); }
-    }
+    .mobile-menu { display:none; flex-direction:column; background:rgba(7,9,15,0.98); backdrop-filter:blur(30px); -webkit-backdrop-filter:blur(30px); border-bottom:1px solid var(--border); padding:20px; position:fixed; top:70px; left:0; right:0; z-index:998; }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a { padding:14px 0; font-size:16px; font-weight:500; color:var(--text); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; }
+    .mobile-menu a svg { opacity:.7; flex-shrink:0; }
     @media (min-width: 768px) { .nav-links { display: flex; } .hamburger { display: none; } }
 
     /* ─── LIGHT MODE ── */
@@ -313,8 +302,7 @@
         radial-gradient(ellipse 80% 40% at 10% 90%, rgba(245,166,35,0.08) 0%, transparent 50%);
     }
     html.light #navbar.scrolled { background: rgba(240,244,255,0.95); }
-    html.light .mobile-menu { background: rgba(240,244,255,0.96); box-shadow:0 18px 44px rgba(15,23,42,.16); }
-    html.light .mobile-bottom-nav { background:rgba(255,255,255,.96); box-shadow:0 -10px 28px rgba(15,23,42,.10); }
+    html.light .mobile-menu { background: rgba(240,244,255,0.98); }
     html.light .hero-grid { background-image: linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px); }
     html.light .review-card, html.light .feature-card, html.light .calc-wrapper, html.light .contact-card { box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
 
@@ -563,9 +551,9 @@
       .footer-legal { flex-wrap: wrap; gap: 10px 16px; }
 
       /* Float buttons — smaller on mobile */
-      .float-btns { bottom: 88px; right: 12px; gap: 8px; }
+      .float-btns { bottom: 16px; right: 12px; gap: 8px; }
       .float-btn { width: 46px; height: 46px; }
-      .rate-bot { right:12px; bottom:196px; width:calc(100vw - 24px); }
+      .rate-bot { right:12px; bottom:124px; width:calc(100vw - 24px); }
 
       /* Trust bar — tighter */
       .trust-bar { gap: 6px 12px; padding: 12px 16px; }
@@ -717,20 +705,6 @@
 
 </div>
 
-<nav class="mobile-bottom-nav" aria-label="Mobile navigation">
-  <a href="blog.html" class="mobile-bottom-item">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-    <span data-i18n="nav-blog">Blog</span>
-  </a>
-  <a href="#calculator" class="mobile-bottom-item active" onclick="closeMenu()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-    <span data-i18n="nav-exchange">Exchange</span>
-  </a>
-  <button type="button" class="mobile-bottom-item" id="mobile-menu-toggle" onclick="toggleMenu()" aria-label="Menu">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-    <span data-i18n="nav-menu">Menu</span>
-  </button>
-</nav>
 
 <!-- ─── TRUST BAR ── -->
 <div class="trust-bar" style="padding-top:80px">
@@ -1177,7 +1151,7 @@
 
   const LANG = {
     en: {
-      'nav-exchange':'Exchange','nav-features':'Features','nav-how':'How It Works','nav-contact':'Contact','nav-blog':'Blog','nav-menu':'Menu',
+      'nav-exchange':'Exchange','nav-features':'Features','nav-how':'How It Works','nav-contact':'Contact','nav-blog':'Blog',
       'trust-1':'Bank-grade Security','trust-2':'Settlement in 15 min','trust-3':'Hong Kong Based','trust-4':'KYC Verified','trust-5':'24/7 Available',
       'hero-badge':"Hong Kong's #1 OTC Crypto Desk",
       'hero-title':'Buy & Sell USDT<br>at <span class="gradient-text">Best Rates</span>',
@@ -1229,7 +1203,7 @@
       'footer-disclaimer':'Risk Disclaimer: Cryptocurrency trading involves significant risk of loss. The value of cryptocurrencies can go up or down and past performance is not indicative of future results. HKOTC.io is a licensed OTC exchange operating under Hong Kong regulations. Trading services are only available to verified clients who have completed KYC.',
     },
     zh: {
-      'nav-exchange':'兌換','nav-features':'特色','nav-how':'如何運作','nav-contact':'聯絡我們','nav-blog':'博客','nav-menu':'選單',
+      'nav-exchange':'兌換','nav-features':'特色','nav-how':'如何運作','nav-contact':'聯絡我們','nav-blog':'博客',
       'trust-1':'銀行級安全','trust-2':'15分鐘結算','trust-3':'香港本地','trust-4':'KYC認證','trust-5':'全天候服務',
       'hero-badge':'香港第一OTC加密貨幣平台',
       'hero-title':'買賣 USDT<br>以<span class="gradient-text">最優惠匯率</span>',
@@ -1286,7 +1260,6 @@
       'nav-how': 'របៀបប្រើ',
       'nav-contact': 'ទាក់ទងយើង',
       'nav-blog': 'ព័ត៌មាន',
-      'nav-menu': 'ម៉ឺនុយ',
       'trust-1': 'សុវត្ថិភាពកម្រិតធនាគារ',
       'trust-2': 'ទូទាត់ក្នុង 15 នាទី',
       'trust-3': 'មានមូលដ្ឋាននៅហុងកុង',
@@ -1474,17 +1447,12 @@
 
   // Mobile menu
   function toggleMenu() {
-    const menu = document.getElementById('mobile-menu');
-    const open = menu.classList.toggle('open');
-    document.getElementById('hamburger').classList.toggle('open', open);
-    const bottomToggle = document.getElementById('mobile-menu-toggle');
-    if (bottomToggle) bottomToggle.classList.toggle('active', open);
+    document.getElementById('mobile-menu').classList.toggle('open');
+    document.getElementById('hamburger').classList.toggle('open');
   }
   function closeMenu() {
     document.getElementById('mobile-menu').classList.remove('open');
     document.getElementById('hamburger').classList.remove('open');
-    const bottomToggle = document.getElementById('mobile-menu-toggle');
-    if (bottomToggle) bottomToggle.classList.remove('active');
   }
 
   function showToast(msg, duration = 3500) {
