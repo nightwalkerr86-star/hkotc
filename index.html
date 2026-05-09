@@ -276,17 +276,17 @@
     .nav-links a.active::after { transform: scaleX(1); }
     .nav-actions { display: flex; align-items: center; gap: 10px; }
     .nav-actions .btn { padding: 9px 18px; font-size: 14px; }
-    .hamburger { width:40px; height:40px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; background:var(--surface); border:1px solid var(--border); padding:0; border-radius:12px; transition:var(--transition); }
-    .hamburger:hover { background: var(--bg3); }
-    .hamburger span { display: block; width:22px; height:2px; background: var(--text); border-radius:2px; transition: var(--transition); }
-    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-    .mobile-menu { display:none; flex-direction:column; background:rgba(7,9,15,0.98); backdrop-filter:blur(30px); -webkit-backdrop-filter:blur(30px); border-bottom:1px solid var(--border); padding:20px; position:fixed; top:70px; left:0; right:0; z-index:998; }
-    .mobile-menu.open { display:flex; }
-    .mobile-menu a { padding:14px 0; font-size:16px; font-weight:500; color:var(--text); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; }
-    .mobile-menu a svg { opacity:.7; flex-shrink:0; }
-    @media (min-width: 768px) { .nav-links { display: flex; } .hamburger { display: none; } }
+    .hamburger { display:none; }
+    .mobile-menu { display:none; }
+    .mobile-bottom-nav { display:none; }
+    @media (max-width: 767px) {
+      body { padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
+      .mobile-bottom-nav { position:fixed; left:0; right:0; bottom:0; z-index:1000; height:78px; padding:7px max(8px, env(safe-area-inset-left)) calc(7px + env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-right)); display:grid; grid-template-columns:repeat(5, minmax(0, 1fr)); background:rgba(7,9,15,.96); border-top:1px solid var(--border); box-shadow:0 -12px 34px rgba(0,0,0,.24); backdrop-filter:blur(22px); -webkit-backdrop-filter:blur(22px); }
+      .mobile-bottom-item { min-width:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; border:0; border-radius:12px; background:transparent; color:var(--muted); font-family:inherit; font-size:11px; font-weight:750; line-height:1.1; text-align:center; white-space:nowrap; transition:color .18s, background .18s; }
+      .mobile-bottom-item svg { width:22px; height:22px; display:block; flex-shrink:0; }
+      .mobile-bottom-item.active, .mobile-bottom-item:hover { color:var(--gold); background:rgba(245,166,35,.09); }
+    }
+    @media (min-width: 768px) { .nav-links { display: flex; } }
 
     /* ─── LIGHT MODE ── */
     html.light {
@@ -302,7 +302,7 @@
         radial-gradient(ellipse 80% 40% at 10% 90%, rgba(245,166,35,0.08) 0%, transparent 50%);
     }
     html.light #navbar.scrolled { background: rgba(240,244,255,0.95); }
-    html.light .mobile-menu { background: rgba(240,244,255,0.98); }
+    html.light .mobile-bottom-nav { background: rgba(255,255,255,0.96); box-shadow:0 -10px 28px rgba(15,23,42,.10); }
     html.light .hero-grid { background-image: linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px); }
     html.light .review-card, html.light .feature-card, html.light .calc-wrapper, html.light .contact-card { box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
 
@@ -551,9 +551,9 @@
       .footer-legal { flex-wrap: wrap; gap: 10px 16px; }
 
       /* Float buttons — smaller on mobile */
-      .float-btns { bottom: 16px; right: 12px; gap: 8px; }
+      .float-btns { bottom: 94px; right: 12px; gap: 8px; }
       .float-btn { width: 46px; height: 46px; }
-      .rate-bot { right:12px; bottom:124px; width:calc(100vw - 24px); }
+      .rate-bot { right:12px; bottom:202px; width:calc(100vw - 24px); }
 
       /* Trust bar — tighter */
       .trust-bar { gap: 6px 12px; padding: 12px 16px; }
@@ -680,31 +680,29 @@
   </div>
 </nav>
 
-<!-- Mobile Menu -->
-<div class="mobile-menu" id="mobile-menu">
-  <a href="#calculator" onclick="closeMenu()">
-    <svg width="18" height="18"><use href="#ico-chart"/></svg>
+<!-- Mobile Bottom Navigation -->
+<nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+  <a href="#calculator" class="mobile-bottom-item active" data-mobile-tab="calculator">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
     <span data-i18n="nav-exchange">Exchange</span>
   </a>
-  <a href="#features" onclick="closeMenu()">
-    <svg width="18" height="18"><use href="#ico-sparkle"/></svg>
+  <a href="#features" class="mobile-bottom-item" data-mobile-tab="features">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v1M12 20v1M3 12h1M20 12h1M5.6 5.6l.7.7M17.7 17.7l.7.7M5.6 18.4l.7-.7M17.7 6.3l.7-.7"/><circle cx="12" cy="12" r="4"/></svg>
     <span data-i18n="nav-features">Features</span>
   </a>
-  <a href="#how" onclick="closeMenu()">
-    <svg width="18" height="18"><use href="#ico-list"/></svg>
+  <a href="#how" class="mobile-bottom-item" data-mobile-tab="how">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
     <span data-i18n="nav-how">How It Works</span>
   </a>
-  <a href="#contact" onclick="closeMenu()">
-    <svg width="18" height="18"><use href="#ico-chat"/></svg>
-    <span data-i18n="nav-contact">Contact Us</span>
+  <a href="#contact" class="mobile-bottom-item" data-mobile-tab="contact">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <span data-i18n="nav-contact">Contact</span>
   </a>
-  <a href="blog.html" onclick="closeMenu()">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+  <a href="blog.html" class="mobile-bottom-item" data-mobile-tab="blog">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
     <span data-i18n="nav-blog">Blog</span>
   </a>
-
-</div>
-
+</nav>
 
 <!-- ─── TRUST BAR ── -->
 <div class="trust-bar" style="padding-top:80px">
@@ -1446,14 +1444,8 @@
   window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20));
 
   // Mobile menu
-  function toggleMenu() {
-    document.getElementById('mobile-menu').classList.toggle('open');
-    document.getElementById('hamburger').classList.toggle('open');
-  }
-  function closeMenu() {
-    document.getElementById('mobile-menu').classList.remove('open');
-    document.getElementById('hamburger').classList.remove('open');
-  }
+  function toggleMenu() {}
+  function closeMenu() {}
 
   function showToast(msg, duration = 3500) {
     const t = document.getElementById('toast');
@@ -1746,7 +1738,7 @@ Hello! I would like to place this order. Please confirm availability and rate.`;
 
   // Scrollspy — highlight active nav link based on visible section
   const spySections = ['calculator','features','how','contact'].map(id => document.getElementById(id)).filter(Boolean);
-  const spyLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+  const spyLinks = document.querySelectorAll('.nav-links a[href^="#"], .mobile-bottom-item[href^="#"]');
   function setActiveLink(id) {
     spyLinks.forEach(a => {
       a.classList.toggle('active', a.getAttribute('href') === '#' + id);
