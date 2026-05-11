@@ -500,40 +500,70 @@
     return new TextDecoder().decode(bytes);
   }
 
-  async function fetchFirstJson(urls) {
-    let lastError;
-    for (const source of urls) {
-      const isObjectSource = typeof source === 'object';
-      const url = isObjectSource ? source.url : source;
-      try {
-        const res = await fetch(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now(), {
-          headers: isObjectSource && source.token ? { Authorization: `Bearer ${source.token}`, Accept: 'application/vnd.github+json' } : {}
-        });
-        if (!res.ok) throw new Error(res.status);
-        const data = await res.json();
-        const payload = isObjectSource && source.kind === 'github-content'
-          ? JSON.parse(decodeBase64Utf8(data.content))
-          : data;
-        const posts = Array.isArray(payload) ? payload : (payload.record || payload.posts || []);
-        if (Array.isArray(posts)) return posts;
-      } catch (error) {
-        lastError = error;
-      }
+  const BLOG_CACHE_KEY = 'hkotc_blog_posts_cache_v1';
+
+  function normalizePosts(payload) {
+    const posts = Array.isArray(payload) ? payload : (payload && (payload.record || payload.posts)) || [];
+    return Array.isArray(posts) ? posts.filter(Boolean) : [];
+  }
+
+  function readCachedBlogPosts() {
+    try {
+      const cached = JSON.parse(localStorage.getItem(BLOG_CACHE_KEY) || '[]');
+      return normalizePosts(cached);
+    } catch {
+      return [];
     }
-    throw lastError || new Error('No blog posts found');
+  }
+
+  function cacheBlogPosts(posts) {
+    try { localStorage.setItem(BLOG_CACHE_KEY, JSON.stringify(posts.slice(0, 40))); } catch {}
+  }
+
+  async function fetchBlogSource(source) {
+    const isObjectSource = typeof source === 'object';
+    const url = isObjectSource ? source.url : source;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 6500);
+    try {
+      const res = await fetch(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now(), {
+        signal: controller.signal,
+        headers: isObjectSource && source.token ? { Authorization: `Bearer ${source.token}`, Accept: 'application/vnd.github+json' } : {}
+      });
+      if (!res.ok) throw new Error(res.status);
+      const data = await res.json();
+      const payload = isObjectSource && source.kind === 'github-content'
+        ? JSON.parse(decodeBase64Utf8(data.content))
+        : data;
+      const posts = normalizePosts(payload);
+      if (!posts.length) throw new Error('empty');
+      return posts;
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  function fetchFirstJson(urls) {
+    return Promise.any(urls.map(fetchBlogSource));
   }
 
   async function initBlogPosts() {
     const grid = document.getElementById('blog-grid');
     if (!grid) return;
-    grid.innerHTML = '<p class="blog-empty">Loading blog posts...</p>';
+    const cachedPosts = readCachedBlogPosts();
+    if (cachedPosts.length) {
+      grid.innerHTML = cachedPosts.map(blogCardHTML).join('');
+    } else {
+      grid.innerHTML = '<p class="blog-empty">Loading blog posts...</p>';
+    }
     try {
       const posts = await fetchFirstJson(blogPostUrls());
       const visiblePosts = posts.filter(Boolean);
       if (!visiblePosts.length) throw new Error('empty');
+      cacheBlogPosts(visiblePosts);
       grid.innerHTML = visiblePosts.map(blogCardHTML).join('');
     } catch {
-      grid.innerHTML = '<p class="blog-empty">No blog posts yet.</p>';
+      if (!cachedPosts.length) grid.innerHTML = '<p class="blog-empty">No blog posts yet.</p>';
     }
   }
 
