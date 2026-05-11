@@ -360,5 +360,48 @@
 
   loadPost();
 </script>
+<script>
+(function(){
+  if (sessionStorage.getItem('hkotc_scam_warning_seen') === '1') return;
+  const lang = localStorage.getItem('lang') || 'en';
+  const copy = {
+    en: {
+      title: 'Scam Warning',
+      body: 'Only contact HKOTC through our official Telegram @jin_bao0x. We never ask for your seed phrase, private key, exchange password, or remote access. Always confirm the rate and wallet address before sending funds.',
+      button: 'I Understand',
+      telegram: 'Official Telegram'
+    },
+    zh: {
+      title: '防詐騙提醒',
+      body: '只透過官方 Telegram @jin_bao0x 聯絡 HKOTC。我們絕不會要求你的助記詞、私鑰、交易所密碼或遠端控制權限。轉帳前請務必確認匯率及錢包地址。',
+      button: '我明白',
+      telegram: '官方 Telegram'
+    },
+    km: {
+      title: 'ការព្រមានប្រឆាំងការបោកប្រាស់',
+      body: 'សូមទាក់ទង HKOTC តាម Telegram ផ្លូវការ @jin_bao0x តែប៉ុណ្ណោះ។ យើងមិនដែលស្នើសុំ seed phrase, private key, ពាក្យសម្ងាត់ exchange ឬការចូលប្រើពីចម្ងាយឡើយ។ មុនផ្ញើប្រាក់ សូមបញ្ជាក់អត្រា និងអាសយដ្ឋាន wallet ជានិច្ច។',
+      button: 'ខ្ញុំយល់ហើយ',
+      telegram: 'Telegram ផ្លូវការ'
+    }
+  };
+  const t = copy[lang] || copy.en;
+  const style = document.createElement('style');
+  style.textContent = '.scam-pop-backdrop{position:fixed;inset:0;z-index:4000;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(0,0,0,.68);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .22s}.scam-pop-backdrop.open{opacity:1;pointer-events:auto}.scam-pop{width:min(100%,460px);border-radius:22px;border:1px solid rgba(245,166,35,.32);background:#0d1120;color:#f0f2ff;box-shadow:0 28px 90px rgba(0,0,0,.48);overflow:hidden;transform:translateY(10px) scale(.98);transition:transform .22s}.scam-pop-backdrop.open .scam-pop{transform:translateY(0) scale(1)}html.light .scam-pop{background:#fff;color:#111827}.scam-pop-head{padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:11px}.scam-pop-icon{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(245,166,35,.14);color:#f5a623;flex:0 0 auto}.scam-pop-title{font-size:19px;font-weight:900}.scam-pop-body{padding:18px 20px 20px;color:#a5aec4;font-size:14px;line-height:1.75}html.light .scam-pop-body{color:#526078}.scam-pop-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.scam-pop-btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.10);font:inherit;font-weight:800;text-decoration:none;cursor:pointer}.scam-pop-primary{background:linear-gradient(135deg,#f5a623,#ffcc66);color:#07090f}.scam-pop-secondary{background:rgba(44,165,224,.14);color:#60c5ff}@media(max-width:420px){.scam-pop-actions{grid-template-columns:1fr}.scam-pop{border-radius:18px}}';
+  document.head.appendChild(style);
+  const backdrop = document.createElement('div');
+  backdrop.className = 'scam-pop-backdrop';
+  backdrop.innerHTML = '<div class="scam-pop" role="dialog" aria-modal="true" aria-labelledby="scam-pop-title"><div class="scam-pop-head"><div class="scam-pop-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg></div><div class="scam-pop-title" id="scam-pop-title"></div></div><div class="scam-pop-body"><p class="scam-pop-text"></p><div class="scam-pop-actions"><a class="scam-pop-btn scam-pop-secondary" href="https://t.me/jin_bao0x" target="_blank" rel="noopener noreferrer"></a><button class="scam-pop-btn scam-pop-primary" type="button"></button></div></div></div>';
+  backdrop.querySelector('#scam-pop-title').textContent = t.title;
+  backdrop.querySelector('.scam-pop-text').textContent = t.body;
+  backdrop.querySelector('.scam-pop-secondary').textContent = t.telegram;
+  backdrop.querySelector('.scam-pop-primary').textContent = t.button;
+  function closePopup(){ sessionStorage.setItem('hkotc_scam_warning_seen','1'); backdrop.classList.remove('open'); setTimeout(() => backdrop.remove(), 240); }
+  backdrop.querySelector('.scam-pop-primary').addEventListener('click', closePopup);
+  backdrop.addEventListener('click', event => { if (event.target === backdrop) closePopup(); });
+  document.addEventListener('keydown', event => { if (event.key === 'Escape' && backdrop.classList.contains('open')) closePopup(); });
+  document.body.appendChild(backdrop);
+  setTimeout(() => backdrop.classList.add('open'), 5000);
+})();
+</script>
 </body>
 </html>
