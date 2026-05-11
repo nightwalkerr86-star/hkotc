@@ -18,31 +18,27 @@
     a { color: var(--gold); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
-    nav {
-      position: sticky; top: 0; z-index: 99;
-      background: rgba(7,9,15,0.95); backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-      padding: 16px 20px;
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    }
-    .nav-logo { font-size: 18px; font-weight: 800; }
-    .nav-logo span { background: linear-gradient(135deg,var(--gold),var(--gold2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-    .nav-right { display: flex; align-items: center; gap: 12px; }
-    .nav-back { font-size: 14px; font-weight: 600; color: var(--muted); display:flex; align-items:center; gap:6px; transition: color 0.2s; }
-    .nav-back:hover { color: var(--text); text-decoration: none; }
-    .lang-btn {
-      display:inline-flex; align-items:center; gap:5px;
-      padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 700;
-      background: rgba(245,166,35,0.1); border: 1px solid rgba(245,166,35,0.25);
-      color: var(--gold); cursor: pointer; transition: all 0.2s;
-    }
-    .lang-btn:hover { background: rgba(245,166,35,0.18); }
+    nav { position: sticky; top: 0; z-index: 99; background: rgba(7,9,15,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 18px; max-width: 1200px; margin: 0 auto; padding: 16px 20px; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 800; letter-spacing: -0.5px; color: var(--text); }
+    .nav-logo:hover { text-decoration: none; }
+    .nav-logo .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--gold), #e8921b); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #07090f; flex-shrink: 0; }
+    .nav-logo .gradient-text { background: linear-gradient(135deg,var(--gold),var(--gold2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .nav-links { display: none; list-style: none; gap: 32px; align-items: center; }
+    .nav-links a { font-size: 14px; font-weight: 500; color: var(--muted); transition: color 0.2s; position: relative; padding-bottom: 3px; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .nav-links a::after { content: ''; position: absolute; left: 0; bottom: -2px; width: 100%; height: 2px; background: var(--gold); border-radius: 2px; transform: scaleX(0); transition: transform 0.2s ease; }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .nav-btn { display:inline-flex; align-items:center; justify-content:center; gap:5px; padding:7px 11px; border-radius:8px; background:rgba(255,255,255,0.04); border:1px solid var(--border); color:var(--text); font-size:12px; font-weight:700; transition:all 0.2s; cursor:pointer; line-height:1; font-family:inherit; }
+    .nav-btn:hover { border-color:var(--gold); color:var(--gold); text-decoration:none; }
     .lang-dropdown { position:relative; display:inline-flex; }
-    .lang-menu { display:none; position:absolute; top:calc(100% + 6px); right:0; background:var(--bg2); border:1px solid rgba(245,166,35,0.2); border-radius:10px; padding:5px; min-width:130px; z-index:300; box-shadow:0 8px 28px rgba(0,0,0,0.35); }
+    .lang-menu { display:none; position:absolute; top:calc(100% + 6px); right:0; background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:5px; min-width:130px; z-index:300; box-shadow:0 8px 28px rgba(0,0,0,0.35); }
     .lang-menu.open { display:flex; flex-direction:column; gap:2px; }
     .lang-option { display:flex; align-items:center; gap:8px; width:100%; padding:8px 10px; border-radius:7px; border:none; background:transparent; color:var(--text); cursor:pointer; font-size:13px; font-weight:600; font-family:inherit; transition:background 0.15s; text-align:left; }
     .lang-option:hover { background:rgba(255,255,255,0.06); }
     .lang-option.active { background:rgba(245,166,35,0.15); color:var(--gold); }
+    @media (min-width: 768px) { .nav-links { display: flex; } }
 
     .page-hero {
       padding: 60px 20px 48px;
@@ -115,26 +111,39 @@
 <body>
 
 <nav>
-  <a href="/" class="nav-logo">HKOTC<span>.io</span></a>
-  <div class="nav-right">
-    <div class="lang-dropdown" id="lang-dropdown">
-      <button class="lang-btn" id="lang-btn" onclick="toggleLangMenu()">
-        <span id="lang-current">EN</span>
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="flex-shrink:0"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <div class="lang-menu" id="lang-menu">
-        <button class="lang-option" data-lang="en" onclick="setLang('en')">
-          <img src="https://flagcdn.com/w20/gb.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> English
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <div class="logo-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+      </div>
+      <span>HKOTC<span class="gradient-text">.io</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#calculator" data-i18n="nav-exchange">Exchange</a></li>
+      <li><a href="/#features" data-i18n="nav-features">Features</a></li>
+      <li><a href="/#how" data-i18n="nav-how">How It Works</a></li>
+      <li><a href="/#contact" data-i18n="nav-contact">Contact</a></li>
+      <li><a href="/blog" data-i18n="nav-blog">Blog</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="lang-dropdown" id="lang-dropdown">
+        <button class="nav-btn" id="lang-btn" onclick="toggleLangMenu()">
+          <span id="lang-current">EN</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="flex-shrink:0"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <button class="lang-option" data-lang="zh" onclick="setLang('zh')">
-          <img src="https://flagcdn.com/w20/hk.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> 中文
-        </button>
-        <button class="lang-option" data-lang="km" onclick="setLang('km')">
-          <img src="https://flagcdn.com/w20/kh.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> ខ្មែរ
-        </button>
+        <div class="lang-menu" id="lang-menu">
+          <button class="lang-option" data-lang="en" onclick="setLang('en')">
+            <img src="https://flagcdn.com/w20/gb.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> English
+          </button>
+          <button class="lang-option" data-lang="zh" onclick="setLang('zh')">
+            <img src="https://flagcdn.com/w20/hk.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> 中文
+          </button>
+          <button class="lang-option" data-lang="km" onclick="setLang('km')">
+            <img src="https://flagcdn.com/w20/kh.png" width="16" height="12" alt="" style="border-radius:2px;object-fit:cover;flex-shrink:0"> ខ្មែរ
+          </button>
+        </div>
       </div>
     </div>
-    <a href="/" class="nav-back" data-i18n="nav-back">← Back to Home</a>
   </div>
 </nav>
 
@@ -392,7 +401,7 @@
 <script>
   const LANG = {
     en: {
-      'nav-back':'← Back to Home',
+      'nav-back':'← Back to Home','nav-exchange':'Exchange','nav-features':'Features','nav-how':'How It Works','nav-contact':'Contact','nav-blog':'Blog',
       'page-badge':'Legal Document',
       'page-title':'Terms of Service',
       'page-meta':'Last Updated: 1 January 2025 · Effective Date: 1 January 2025',
@@ -529,7 +538,7 @@
       'ft-copy':'© 2025 HKOTC.io. All rights reserved.',
     },
     zh: {
-      'nav-back':'← 返回主頁',
+      'nav-back':'← 返回主頁','nav-exchange':'兌換','nav-features':'特色','nav-how':'如何運作','nav-contact':'聯絡我們','nav-blog':'資訊',
       'page-badge':'法律文件',
       'page-title':'服務條款',
       'page-meta':'最後更新：2025年1月1日 · 生效日期：2025年1月1日',
@@ -667,7 +676,7 @@
     }
   };
 
-  LANG.km = { ...LANG.en, 'nav-back':"← ត្រឡប់ទៅទំព័រដើម", 'page-badge':"ឯកសារផ្លូវច្បាប់", 'page-title':"លក្ខខណ្ឌសេវាកម្ម", 'page-meta':"បានធ្វើបច្ចុប្បន្នភាពចុងក្រោយ៖ 1 មករា 2025 · ចូលជាធរមាន៖ 1 មករា 2025", 'toc-title':"មាតិកា", 'ft-home':"ទំព័រដើម", 'ft-terms':"លក្ខខណ្ឌសេវាកម្ម", 'ft-privacy':"គោលការណ៍ឯកជនភាព", 'ft-blog':"ព័ត៌មាន", 'ft-copy':"© 2025 HKOTC.io. រក្សាសិទ្ធិគ្រប់យ៉ាង។", 'intro':"សូមអានលក្ខខណ្ឌទាំងនេះដោយប្រុងប្រយ័ត្ន មុនពេលប្រើសេវាកម្ម HKOTC.io។", 'cta-title':"មានសំណួរអំពីលក្ខខណ្ឌរបស់យើង?", 'cta-sub':"ក្រុម compliance របស់យើងអាចជួយពន្យល់ចំណុចណាមួយនៅក្នុងលក្ខខណ្ឌទាំងនេះ។", 'cta-wa':"ទាក់ទងតាម WhatsApp", 'cta-tg':"Telegram @jin_bao0x" };
+  LANG.km = { ...LANG.en, 'nav-back':"← ត្រឡប់ទៅទំព័រដើម",'nav-exchange':'ប្តូរ USDT','nav-features':'អត្ថប្រយោជន៍','nav-how':'របៀបប្រើ','nav-contact':'ទាក់ទងយើង','nav-blog':'ព័ត៌មាន', 'page-badge':"ឯកសារផ្លូវច្បាប់", 'page-title':"លក្ខខណ្ឌសេវាកម្ម", 'page-meta':"បានធ្វើបច្ចុប្បន្នភាពចុងក្រោយ៖ 1 មករា 2025 · ចូលជាធរមាន៖ 1 មករា 2025", 'toc-title':"មាតិកា", 'ft-home':"ទំព័រដើម", 'ft-terms':"លក្ខខណ្ឌសេវាកម្ម", 'ft-privacy':"គោលការណ៍ឯកជនភាព", 'ft-blog':"ព័ត៌មាន", 'ft-copy':"© 2025 HKOTC.io. រក្សាសិទ្ធិគ្រប់យ៉ាង។", 'intro':"សូមអានលក្ខខណ្ឌទាំងនេះដោយប្រុងប្រយ័ត្ន មុនពេលប្រើសេវាកម្ម HKOTC.io។", 'cta-title':"មានសំណួរអំពីលក្ខខណ្ឌរបស់យើង?", 'cta-sub':"ក្រុម compliance របស់យើងអាចជួយពន្យល់ចំណុចណាមួយនៅក្នុងលក្ខខណ្ឌទាំងនេះ។", 'cta-wa':"ទាក់ទងតាម WhatsApp", 'cta-tg':"Telegram @jin_bao0x" };
 
   let currentLang = localStorage.getItem('lang') || 'en';
 
