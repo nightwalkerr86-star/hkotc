@@ -456,8 +456,8 @@
     .comment-panel .reviews-grid { display:flex; grid-template-columns:none; gap:14px; width:100%; max-width:100%; overflow-x:auto; overflow-y:hidden; overscroll-behavior-x:contain; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; padding:2px 0 14px; margin:0; }
     .comment-panel .reviews-grid::-webkit-scrollbar { display:none; }
     .comment-panel .review-card { flex:0 0 min(86%, 360px); scroll-snap-align:start; min-height:170px; }
-    @media (min-width: 720px) { .comment-panel .reviews-grid { display:grid; overflow:visible; padding:0; margin:0; grid-template-columns: repeat(2, minmax(0, 1fr)); } .comment-panel .review-card { flex:auto; min-width:0; } }
-    @media (min-width: 980px) { .comment-panel { grid-template-columns: minmax(0, 1fr) 360px; align-items: start; } }
+    @media (min-width: 720px) { .comment-panel .review-card { flex-basis:360px; } }
+    @media (min-width: 980px) { .comment-panel { align-items: start; } .comment-panel .review-card { flex-basis:380px; } }
     .comment-empty { padding: 22px; border-radius: 18px; background: var(--bg); border: 1px dashed var(--border); color: var(--muted); font-size: 14px; text-align: center; }
 
 
