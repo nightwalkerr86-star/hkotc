@@ -365,24 +365,9 @@
   if (sessionStorage.getItem('hkotc_scam_warning_seen') === '1') return;
   const lang = localStorage.getItem('lang') || 'en';
   const copy = {
-    en: {
-      title: 'Scam Warning',
-      body: 'Only contact HKOTC through our official Telegram @jin_bao0x. We never ask for your seed phrase, private key, exchange password, or remote access. Always confirm the rate and wallet address before sending funds.',
-      button: 'I Understand',
-      telegram: 'Official Telegram'
-    },
-    zh: {
-      title: '防詐騙提醒',
-      body: '只透過官方 Telegram @jin_bao0x 聯絡 HKOTC。我們絕不會要求你的助記詞、私鑰、交易所密碼或遠端控制權限。轉帳前請務必確認匯率及錢包地址。',
-      button: '我明白',
-      telegram: '官方 Telegram'
-    },
-    km: {
-      title: 'ការព្រមានប្រឆាំងការបោកប្រាស់',
-      body: 'សូមទាក់ទង HKOTC តាម Telegram ផ្លូវការ @jin_bao0x តែប៉ុណ្ណោះ។ យើងមិនដែលស្នើសុំ seed phrase, private key, ពាក្យសម្ងាត់ exchange ឬការចូលប្រើពីចម្ងាយឡើយ។ មុនផ្ញើប្រាក់ សូមបញ្ជាក់អត្រា និងអាសយដ្ឋាន wallet ជានិច្ច។',
-      button: 'ខ្ញុំយល់ហើយ',
-      telegram: 'Telegram ផ្លូវការ'
-    }
+    en: { title: "⚠️ Scam Warning Alert", body: "Please be aware of fake accounts, impersonators, and suspicious payment requests.\n\nOur official team will only communicate through the official contact channels listed on this website. We will never ask you to send money to a personal account, third-party account, or unknown wallet address without official confirmation.\n\nBefore making any payment, please always confirm:\n\nThe official order number\nThe latest exchange rate\nThe official receiving account or wallet address\nThe payment amount\nThe identity verification status\n\nDo not make any payment before receiving final confirmation from our team.\n\nIf anyone contacts you privately claiming to represent us, offers unusually high rates, or asks you to pay quickly, please stop immediately and contact our official support.\n\nYour safety is our priority. Always verify before you pay.", button: 'I Understand', telegram: 'Official Telegram' },
+    zh: { title: "⚠️ Scam Warning Alert", body: "Please be aware of fake accounts, impersonators, and suspicious payment requests.\n\nOur official team will only communicate through the official contact channels listed on this website. We will never ask you to send money to a personal account, third-party account, or unknown wallet address without official confirmation.\n\nBefore making any payment, please always confirm:\n\nThe official order number\nThe latest exchange rate\nThe official receiving account or wallet address\nThe payment amount\nThe identity verification status\n\nDo not make any payment before receiving final confirmation from our team.\n\nIf anyone contacts you privately claiming to represent us, offers unusually high rates, or asks you to pay quickly, please stop immediately and contact our official support.\n\nYour safety is our priority. Always verify before you pay.", button: 'I Understand', telegram: 'Official Telegram' },
+    km: { title: "⚠️ Scam Warning Alert", body: "Please be aware of fake accounts, impersonators, and suspicious payment requests.\n\nOur official team will only communicate through the official contact channels listed on this website. We will never ask you to send money to a personal account, third-party account, or unknown wallet address without official confirmation.\n\nBefore making any payment, please always confirm:\n\nThe official order number\nThe latest exchange rate\nThe official receiving account or wallet address\nThe payment amount\nThe identity verification status\n\nDo not make any payment before receiving final confirmation from our team.\n\nIf anyone contacts you privately claiming to represent us, offers unusually high rates, or asks you to pay quickly, please stop immediately and contact our official support.\n\nYour safety is our priority. Always verify before you pay.", button: 'I Understand', telegram: 'Official Telegram' }
   };
   const t = copy[lang] || copy.en;
   const style = document.createElement('style');
