@@ -372,7 +372,7 @@
                 <button class="upload-browse" type="button">Browse Files</button>
                 <input id="bp-photo-file" type="file" accept="image/*" onchange="handleImgFile(event,'bp')" hidden>
               </div>
-              <input class="finput" id="bp-photo" type="url" placeholder="https://i.imgur.com/xxxxxxx.jpg" oninput="onImgUrl('bp')">
+              <input class="finput" id="bp-photo" type="text" placeholder="https://i.imgur.com/xxxxxxx.jpg" oninput="onImgUrl('bp')">
               <div class="img-preview-wrap" id="bp-img-preview-wrap" style="margin-top:10px">
                 <img id="bp-img-preview" alt="">
               </div>
@@ -414,7 +414,7 @@
                 <button class="upload-browse" type="button">Browse Files</button>
                 <input id="cp-photo-file" type="file" accept="image/*" onchange="handleImgFile(event,'cp')" hidden>
               </div>
-              <input class="finput" id="cp-photo" type="url" placeholder="https://i.imgur.com/xxxxxxx.jpg" oninput="onImgUrl('cp')">
+              <input class="finput" id="cp-photo" type="text" placeholder="https://i.imgur.com/xxxxxxx.jpg" oninput="onImgUrl('cp')">
               <div class="img-preview-wrap" id="cp-img-preview-wrap" style="margin-top:10px">
                 <img id="cp-img-preview" alt="">
               </div>
@@ -779,6 +779,19 @@ async function ghPut(path, content, sha, msg) {
   if (!res.ok){ const e=await res.json(); throw new Error(e.message||res.status); }
   return res.json();
 }
+
+async function ghPutBase64(path, base64Content, msg) {
+  const c=cfg();
+  let sha;
+  try { sha=(await ghGet(path)).sha; } catch {}
+  const res=await fetch(`https://api.github.com/repos/${c.repo}/contents/${path}`,{
+    method:'PUT',
+    headers:{Authorization:`Bearer ${c.token}`,Accept:'application/vnd.github+json','Content-Type':'application/json'},
+    body:JSON.stringify({message:msg, content:base64Content, sha})
+  });
+  if (!res.ok){ const e=await res.json().catch(()=>({message:res.status})); throw new Error(e.message||res.status); }
+  return res.json();
+}
 async function readFile(path) {
   try {
     const f=await ghGet(path);
@@ -797,20 +810,37 @@ async function writeFile(path, data, sha, msg) {
 // ═══════════════════════════════════════════════════════════
 //  IMAGE HANDLING
 // ═══════════════════════════════════════════════════════════
+const pendingImageFiles = { bp:null, cp:null };
+const pendingImagePreviews = { bp:'', cp:'' };
+
 function handleImgFile(e, prefix) {
   const file=e.target.files[0]; if(!file) return;
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    const url=ev.target.result;
-    document.getElementById(prefix+'-photo').value=url;
-    showImgPreview(prefix, url);
-    if (prefix==='cp') cpPreview();
-    if (prefix==='bp') bpPreview();
-  };
-  reader.readAsDataURL(file);
+  if (!file.type.startsWith('image/')) {
+    showStatus(prefix+'-status','Please choose an image file.','err');
+    return;
+  }
+  if (file.size > 6 * 1024 * 1024) {
+    showStatus(prefix+'-status','Image is too large. Please use an image under 6MB or paste an Imgur link.','err');
+    return;
+  }
+  if (pendingImagePreviews[prefix]) URL.revokeObjectURL(pendingImagePreviews[prefix]);
+  pendingImageFiles[prefix]=file;
+  pendingImagePreviews[prefix]=URL.createObjectURL(file);
+  const input=document.getElementById(prefix+'-photo');
+  input.value='Selected file: '+file.name;
+  input.dataset.localFile='1';
+  showImgPreview(prefix, pendingImagePreviews[prefix]);
+  if (prefix==='cp') cpPreview();
+  if (prefix==='bp') bpPreview();
 }
+
 function onImgUrl(prefix) {
-  const url=document.getElementById(prefix+'-photo').value.trim();
+  pendingImageFiles[prefix]=null;
+  if (pendingImagePreviews[prefix]) URL.revokeObjectURL(pendingImagePreviews[prefix]);
+  pendingImagePreviews[prefix]='';
+  const input=document.getElementById(prefix+'-photo');
+  delete input.dataset.localFile;
+  const url=input.value.trim();
   showImgPreview(prefix, url);
   if (prefix==='cp') cpPreview();
   if (prefix==='bp') bpPreview();
@@ -822,6 +852,40 @@ function showImgPreview(prefix, url) {
     img.src=url; wrap.style.display='block';
     img.onerror=()=>{ wrap.style.display='none'; };
   } else { wrap.style.display='none'; }
+}
+
+function safeUploadName(file) {
+  const extFromType = file.type.split('/')[1] || 'jpg';
+  const ext = (file.name.match(/\.([a-z0-9]+)$/i)?.[1] || extFromType).toLowerCase().replace(/jpeg/,'jpg');
+  const base = file.name.replace(/\.[^.]+$/,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,42) || 'image';
+  return `${Date.now()}-${base}.${ext}`;
+}
+
+async function fileToBase64(file) {
+  const buffer = await file.arrayBuffer();
+  const bytes = new Uint8Array(buffer);
+  let binary = '';
+  for (let i=0; i<bytes.length; i+=0x8000) {
+    binary += String.fromCharCode(...bytes.subarray(i, i+0x8000));
+  }
+  return btoa(binary);
+}
+
+async function uploadPendingImage(prefix) {
+  const input=document.getElementById(prefix+'-photo');
+  const file=pendingImageFiles[prefix];
+  if (!file) return input.dataset.localFile ? '' : input.value.trim();
+  showStatus(prefix+'-status','Uploading image...','info');
+  const path='uploads/'+safeUploadName(file);
+  await ghPutBase64(path, await fileToBase64(file), `🖼 Upload image — ${file.name.slice(0,60)}`);
+  const url='/'+path;
+  pendingImageFiles[prefix]=null;
+  if (pendingImagePreviews[prefix]) URL.revokeObjectURL(pendingImagePreviews[prefix]);
+  pendingImagePreviews[prefix]='';
+  delete input.dataset.localFile;
+  input.value=url;
+  showImgPreview(prefix, url);
+  return url;
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -847,7 +911,7 @@ function fmtLine(prefix) {
 // ═══════════════════════════════════════════════════════════
 function cpPreview() {
   const raw=document.getElementById('cp-text').value;
-  const photo=document.getElementById('cp-photo').value.trim();
+  const photo=pendingImagePreviews.cp || document.getElementById('cp-photo').value.trim();
   const lines=raw.split('\n');
   const hi=lines.findIndex(l=>/^#\S/.test(l.trim()));
   const body=hi>-1?lines.slice(0,hi).join('\n').trim():raw.trim();
@@ -862,18 +926,23 @@ function cpPreview() {
 function updateCpChar(){ document.getElementById('cp-char').textContent=document.getElementById('cp-text').value.length; }
 function cpClear(){
   ['cp-text','cp-photo','cp-link'].forEach(id=>document.getElementById(id).value='');
+  pendingImageFiles.cp=null;
+  if (pendingImagePreviews.cp) URL.revokeObjectURL(pendingImagePreviews.cp);
+  pendingImagePreviews.cp='';
+  delete document.getElementById('cp-photo').dataset.localFile;
   document.getElementById('cp-img-preview-wrap').style.display='none';
   cpPreview(); updateCpChar();
 }
 async function publishChannelPost() {
   const text=document.getElementById('cp-text').value.trim();
-  const photo=document.getElementById('cp-photo').value.trim();
+  let photo=document.getElementById('cp-photo').value.trim();
   const link=document.getElementById('cp-link').value.trim();
   if (!text){ showStatus('cp-status','Post text is required.','err'); return; }
   const c=cfg();
   if (!c.token||!c.repo){ showStatus('cp-status','Set up GitHub in Settings first.','err'); return; }
   setBtnLoading('cp-publish-btn',true);
   try {
+    photo=await uploadPendingImage('cp');
     const {data,sha}=await readFile(c.chPath);
     const post={message_id:Date.now(),date:Math.floor(Date.now()/1000),text,photo:photo||'',channel:'hkotcdesk',message_link:link||''};
     const updated=[post,...data];
@@ -895,12 +964,13 @@ async function publishBlogPost() {
   const excerpt=document.getElementById('bp-excerpt').value.trim();
   const tags=document.getElementById('bp-tags').value.trim();
   const cat=document.getElementById('bp-cat').value;
-  const photo=document.getElementById('bp-photo').value.trim();
+  let photo=document.getElementById('bp-photo').value.trim();
   if (!title||!body){ showStatus('bp-status','Title and body are required.','err'); return; }
   const c=cfg();
   if (!c.token||!c.repo){ showStatus('bp-status','Set up GitHub in Settings first.','err'); return; }
   setBtnLoading('bp-publish-btn',true);
   try {
+    photo=await uploadPendingImage('bp');
     const {data,sha}=await readFile(c.blogPath);
     const post={id:Date.now(),date:Math.floor(Date.now()/1000),title,body,excerpt:excerpt||body.slice(0,160)+'…',photo:photo||'',category:cat,tags:tags?tags.split(',').map(t=>t.trim()):[]};
     const updated=[post,...data];
@@ -908,6 +978,10 @@ async function publishBlogPost() {
     showStatus('bp-status','✅ Published! Live on blog now.','ok');
     // Clear
     ['bp-title','bp-body','bp-excerpt','bp-tags','bp-photo'].forEach(id=>document.getElementById(id).value='');
+    pendingImageFiles.bp=null;
+    if (pendingImagePreviews.bp) URL.revokeObjectURL(pendingImagePreviews.bp);
+    pendingImagePreviews.bp='';
+    delete document.getElementById('bp-photo').dataset.localFile;
     document.getElementById('bp-img-preview-wrap').style.display='none';
     updateBpChar(); loadAllPosts();
   } catch(e){ showStatus('bp-status','❌ '+friendlyGitHubError(e.message),'err'); }
