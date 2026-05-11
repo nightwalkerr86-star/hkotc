@@ -1081,26 +1081,26 @@
 <!-- ─── FLOATING BUTTONS ── -->
 <div class="rate-bot" id="rate-bot" aria-live="polite">
   <div class="rate-bot-head">
-    <div class="rate-bot-title"><span class="rate-bot-status"></span><span id="rate-bot-title">Rate Bot</span></div>
-    <button class="rate-bot-close" type="button" onclick="toggleRateBot(false)" aria-label="Close rate bot">
+    <div class="rate-bot-title"><span class="rate-bot-status"></span><span id="rate-bot-title">Chat Inquiry</span></div>
+    <button class="rate-bot-close" type="button" onclick="toggleRateBot(false)" aria-label="Close chat inquiry">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
   </div>
   <div class="rate-bot-body">
     <div class="rate-bot-msg" id="rate-bot-msg"></div>
     <div class="rate-bot-actions">
-      <button class="rate-bot-chip" type="button" onclick="rateBotReply('cash')">Cash rate</button>
-      <button class="rate-bot-chip" type="button" onclick="rateBotReply('transfer')">Bank rate</button>
+      <button class="rate-bot-chip" type="button" onclick="rateBotReply('quote')">Quote inquiry</button>
+      <button class="rate-bot-chip" type="button" onclick="rateBotReply('support')">Support inquiry</button>
     </div>
     <a href="https://t.me/jin_bao0x" target="_blank" rel="noopener noreferrer" class="btn btn-telegram rate-bot-open">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-      Open Telegram
+      Chat on Telegram
     </a>
   </div>
 </div>
 <div class="float-btns">
-  <button type="button" class="float-btn float-tg" onclick="toggleRateBot()" aria-label="Open rate bot">
-    <div class="float-tooltip">Rate Bot</div>
+  <button type="button" class="float-btn float-tg" onclick="toggleRateBot()" aria-label="Open chat inquiry">
+    <div class="float-tooltip">Chat Inquiry</div>
     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
   </button>
   <a href="https://wa.me/qr/K3GYC3HRQVYSI1" target="_blank" rel="noopener noreferrer" class="float-btn float-wa">
@@ -1519,43 +1519,39 @@
     updateCalc();
   }
 
-  function formatRateBotMessage(kind = 'all') {
-    const cash = CONFIG.paymentMethods.cash;
-    const transfer = CONFIG.paymentMethods.transfer;
-    const today = new Date().toLocaleDateString(currentLang === 'en' ? 'en-HK' : currentLang === 'zh' ? 'zh-HK' : 'km-KH', { day:'numeric', month:'short', year:'numeric' });
-    const botLines = {
+  function formatRateBotMessage(kind = 'quote') {
+    const inquiryLines = {
       en: {
-        title: 'Rate Bot',
-        intro: `Auto reply for today (\${today})`,
-        cash: `Cash: Buy \${cash.buyRate.toFixed(4)} / Sell \${cash.sellRate.toFixed(4)} HKD per USDT. Spread 0.80%.`,
-        transfer: `Bank Transfer: Buy \${transfer.buyRate.toFixed(4)} / Sell \${transfer.sellRate.toFixed(4)} HKD per USDT. Spread 0.50%.`,
-        note: 'Tap Open Telegram to place an order.'
+        title: 'Chat Inquiry',
+        intro: 'How can we help?',
+        quote: 'Ask us for today\'s USDT/HKD quote, payment method, settlement time, and order confirmation.',
+        support: 'Need help with an order, payment, wallet address, or verification? Message our official desk.',
+        note: 'For your safety, always confirm the official order number, rate, payment account, and wallet address before sending funds.'
       },
       zh: {
-        title: '匯率自動回覆',
-        intro: `今日匯率（\${today}）`,
-        cash: `現金交易：買入 \${cash.buyRate.toFixed(4)} / 賣出 \${cash.sellRate.toFixed(4)} 港幣/USDT，差價 0.80%。`,
-        transfer: `銀行轉賬：買入 \${transfer.buyRate.toFixed(4)} / 賣出 \${transfer.sellRate.toFixed(4)} 港幣/USDT，差價 0.50%。`,
-        note: '點擊 Open Telegram 即可下單。'
+        title: '線上查詢',
+        intro: '請問需要什麼協助？',
+        quote: '查詢今日 USDT/HKD 報價、付款方式、結算時間及訂單確認。',
+        support: '如需訂單、付款、錢包地址或身份核實協助，請聯絡官方服務台。',
+        note: '為保障資金安全，付款前請務必確認官方訂單編號、匯率、收款帳戶及錢包地址。'
       },
       km: {
-        title: 'បតឆ្លើយអត្រា',
-        intro: `អត្រាថ្ងៃនេះ (\${today})`,
-        cash: `សាច់ប្រាក់៖ ទិញ \${cash.buyRate.toFixed(4)} / លក់ \${cash.sellRate.toFixed(4)} HKD ក្នុងមួយ USDT។ Spread 0.80%។`,
-        transfer: `ផ្ទេរធនាគារ៖ ទិញ \${transfer.buyRate.toFixed(4)} / លក់ \${transfer.sellRate.toFixed(4)} HKD ក្នុងមួយ USDT។ Spread 0.50%។`,
-        note: 'ចុច Open Telegram ដើម្បីដាក់បញ្ជា។'
+        title: 'សាកសួរតាមជជែក',
+        intro: 'តើយើងអាចជួយអ្វីបានខ្លះ?',
+        quote: 'សាកសួរអត្រា USDT/HKD ថ្ងៃនេះ វិធីបង់ប្រាក់ ពេលវេលាទូទាត់ និងការបញ្ជាក់បញ្ជាទិញ។',
+        support: 'ត្រូវការជំនួយអំពីបញ្ជាទិញ ការបង់ប្រាក់ អាសយដ្ឋានកាបូប ឬការផ្ទៀងផ្ទាត់អត្តសញ្ញាណ សូមទាក់ទងតុសេវាផ្លូវការ។',
+        note: 'ដើម្បីសុវត្ថិភាព សូមបញ្ជាក់លេខបញ្ជាទិញផ្លូវការ អត្រា គណនីទទួលប្រាក់ និងអាសយដ្ឋានកាបូប មុនពេលផ្ញើប្រាក់។'
       }
     };
-    const lines = botLines[currentLang] || botLines.en;
+    const lines = inquiryLines[currentLang] || inquiryLines.en;
     document.getElementById('rate-bot-title').textContent = lines.title;
-    const parts = [`<strong>\${lines.intro}</strong>`];
-    if (kind === 'cash' || kind === 'all') parts.push(lines.cash);
-    if (kind === 'transfer' || kind === 'all') parts.push(lines.transfer);
+    const parts = [`<strong>${lines.intro}</strong>`];
+    parts.push(kind === 'support' ? lines.support : lines.quote);
     parts.push(lines.note);
     return parts.join('\n\n');
   }
 
-  function rateBotReply(kind = 'all') {
+  function rateBotReply(kind = 'quote') {
     const msg = document.getElementById('rate-bot-msg');
     if (msg) msg.innerHTML = formatRateBotMessage(kind);
   }
@@ -1564,7 +1560,7 @@
     const bot = document.getElementById('rate-bot');
     if (!bot) return;
     const open = typeof force === 'boolean' ? force : !bot.classList.contains('open');
-    if (open) rateBotReply('all');
+    if (open) rateBotReply('quote');
     bot.classList.toggle('open', open);
   }
 
