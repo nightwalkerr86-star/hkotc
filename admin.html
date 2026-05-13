@@ -422,7 +422,7 @@
       <div class="panel" id="panel-all-posts">
         <div class="page-hd">
           <h1>All Posts</h1>
-          <p>Manage local JSON posts. Changes are saved through server.py.</p>
+          <p>Manage published posts from the blog data file.</p>
         </div>
         <div class="card">
           <div class="filter-tabs">
@@ -459,10 +459,19 @@
       <div class="panel" id="panel-settings">
         <div class="page-hd"><h1>Settings</h1><p>Static blog settings and admin PIN.</p></div>
         <div class="card">
-          <div class="card-title">Static JSON Blog</div>
-          <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.7">This local admin writes directly to <code>blog-posts.json</code> and <code>channel-posts.json</code> through <code>server.py</code>. Run the site at <code>http://127.0.0.1:8000</code>.</p>
-          <div class="setup-fields"><div class="frow" style="margin:0"><label class="flabel">Blog data file</label><input class="finput" type="text" value="blog-posts.json" readonly></div><div class="frow" style="margin:0"><label class="flabel">Image folder</label><input class="finput" type="text" value="uploads/" readonly></div></div>
-          <div class="btn-row" style="margin-top:16px"><button class="btn btn-ghost" onclick="testConnection()">Check JSON</button></div>
+          <div class="card-title">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+            Online GitHub Publishing
+          </div>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.7">Save your GitHub token once in this admin browser. After that, Publish Post commits directly to GitHub and your Vercel site updates after deploy.</p>
+          <div class="setup-fields">
+            <div class="frow" style="margin:0"><label class="flabel">GitHub Token</label><input class="finput" id="gh-token" type="password" placeholder="github_pat_..."></div>
+            <div class="frow" style="margin:0"><label class="flabel">Repository</label><input class="finput" id="gh-repo" type="text" placeholder="nightwalkerr86-star/hkotc"></div>
+            <div class="frow" style="margin:0"><label class="flabel">Branch</label><input class="finput" id="gh-branch" type="text" placeholder="main"></div>
+            <div class="frow" style="margin:0"><label class="flabel">Blog JSON Path</label><input class="finput" id="gh-blog-path" type="text" placeholder="blog-posts.json"></div>
+            <div class="frow" style="margin:0"><label class="flabel">Channel JSON Path</label><input class="finput" id="gh-channel-path" type="text" placeholder="channel-posts.json"></div>
+          </div>
+          <div class="btn-row" style="margin-top:16px"><button class="btn btn-primary" onclick="saveSettings()">Save GitHub Settings</button><button class="btn btn-ghost" onclick="testConnection()">Check GitHub</button></div>
           <div class="status" id="s-status"></div>
         </div>
         <div class="card" style="margin-top:16px">
@@ -553,6 +562,7 @@ const BLOG_POSTS_PATH = 'blog-posts.json';
 const CHANNEL_POSTS_PATH = 'channel-posts.json';
 const LOCAL_SERVER_MODE = ['127.0.0.1', 'localhost'].includes(location.hostname) || location.protocol === 'file:';
 const LOCAL_API_BASE = location.protocol === 'file:' ? 'http://127.0.0.1:8000' : '';
+const GH_SETTINGS_KEY = 'hkotc_github_settings_v1';
 function serverContentPath(path) {
   if (path === BLOG_POSTS_PATH) return 'blog-posts.json';
   if (path === CHANNEL_POSTS_PATH) return 'channel-posts.json';
@@ -560,25 +570,50 @@ function serverContentPath(path) {
 }
 
 function cfg() {
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(GH_SETTINGS_KEY) || '{}'); } catch {}
+  const [owner='', name=''] = String(saved.repo || 'nightwalkerr86-star/hkotc').split('/');
   return {
-    repo: 'nightwalkerr86-star/hkotc',
-    blogPath: 'blog-posts.json',
-    chPath: 'channel-posts.json',
+    token: saved.token || '',
+    repo: saved.repo || 'nightwalkerr86-star/hkotc',
+    owner,
+    name,
+    branch: saved.branch || 'main',
+    blogPath: saved.blogPath || 'blog-posts.json',
+    chPath: saved.chPath || 'channel-posts.json',
   };
 }
 function saveSettings() {
-  showStatus('s-status','Local server mode uses server.py.','info');
+  const settings = {
+    token: document.getElementById('gh-token').value.trim(),
+    repo: document.getElementById('gh-repo').value.trim() || 'nightwalkerr86-star/hkotc',
+    branch: document.getElementById('gh-branch').value.trim() || 'main',
+    blogPath: document.getElementById('gh-blog-path').value.trim() || 'blog-posts.json',
+    chPath: document.getElementById('gh-channel-path').value.trim() || 'channel-posts.json',
+  };
+  if (!settings.token) { showStatus('s-status','GitHub token is required.','err'); return; }
+  if (!/^[^/]+\/[^/]+$/.test(settings.repo)) { showStatus('s-status','Repository must look like owner/repo.','err'); return; }
+  localStorage.setItem(GH_SETTINGS_KEY, JSON.stringify(settings));
+  showStatus('s-status','✅ GitHub settings saved in this browser.','ok');
 }
-function loadSettings() {}
+function loadSettings() {
+  const c = cfg();
+  const map = {
+    'gh-token': c.token,
+    'gh-repo': c.repo,
+    'gh-branch': c.branch,
+    'gh-blog-path': c.blogPath,
+    'gh-channel-path': c.chPath,
+  };
+  Object.entries(map).forEach(([id,value]) => { const el=document.getElementById(id); if (el) el.value=value; });
+}
 async function testConnection() {
-  showStatus('s-status','Checking local server…','info');
+  showStatus('s-status','Checking GitHub access…','info');
   try {
-    const res = await fetch(LOCAL_API_BASE + '/api/content?path=blog-posts.json&t=' + Date.now(), { cache:'no-store' });
-    if (!res.ok) throw new Error('Cannot reach server.py at http://127.0.0.1:8000');
-    const payload = await res.json();
-    const data = Array.isArray(payload.data) ? payload.data : [];
-    showStatus('s-status', '✅ Local server is working. Blog posts: ' + data.length, 'ok');
-  } catch(e) { showStatus('s-status','❌ '+e.message,'err'); }
+    saveSettings();
+    await ghGet(cfg().blogPath);
+    showStatus('s-status','✅ GitHub is connected. Blog JSON can be read.','ok');
+  } catch(e) { showStatus('s-status','❌ '+friendlyGitHubError(e.message),'err'); }
 }
 function changePIN() {
   const p=document.getElementById('new-pin').value;
@@ -603,10 +638,11 @@ function clearAdminPublishPassword() {
 }
 
 function friendlyGitHubError(message) {
-  if (/Failed to fetch/i.test(message)) return 'Local server is not running. Start server.py and open http://127.0.0.1:8000/admin.html';
-  if (/Local read failed|Read failed/i.test(message)) return 'Could not read local JSON. Make sure server.py is running.';
-  if (/Local write failed/i.test(message)) return 'Could not write local JSON. Make sure server.py is running and files are writable.';
-  if (/Local image upload failed/i.test(message)) return 'Could not upload image. Make sure server.py is running and uploads/ is writable.';
+  if (/Invalid admin password|unauthorized/i.test(message)) return 'Wrong admin publish password. Please try again.';
+  if (/GitHub settings/i.test(message)) return 'Add GitHub token and repo in Settings first.';
+  if (/Resource not accessible by personal access token/i.test(message)) return 'GitHub token permission problem: token needs Repository permissions → Contents → Read and write.';
+  if (/Bad credentials/i.test(message)) return 'GitHub token is invalid. Create a new token and save it in Settings.';
+  if (/Not Found|GitHub read 404/i.test(message)) return 'GitHub repo or file path not found. Check Repository, Branch, and Blog JSON Path.';
   return message;
 }
 
@@ -644,7 +680,20 @@ async function localUploadImage(path, base64Content) {
 }
 
 async function ghGet(path) {
-  throw new Error('Remote GitHub publishing is disabled. Use the local server endpoints.');
+  const c = cfg();
+  if (!c.token || !c.owner || !c.name) throw new Error('GitHub settings missing');
+  const url = `https://api.github.com/repos/${encodeURIComponent(c.owner)}/${encodeURIComponent(c.name)}/contents/${encodeURIComponent(path).replace(/%2F/g,'/')}?ref=${encodeURIComponent(c.branch)}`;
+  const res = await fetch(url, {
+    headers: {
+      'Authorization': 'Bearer ' + c.token,
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+    },
+    cache: 'no-store',
+  });
+  const json = await res.json().catch(()=>({message:'GitHub read failed'}));
+  if (!res.ok) throw new Error(json.message || 'GitHub read failed');
+  return { data: JSON.parse(decodeBase64Utf8(json.content || 'W10=')), sha: json.sha };
 }
 function encodeBase64Utf8(text) {
   const bytes = new TextEncoder().encode(text);
@@ -660,11 +709,47 @@ function decodeBase64Utf8(base64) {
 }
 
 async function ghPut(path, content, sha, msg) {
-  throw new Error('Remote GitHub publishing is disabled. Use the local server endpoints.');
+  const c = cfg();
+  if (!c.token || !c.owner || !c.name) throw new Error('GitHub settings missing');
+  const body = {
+    message: msg,
+    branch: c.branch,
+    content: encodeBase64Utf8(content),
+  };
+  if (sha) body.sha = sha;
+  const url = `https://api.github.com/repos/${encodeURIComponent(c.owner)}/${encodeURIComponent(c.name)}/contents/${encodeURIComponent(path).replace(/%2F/g,'/')}`;
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Authorization': 'Bearer ' + c.token,
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+  const json = await res.json().catch(()=>({message:'GitHub write failed'}));
+  if (!res.ok) throw new Error(json.message || 'GitHub write failed');
+  return json;
 }
 
 async function ghPutBase64(path, base64Content, msg) {
-  return localUploadImage(path, base64Content);
+  const c = cfg();
+  if (!c.token || !c.owner || !c.name) throw new Error('GitHub settings missing');
+  const url = `https://api.github.com/repos/${encodeURIComponent(c.owner)}/${encodeURIComponent(c.name)}/contents/${encodeURIComponent(path).replace(/%2F/g,'/')}`;
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Authorization': 'Bearer ' + c.token,
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ message: msg, branch: c.branch, content: base64Content }),
+  });
+  const json = await res.json().catch(()=>({message:'GitHub image upload failed'}));
+  if (!res.ok) throw new Error(json.message || 'GitHub image upload failed');
+  return json;
 }
 
 function downloadJsonFile(fileName, data) {
@@ -680,10 +765,16 @@ function downloadJsonFile(fileName, data) {
 }
 
 async function readFile(path) {
-  const result = await localGet(path);
-  return {data: Array.isArray(result.data) ? result.data : [], sha:null};
+  if (cfg().token) return ghGet(path);
+  try {
+    const res = await fetch(serverContentPath(path) + '?t=' + Date.now(), { cache:'no-store' });
+    if (!res.ok) throw new Error('Read failed');
+    const data = await res.json();
+    return {data: Array.isArray(data) ? data : [], sha:null};
+  } catch { return {data:[], sha:null}; }
 }
 async function writeFile(path, data, sha, msg) {
+  if (cfg().token) return ghPut(path, JSON.stringify(data, null, 2) + '\n', sha, msg);
   return localPut(path, data);
 }
 
@@ -831,7 +922,13 @@ function slugifyPostTitle(value) {
 }
 
 async function buildCoverUpload(prefix) {
-  return null;
+  const file = pendingImageFiles[prefix];
+  if (!file) return null;
+  return {
+    fileName: file.name,
+    mimeType: file.type,
+    base64: await fileToBase64(file),
+  };
 }
 
 async function publishBlogPost() {
@@ -840,21 +937,30 @@ async function publishBlogPost() {
   const excerpt=document.getElementById('bp-excerpt').value.trim();
   const tags=document.getElementById('bp-tags').value.trim();
   const cat=document.getElementById('bp-cat').value;
-  let coverImage=document.getElementById('bp-photo').value.trim();
+  let coverImage=document.getElementById('bp-photo').dataset.localFile ? '' : document.getElementById('bp-photo').value.trim();
   if (!title||!body){ showStatus('bp-status','Title and body are required.','err'); return; }
+  if (!cfg().token){ showStatus('bp-status','Add GitHub token in Settings first.','err'); return; }
   setBtnLoading('bp-publish-btn',true);
   try {
-    coverImage=await uploadPendingImage('bp');
-    const {data,sha}=await readFile(cfg().blogPath);
+    if (pendingImageFiles.bp) {
+      const file = pendingImageFiles.bp;
+      const imagePath = 'uploads/' + safeUploadName(file);
+      showStatus('bp-status','Uploading image to GitHub…','info');
+      await ghPutBase64(imagePath, await fileToBase64(file), 'Upload image: ' + file.name);
+      coverImage = '/' + imagePath;
+    }
+    showStatus('bp-status','Publishing post to GitHub…','info');
+    const c = cfg();
+    const {data,sha} = await ghGet(c.blogPath);
     const now = new Date().toISOString();
     const post = {
       id: String(Date.now()),
       title,
       slug: slugifyPostTitle(title),
-      category: cat || 'Market News',
+      category: cat,
       excerpt: excerpt || body.slice(0,160),
       content: body,
-      coverImage: coverImage || '',
+      coverImage,
       author: 'HKOTC Desk',
       status: 'published',
       createdAt: now,
@@ -862,19 +968,21 @@ async function publishBlogPost() {
       publishedAt: now,
       date: Math.floor(Date.now()/1000),
       body,
-      photo: coverImage || '',
-      tags: tags ? tags.split(',').map(t=>t.trim()).filter(Boolean) : []
+      photo: coverImage,
+      tags: tags ? tags.split(',').map(t=>t.trim()).filter(Boolean) : [],
     };
-    const updated = [post, ...data];
-    await writeFile(cfg().blogPath, updated, sha, 'Local blog post');
-    showStatus('bp-status','✅ Published to local server. Refresh blog now.','ok');
+    const updated = [post, ...data.filter(item => String(item.id) !== post.id)];
+    await ghPut(c.blogPath, JSON.stringify(updated, null, 2) + '\n', sha, `Publish blog post: ${title}`);
+    try { localStorage.removeItem('hkotc_blog_posts_cache_v1'); } catch {}
+    showStatus('bp-status','✅ Published to GitHub. Opening blog page…','ok');
     ['bp-title','bp-body','bp-excerpt','bp-tags','bp-photo'].forEach(id=>document.getElementById(id).value='');
     pendingImageFiles.bp=null;
     if (pendingImagePreviews.bp) URL.revokeObjectURL(pendingImagePreviews.bp);
     pendingImagePreviews.bp='';
+    delete document.getElementById('bp-photo').dataset.localFile;
     document.getElementById('bp-img-preview-wrap').style.display='none';
     updateBpChar();
-    await loadAllPosts();
+    setTimeout(()=>{ window.location.href = '/blog?t=' + Date.now(); }, 900);
   } catch(e){ showStatus('bp-status','❌ '+friendlyGitHubError(e.message),'err'); }
   setBtnLoading('bp-publish-btn',false);
 }
