@@ -648,6 +648,7 @@ function clearAdminPublishPassword() {
 function friendlyGitHubError(message) {
   if (/Invalid admin password|unauthorized/i.test(message)) return 'Wrong admin publish password. Please try again.';
   if (/GitHub settings/i.test(message)) return 'Add GitHub token and repo in Settings first.';
+  if (/Failed to fetch|NetworkError|Load failed/i.test(message)) return 'Cannot connect to GitHub from this page. Use the deployed Vercel admin URL, or check your internet/CSP settings.';
   if (/Resource not accessible by personal access token/i.test(message)) return 'GitHub token permission problem: token needs Repository permissions → Contents → Read and write.';
   if (/Bad credentials/i.test(message)) return 'GitHub token is invalid. Create a new token and save it in Settings.';
   if (/Not Found|GitHub read 404/i.test(message)) return 'GitHub repo or file path not found. Check Repository, Branch, and Blog JSON Path.';
@@ -939,6 +940,24 @@ async function buildCoverUpload(prefix) {
   };
 }
 
+async function publishPostThroughBackend(payload) {
+  const c = cfg();
+  const res = await fetch('/api/publish-post', {
+    method: 'POST',
+    headers: { 'Content-Type':'application/json' },
+    body: JSON.stringify({
+      ...payload,
+      githubToken: c.token,
+      githubRepo: c.repo,
+      githubBranch: c.branch,
+      githubBlogPath: c.blogPath,
+    }),
+  });
+  const result = await res.json().catch(()=>({message:'Publish failed'}));
+  if (!res.ok) throw new Error(result.message || result.error || 'Publish failed');
+  return result;
+}
+
 async function publishBlogPost() {
   const title=document.getElementById('bp-title').value.trim();
   const body=document.getElementById('bp-body').value.trim();
@@ -950,18 +969,8 @@ async function publishBlogPost() {
   if (!cfg().token){ showStatus('bp-status','Add GitHub token in Settings first.','err'); return; }
   setBtnLoading('bp-publish-btn',true);
   try {
-    if (pendingImageFiles.bp) {
-      const file = pendingImageFiles.bp;
-      const imagePath = 'uploads/' + safeUploadName(file);
-      showStatus('bp-status','Uploading image to GitHub…','info');
-      await ghPutBase64(imagePath, await fileToBase64(file), 'Upload image: ' + file.name);
-      coverImage = '/' + imagePath;
-    }
-    showStatus('bp-status','Publishing post to GitHub…','info');
-    const c = cfg();
-    const {data,sha} = await ghGet(c.blogPath);
     const now = new Date().toISOString();
-    const post = {
+    const payload = {
       id: String(Date.now()),
       title,
       slug: slugifyPostTitle(title),
@@ -978,9 +987,28 @@ async function publishBlogPost() {
       body,
       photo: coverImage,
       tags: tags ? tags.split(',').map(t=>t.trim()).filter(Boolean) : [],
+      coverImageUpload: await buildCoverUpload('bp'),
     };
-    const updated = [post, ...data.filter(item => String(item.id) !== post.id)];
-    await ghPut(c.blogPath, JSON.stringify(updated, null, 2) + '\n', sha, `Publish blog post: ${title}`);
+
+    if (!LOCAL_SERVER_MODE) {
+      showStatus('bp-status','Publishing post through Vercel…','info');
+      await publishPostThroughBackend(payload);
+    } else {
+      if (pendingImageFiles.bp) {
+        const file = pendingImageFiles.bp;
+        const imagePath = 'uploads/' + safeUploadName(file);
+        showStatus('bp-status','Uploading image to GitHub…','info');
+        await ghPutBase64(imagePath, await fileToBase64(file), 'Upload image: ' + file.name);
+        payload.coverImage = '/' + imagePath;
+        payload.photo = payload.coverImage;
+      }
+      showStatus('bp-status','Publishing post to GitHub…','info');
+      const c = cfg();
+      const {data,sha} = await ghGet(c.blogPath);
+      const updated = [payload, ...data.filter(item => String(item.id) !== payload.id)];
+      await ghPut(c.blogPath, JSON.stringify(updated, null, 2) + '\n', sha, `Publish blog post: ${title}`);
+    }
+
     try { localStorage.removeItem('hkotc_blog_posts_cache_v1'); } catch {}
     showStatus('bp-status','✅ Published to GitHub. Opening blog page…','ok');
     ['bp-title','bp-body','bp-excerpt','bp-tags','bp-photo'].forEach(id=>document.getElementById(id).value='');
