@@ -987,6 +987,7 @@ async function publishChannelPost() {
     const post={message_id:Date.now(),date:Math.floor(Date.now()/1000),text,photo:photo||'',channel:'hkotcdesk',message_link:link||''};
     const updated=[post,...data];
     await writeFile(c.chPath,updated,sha,`📢 Channel post — ${new Date().toISOString().slice(0,10)}`);
+    try { localStorage.removeItem('hkotc_blog_posts_cache_v1'); } catch {}
     showStatus('cp-status', LOCAL_SERVER_MODE ? '✅ Published to local server. Live on blog now.' : '✅ Published! Live on blog now.','ok');
     cpClear(); loadAllPosts();
   } catch(e){ showStatus('cp-status','❌ '+friendlyGitHubError(e.message),'err'); }
@@ -1015,6 +1016,7 @@ async function publishBlogPost() {
     const post={id:Date.now(),date:Math.floor(Date.now()/1000),title,body,excerpt:excerpt||body.slice(0,160)+'…',photo:photo||'',category:cat,tags:tags?tags.split(',').map(t=>t.trim()):[]};
     const updated=[post,...data];
     await writeFile(c.blogPath,updated,sha,`✍️ Blog post — ${title.slice(0,60)}`);
+    try { localStorage.removeItem('hkotc_blog_posts_cache_v1'); } catch {}
     showStatus('bp-status', LOCAL_SERVER_MODE ? '✅ Published to local server. Live on blog now.' : '✅ Published! Live on blog now.','ok');
     // Clear
     ['bp-title','bp-body','bp-excerpt','bp-tags','bp-photo'].forEach(id=>document.getElementById(id).value='');
@@ -1145,12 +1147,14 @@ function filterPosts(f, btn) {
 }
 async function deletePost(type, idx) {
   if (!confirm('Delete this post? This cannot be undone.')) return;
+  try { localStorage.removeItem('hkotc_blog_posts_cache_v1'); } catch {}
   const c=cfg();
   const path=type==='blog'?c.blogPath:c.chPath;
   const {data,sha}=await readFile(path);
   data.splice(idx,1);
   try {
     await writeFile(path,data,sha,'🗑 Delete post');
+    try { localStorage.removeItem('hkotc_blog_posts_cache_v1'); } catch {}
     await loadAllPosts();
     renderPostsTable(document.querySelector('.filter-tab.active')?.dataset.f||'all');
   } catch(e){ alert('Delete failed: '+e.message); }

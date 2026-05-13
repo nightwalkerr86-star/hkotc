@@ -559,7 +559,7 @@
   async function initBlogPosts() {
     const grid = document.getElementById('blog-grid');
     if (!grid) return;
-    const cachedPosts = readCachedBlogPosts();
+    const cachedPosts = isLocalServer() ? [] : readCachedBlogPosts();
     if (cachedPosts.length) {
       grid.innerHTML = cachedPosts.map(blogCardHTML).join('');
     } else {
