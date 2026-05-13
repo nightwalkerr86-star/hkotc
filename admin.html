@@ -541,31 +541,38 @@
         </div>
         <div class="card">
           <div class="card-title">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
-            GitHub Connection
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+            Secure Publishing Backend
           </div>
-          <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Posts are saved to your GitHub repo. This is a one-time setup.</p>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.7">Blog posts are published through <code>/api/publish-post</code>. Keep the GitHub token in Vercel environment variables only, never in this admin page.</p>
           <div class="setup-fields">
             <div class="frow" style="margin:0">
-              <label class="flabel">GitHub Token</label>
-              <input class="finput" id="s-token" type="password" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+              <label class="flabel">Required env</label>
+              <input class="finput" type="text" value="GITHUB_TOKEN" readonly>
             </div>
             <div class="frow" style="margin:0">
-              <label class="flabel">Repository (owner/repo)</label>
-              <input class="finput" id="s-repo" type="text" placeholder="yourname/otc-web">
+              <label class="flabel">Required env</label>
+              <input class="finput" type="text" value="GITHUB_OWNER" readonly>
             </div>
             <div class="frow" style="margin:0">
-              <label class="flabel">Blog posts file path</label>
-              <input class="finput" id="s-blog-path" type="text" value="otc-web/blog-posts.json" readonly>
+              <label class="flabel">Required env</label>
+              <input class="finput" type="text" value="GITHUB_REPO" readonly>
             </div>
             <div class="frow" style="margin:0">
-              <label class="flabel">Channel posts file path</label>
-              <input class="finput" id="s-ch-path" type="text" value="otc-web/channel-posts.json" readonly>
+              <label class="flabel">Required env</label>
+              <input class="finput" type="text" value="ADMIN_PASSWORD" readonly>
+            </div>
+            <div class="frow" style="margin:0">
+              <label class="flabel">Optional env</label>
+              <input class="finput" type="text" value="GITHUB_BRANCH=main" readonly>
+            </div>
+            <div class="frow" style="margin:0">
+              <label class="flabel">Optional env</label>
+              <input class="finput" type="text" value="GITHUB_BLOG_PATH=blog-posts.json" readonly>
             </div>
           </div>
           <div class="btn-row" style="margin-top:16px">
-            <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
-            <button class="btn btn-ghost" onclick="testConnection()">Test Connection</button>
+            <button class="btn btn-ghost" onclick="testConnection()">Check Backend</button>
           </div>
           <div class="status" id="s-status"></div>
         </div>
@@ -665,8 +672,8 @@ function nav(id) {
 // ═══════════════════════════════════════════════════════════
 //  SETTINGS
 // ═══════════════════════════════════════════════════════════
-const BLOG_POSTS_PATH = 'otc-web/blog-posts.json';
-const CHANNEL_POSTS_PATH = 'otc-web/channel-posts.json';
+const BLOG_POSTS_PATH = 'blog-posts.json';
+const CHANNEL_POSTS_PATH = 'channel-posts.json';
 const LOCAL_SERVER_MODE = ['127.0.0.1', 'localhost'].includes(location.hostname) || location.protocol === 'file:';
 const LOCAL_API_BASE = location.protocol === 'file:' ? 'http://127.0.0.1:8000' : '';
 function serverContentPath(path) {
@@ -677,44 +684,28 @@ function serverContentPath(path) {
 
 function cfg() {
   return {
-    token:    localStorage.getItem('gh_token')||'',
-    repo:     localStorage.getItem('gh_repo')||'',
-    blogPath: BLOG_POSTS_PATH,
-    chPath:   CHANNEL_POSTS_PATH,
+    repo: 'nightwalkerr86-star/hkotc',
+    blogPath: 'blog-posts.json',
+    chPath: 'channel-posts.json',
   };
 }
 function saveSettings() {
-  const t=document.getElementById('s-token').value.trim();
-  const r=document.getElementById('s-repo').value.trim();
-  const bp=document.getElementById('s-blog-path').value.trim();
-  const cp=document.getElementById('s-ch-path').value.trim();
-  if (!t||!r) { showStatus('s-status','Please fill in Token and Repository.','err'); return; }
-  localStorage.setItem('gh_token', t);
-  localStorage.setItem('gh_repo', r);
-  localStorage.setItem('gh_blog_path', BLOG_POSTS_PATH);
-  localStorage.setItem('gh_ch_path', CHANNEL_POSTS_PATH);
-  showStatus('s-status','✅ Settings saved!','ok');
+  showStatus('s-status','No frontend GitHub settings are needed. Configure environment variables in Vercel.','info');
 }
-function loadSettings() {
-  const c=cfg();
-  if (c.token) document.getElementById('s-token').value=c.token;
-  if (c.repo)  document.getElementById('s-repo').value=c.repo;
-  document.getElementById('s-blog-path').value=BLOG_POSTS_PATH;
-  document.getElementById('s-ch-path').value=CHANNEL_POSTS_PATH;
-}
+function loadSettings() {}
 async function testConnection() {
-  const c=cfg();
-  if (!c.token||!c.repo) { showStatus('s-status','Fill in settings first.','err'); return; }
-  showStatus('s-status','Testing…','info');
+  showStatus('s-status','Testing backend…','info');
   try {
-    const res=await fetch(`https://api.github.com/repos/${c.repo}`,{headers:{Authorization:`Bearer ${c.token}`}});
-    const d=await res.json();
-    if (!d.full_name) {
-      showStatus('s-status','❌ Could not access repo. Check token + repo name.','err');
-      return;
-    }
-    await checkContentAccess(c.blogPath);
-    showStatus('s-status',`✅ Connected to ${d.full_name}. Contents permission OK.`,'ok');
+    const password = getAdminPublishPassword();
+    if (!password) { showStatus('s-status','Admin password is required to test publishing backend.','err'); return; }
+    const res = await fetch('/api/publish-post', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'x-admin-password': password },
+      body: JSON.stringify({ title:'Backend test', content:'Backend test', dryRun:true })
+    });
+    if (res.status === 401) { sessionStorage.removeItem('admin_publish_password'); showStatus('s-status','❌ Wrong admin password.','err'); return; }
+    if (!res.ok) { const e = await res.json().catch(()=>({message:res.status})); showStatus('s-status','❌ '+(e.message || e.error || res.status),'err'); return; }
+    showStatus('s-status','✅ Backend is reachable.','ok');
   } catch(e) { showStatus('s-status','❌ '+friendlyGitHubError(e.message),'err'); }
 }
 function changePIN() {
@@ -726,35 +717,44 @@ function changePIN() {
   showStatus('pin-change-status','✅ PIN updated!','ok');
 }
 
+function getAdminPublishPassword() {
+  let password = sessionStorage.getItem('admin_publish_password') || '';
+  if (!password) {
+    password = prompt('Enter admin publish password');
+    if (password) sessionStorage.setItem('admin_publish_password', password);
+  }
+  return password;
+}
+
+function clearAdminPublishPassword() {
+  sessionStorage.removeItem('admin_publish_password');
+}
+
 function friendlyGitHubError(message) {
+  if (/Invalid admin password|unauthorized/i.test(message)) {
+    return 'Wrong admin publish password. Please try again.';
+  }
+  if (/Missing environment variable/i.test(message)) {
+    return message + '. Add it in Vercel Project Settings → Environment Variables.';
+  }
   if (/Resource not accessible by personal access token/i.test(message)) {
-    return 'Token permission problem: edit your GitHub token and set Repository permissions → Contents → Read and write, and make sure this repo is selected.';
+    return 'GitHub token permission problem: the server token needs Repository permissions → Contents → Read and write.';
   }
   if (/Bad credentials/i.test(message)) {
-    return 'Bad token. Copy a new GitHub token and paste it in Settings.';
+    return 'Server GitHub token is invalid. Create a new token and update GITHUB_TOKEN in Vercel.';
   }
   if (/Not Found|GitHub read 404/i.test(message)) {
-    return 'Repo or file path not found. Check Repository and the JSON file path in Settings.';
-  }
-  if (/GitHub read 403/i.test(message)) {
-    return 'Token cannot read this repo. Select this repository in the token settings and allow Contents read/write.';
+    return 'GitHub repo or JSON path not found. Check GITHUB_OWNER, GITHUB_REPO, and GITHUB_BLOG_PATH in Vercel.';
   }
   return message;
 }
 
 async function checkContentAccess(path) {
-  if (LOCAL_SERVER_MODE) return;
-  const c=cfg();
-  const res=await fetch(`https://api.github.com/repos/${c.repo}/contents/${path}`,{
-    headers:{Authorization:`Bearer ${c.token}`,Accept:'application/vnd.github+json'}
-  });
-  if (res.ok || res.status===404) return;
-  const e=await res.json().catch(()=>({message:`GitHub read ${res.status}`}));
-  throw new Error(e.message||`GitHub read ${res.status}`);
+  return true;
 }
 
 // ═══════════════════════════════════════════════════════════
-//  GITHUB API
+//  CONTENT HELPERS
 // ═══════════════════════════════════════════════════════════
 async function localGet(path) {
   const res = await fetch(LOCAL_API_BASE + '/api/content?path=' + encodeURIComponent(serverContentPath(path)), { cache: 'no-store' });
@@ -784,8 +784,8 @@ async function localUploadImage(path, base64Content) {
 
 async function ghGet(path) {
   const c=cfg();
-  const res=await fetch(`https://api.github.com/repos/${c.repo}/contents/${path}`,{
-    headers:{Authorization:`Bearer ${c.token}`,Accept:'application/vnd.github+json'}
+  const res=await fetch(`https://api.github.com/repos/${c.repo}/contents/${path}?ref=main`,{
+    headers:{Accept:'application/vnd.github+json'}
   });
   if (!res.ok){ const e=await res.json().catch(()=>({message:`GitHub read ${res.status}`})); throw new Error(e.message||`GitHub read ${res.status}`); }
   return res.json();
@@ -804,28 +804,12 @@ function decodeBase64Utf8(base64) {
 }
 
 async function ghPut(path, content, sha, msg) {
-  const c=cfg();
-  const res=await fetch(`https://api.github.com/repos/${c.repo}/contents/${path}`,{
-    method:'PUT',
-    headers:{Authorization:`Bearer ${c.token}`,Accept:'application/vnd.github+json','Content-Type':'application/json'},
-    body:JSON.stringify({message:msg, content:encodeBase64Utf8(JSON.stringify(content,null,2)), sha})
-  });
-  if (!res.ok){ const e=await res.json(); throw new Error(e.message||res.status); }
-  return res.json();
+  throw new Error('Publishing now uses the secure /api/publish-post backend. GitHub tokens are not stored in admin.html.');
 }
 
 async function ghPutBase64(path, base64Content, msg) {
   if (LOCAL_SERVER_MODE) return localUploadImage(path, base64Content);
-  const c=cfg();
-  let sha;
-  try { sha=(await ghGet(path)).sha; } catch {}
-  const res=await fetch(`https://api.github.com/repos/${c.repo}/contents/${path}`,{
-    method:'PUT',
-    headers:{Authorization:`Bearer ${c.token}`,Accept:'application/vnd.github+json','Content-Type':'application/json'},
-    body:JSON.stringify({message:msg, content:base64Content, sha})
-  });
-  if (!res.ok){ const e=await res.json().catch(()=>({message:res.status})); throw new Error(e.message||res.status); }
-  return res.json();
+  throw new Error('Image upload for blog posts is handled by the secure publish backend.');
 }
 async function readFile(path) {
   try {
@@ -979,7 +963,6 @@ async function publishChannelPost() {
   const link=document.getElementById('cp-link').value.trim();
   if (!text){ showStatus('cp-status','Post text is required.','err'); return; }
   const c=cfg();
-  if (!LOCAL_SERVER_MODE && (!c.token||!c.repo)){ showStatus('cp-status','Set up GitHub in Settings first.','err'); return; }
   setBtnLoading('cp-publish-btn',true);
   try {
     photo=await uploadPendingImage('cp');
@@ -999,26 +982,62 @@ async function publishChannelPost() {
 // ═══════════════════════════════════════════════════════════
 function bpPreview(){}
 function updateBpChar(){ document.getElementById('bp-char').textContent=document.getElementById('bp-body').value.length; }
+function slugifyPostTitle(value) {
+  return String(value || '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9\u4e00-\u9fff\u1780-\u17ff]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80) || ('post-' + Date.now());
+}
+
+async function buildCoverUpload(prefix) {
+  const file = pendingImageFiles[prefix];
+  if (!file) return null;
+  return {
+    fileName: file.name,
+    mimeType: file.type,
+    base64: await fileToBase64(file),
+  };
+}
+
 async function publishBlogPost() {
   const title=document.getElementById('bp-title').value.trim();
   const body=document.getElementById('bp-body').value.trim();
   const excerpt=document.getElementById('bp-excerpt').value.trim();
   const tags=document.getElementById('bp-tags').value.trim();
   const cat=document.getElementById('bp-cat').value;
-  let photo=document.getElementById('bp-photo').value.trim();
+  const coverImage=document.getElementById('bp-photo').dataset.localFile ? '' : document.getElementById('bp-photo').value.trim();
   if (!title||!body){ showStatus('bp-status','Title and body are required.','err'); return; }
-  const c=cfg();
-  if (!LOCAL_SERVER_MODE && (!c.token||!c.repo)){ showStatus('bp-status','Set up GitHub in Settings first.','err'); return; }
+  const adminPassword = getAdminPublishPassword();
+  if (!adminPassword){ showStatus('bp-status','Admin publish password is required.','err'); return; }
   setBtnLoading('bp-publish-btn',true);
   try {
-    photo=await uploadPendingImage('bp');
-    const {data,sha}=await readFile(c.blogPath);
-    const post={id:Date.now(),date:Math.floor(Date.now()/1000),title,body,excerpt:excerpt||body.slice(0,160)+'…',photo:photo||'',category:cat,tags:tags?tags.split(',').map(t=>t.trim()):[]};
-    const updated=[post,...data];
-    await writeFile(c.blogPath,updated,sha,`✍️ Blog post — ${title.slice(0,60)}`);
+    const payload = {
+      title,
+      slug: slugifyPostTitle(title),
+      category: cat,
+      excerpt: excerpt || body.slice(0,160),
+      content: body,
+      coverImage,
+      tags: tags ? tags.split(',').map(t=>t.trim()).filter(Boolean) : [],
+      coverImageUpload: await buildCoverUpload('bp'),
+    };
+    const res = await fetch('/api/publish-post', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'x-admin-password': adminPassword },
+      body: JSON.stringify(payload),
+    });
+    const result = await res.json().catch(()=>({message:res.status}));
+    if (res.status === 401) {
+      clearAdminPublishPassword();
+      showStatus('bp-status','❌ Wrong admin publish password. Please try again.','err');
+      return;
+    }
+    if (!res.ok) throw new Error(result.message || result.error || 'Publish failed');
     try { localStorage.removeItem('hkotc_blog_posts_cache_v1'); } catch {}
-    showStatus('bp-status', LOCAL_SERVER_MODE ? '✅ Published to local server. Live on blog now.' : '✅ Published! Live on blog now.','ok');
-    // Clear
+    showStatus('bp-status','✅ Published to GitHub. Refresh blog after Vercel redeploy or GitHub raw update.','ok');
     ['bp-title','bp-body','bp-excerpt','bp-tags','bp-photo'].forEach(id=>document.getElementById(id).value='');
     pendingImageFiles.bp=null;
     if (pendingImagePreviews.bp) URL.revokeObjectURL(pendingImagePreviews.bp);
@@ -1108,7 +1127,7 @@ document.addEventListener('input', event => {
 // ═══════════════════════════════════════════════════════════
 let allPostsCache={blog:[],channel:[]};
 async function loadAllPosts() {
-  const c=cfg(); if (!LOCAL_SERVER_MODE && (!c.token||!c.repo)) return;
+  const c=cfg();
   const [bl,ch]=await Promise.all([readFile(c.blogPath),readFile(c.chPath)]);
   allPostsCache={blog:bl.data, channel:ch.data};
   document.getElementById('posts-count').textContent=bl.data.length+ch.data.length;
@@ -1211,8 +1230,6 @@ function setBtnLoading(id,loading) {
 async function initApp() {
   loadSettings();
   updateCommentsCount();
-  const c=cfg();
-  if (!LOCAL_SERVER_MODE && (!c.token||!c.repo)) { nav('settings'); return; }
   await loadAllPosts();
   renderDashboard();
   document.getElementById('stat-blog').textContent=allPostsCache.blog.length;

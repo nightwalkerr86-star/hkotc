@@ -1,0 +1,198 @@
+const DEFAULT_BRANCH = 'main';
+const DEFAULT_POSTS_PATH = 'blog-posts.json';
+
+function send(res, status, payload) {
+  res.statusCode = status;
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-store');
+  res.end(JSON.stringify(payload));
+}
+
+function env(name, fallback = '') {
+  return process.env[name] || fallback;
+}
+
+function requireEnv(name) {
+  const value = env(name);
+  if (!value) throw new Error(`Missing environment variable: ${name}`);
+  return value;
+}
+
+function slugify(value) {
+  const base = String(value || '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9\u4e00-\u9fff\u1780-\u17ff]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80);
+  return base || `post-${Date.now()}`;
+}
+
+function safeUploadName(fileName = 'cover.jpg') {
+  const ext = (String(fileName).match(/\.([a-z0-9]+)$/i)?.[1] || 'jpg').toLowerCase().replace('jpeg', 'jpg');
+  const base = String(fileName)
+    .replace(/\.[^.]+$/, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 42) || 'cover';
+  return `${Date.now()}-${base}.${ext}`;
+}
+
+function normalizeCategory(value) {
+  const map = {
+    market: 'Market News',
+    news: 'Market News',
+    regulation: 'Regulation',
+    guide: 'OTC Guide',
+    defi: 'DeFi',
+  };
+  return map[String(value || '').toLowerCase()] || String(value || 'Market News');
+}
+
+function normalizeExistingPost(post) {
+  if (!post || typeof post !== 'object') return null;
+  const title = post.title || 'Untitled post';
+  const content = post.content || post.body || post.text || '';
+  const createdAt = post.createdAt || post.publishedAt || post.updatedAt || (post.date ? new Date(typeof post.date === 'number' ? post.date * 1000 : post.date).toISOString() : new Date().toISOString());
+  const slug = post.slug || slugify(title);
+  return {
+    id: String(post.id || post.message_id || Date.now()),
+    title,
+    slug,
+    category: normalizeCategory(post.category),
+    excerpt: post.excerpt || String(content).slice(0, 160),
+    content,
+    coverImage: post.coverImage || post.photo || '',
+    author: post.author || 'HKOTC Desk',
+    status: post.status || 'published',
+    createdAt,
+    updatedAt: post.updatedAt || createdAt,
+    publishedAt: post.publishedAt || createdAt,
+    tags: Array.isArray(post.tags) ? post.tags : [],
+  };
+}
+
+async function githubRequest(url, options = {}) {
+  const token = requireEnv('GITHUB_TOKEN');
+  const res = await fetch(url, {
+    ...options,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      ...(options.headers || {}),
+    },
+  });
+  const text = await res.text();
+  const data = text ? JSON.parse(text) : null;
+  if (!res.ok) throw new Error(data?.message || `GitHub request failed: ${res.status}`);
+  return data;
+}
+
+async function getGithubFile(owner, repo, branch, path) {
+  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path).replace(/%2F/g, '/')}?ref=${encodeURIComponent(branch)}`;
+  try {
+    const file = await githubRequest(url);
+    const json = JSON.parse(Buffer.from(file.content || '', 'base64').toString('utf8'));
+    return { data: Array.isArray(json) ? json : [], sha: file.sha };
+  } catch (error) {
+    if (/Not Found/i.test(error.message)) return { data: [], sha: undefined };
+    throw error;
+  }
+}
+
+async function putGithubFile(owner, repo, branch, path, content, sha, message) {
+  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path).replace(/%2F/g, '/')}`;
+  const body = {
+    message,
+    branch,
+    content: Buffer.from(content).toString('base64'),
+  };
+  if (sha) body.sha = sha;
+  return githubRequest(url, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+}
+
+async function readJsonBody(req) {
+  const chunks = [];
+  for await (const chunk of req) chunks.push(chunk);
+  return JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}');
+}
+
+module.exports = async function handler(req, res) {
+  if (req.method !== 'POST') return send(res, 405, { error: 'method_not_allowed' });
+
+  try {
+    const adminPassword = env('ADMIN_PASSWORD') || env('ADMIN_PIN');
+    if (!adminPassword) throw new Error('Missing environment variable: ADMIN_PASSWORD');
+
+    const payload = await readJsonBody(req);
+    const suppliedPassword = req.headers['x-admin-password'] || payload.adminPassword || '';
+    if (String(suppliedPassword) !== String(adminPassword)) {
+      return send(res, 401, { error: 'unauthorized', message: 'Invalid admin password' });
+    }
+
+    const owner = requireEnv('GITHUB_OWNER');
+    const repo = requireEnv('GITHUB_REPO');
+    const branch = env('GITHUB_BRANCH', DEFAULT_BRANCH);
+    const postsPath = env('GITHUB_BLOG_PATH', DEFAULT_POSTS_PATH);
+
+    if (payload.dryRun) return send(res, 200, { ok: true, mode: 'dry-run', owner, repo, branch, postsPath });
+
+    const title = String(payload.title || '').trim();
+    const content = String(payload.content || payload.body || '').trim();
+    if (!title || !content) return send(res, 400, { error: 'invalid_post', message: 'Title and content are required' });
+
+    let coverImage = String(payload.coverImage || '').trim();
+    if (payload.coverImageUpload && payload.coverImageUpload.base64) {
+      const uploadName = safeUploadName(payload.coverImageUpload.fileName);
+      const uploadPath = `uploads/${uploadName}`;
+      const imageBuffer = Buffer.from(String(payload.coverImageUpload.base64), 'base64');
+      await putGithubFile(owner, repo, branch, uploadPath, imageBuffer, undefined, `Upload image: ${uploadName}`);
+      coverImage = `/${uploadPath}`;
+    }
+
+    const now = new Date().toISOString();
+    const requestedSlug = slugify(payload.slug || title);
+    const { data: currentPosts, sha } = await getGithubFile(owner, repo, branch, postsPath);
+    const posts = currentPosts.map(normalizeExistingPost).filter(Boolean);
+    const usedSlugs = new Set(posts.map(post => post.slug));
+    let slug = requestedSlug;
+    if (!payload.id) {
+      let suffix = 2;
+      while (usedSlugs.has(slug)) slug = `${requestedSlug}-${suffix++}`;
+    }
+
+    const post = {
+      id: String(payload.id || Date.now()),
+      title,
+      slug,
+      category: normalizeCategory(payload.category),
+      excerpt: String(payload.excerpt || content.slice(0, 160)).trim(),
+      content,
+      coverImage,
+      author: 'HKOTC Desk',
+      status: 'published',
+      createdAt: payload.createdAt || now,
+      updatedAt: now,
+      publishedAt: payload.publishedAt || now,
+      tags: Array.isArray(payload.tags) ? payload.tags : [],
+    };
+
+    const existingIndex = posts.findIndex(item => item.id === post.id || item.slug === post.slug);
+    if (existingIndex >= 0) posts[existingIndex] = { ...posts[existingIndex], ...post, createdAt: posts[existingIndex].createdAt || post.createdAt };
+    else posts.unshift(post);
+
+    posts.sort((a, b) => new Date(b.publishedAt || b.createdAt) - new Date(a.publishedAt || a.createdAt));
+    await putGithubFile(owner, repo, branch, postsPath, JSON.stringify(posts, null, 2) + '\n', sha, `Publish blog post: ${title}`);
+
+    return send(res, 200, { ok: true, post, count: posts.length });
+  } catch (error) {
+    return send(res, 500, { error: 'publish_failed', message: error.message });
+  }
+};
