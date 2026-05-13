@@ -1530,8 +1530,8 @@
     if (heroRate) heroRate.textContent = 'HK$' + rate.toFixed(4);
     const el = document.getElementById('hero-change');
     if (el) {
-      el.textContent = getRateStatusText();
-      el.style.color = rateStatus === 'live' ? 'var(--green)' : 'var(--muted)';
+      el.textContent = '';
+      el.style.display = 'none';
     }
     updateCalculatorRateCards();
   }
