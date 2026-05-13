@@ -94,6 +94,14 @@
     .flabel{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);display:block;margin-bottom:7px}
     .finput,.fselect,textarea{width:100%;padding:11px 14px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border-color .2s}
     .finput:focus,.fselect:focus,textarea:focus{border-color:rgba(245,166,35,0.45)}
+    .finput:-webkit-autofill,.finput:-webkit-autofill:hover,.finput:-webkit-autofill:focus,
+    textarea:-webkit-autofill,textarea:-webkit-autofill:hover,textarea:-webkit-autofill:focus{
+      -webkit-text-fill-color:var(--text);
+      caret-color:var(--text);
+      box-shadow:0 0 0 1000px var(--bg) inset;
+      border-color:rgba(245,166,35,0.45);
+      transition:background-color 9999s ease-out;
+    }
     .upload-drop{border:1.5px dashed rgba(245,166,35,.42);border-radius:12px;background:rgba(255,255,255,.025);color:var(--muted);min-height:132px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;margin-bottom:12px;transition:border-color .2s,background .2s,box-shadow .2s}
     .upload-drop:hover{border-color:rgba(245,166,35,.75);background:rgba(245,166,35,.055);box-shadow:0 0 0 3px rgba(245,166,35,.05)}
     .upload-drop svg{width:34px;height:34px;color:rgba(245,166,35,.82)}
@@ -324,7 +332,7 @@
           <div class="card editor-main-card">
             <div class="frow">
               <label class="flabel">Post Title *</label>
-              <input class="finput editor-title-input" id="bp-title" type="text" placeholder="e.g. Bitcoin Hits New ATH — What It Means for HK OTC">
+              <input class="finput editor-title-input" id="bp-title" type="text" placeholder="e.g. Bitcoin Hits New ATH — What It Means for HK OTC" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
             </div>
             <div class="frow">
               <label class="flabel">Body / Content *</label>
@@ -335,16 +343,16 @@
                 <button class="fmt-btn" type="button">• List</button>
                 <button class="fmt-btn" type="button">—</button>
               </div>
-              <textarea id="bp-body" class="editor-body" oninput="updateBpChar()" placeholder="Write your article here....&#10;&#10;You can use line breaks and basic formatting."></textarea>
+              <textarea id="bp-body" class="editor-body" oninput="updateBpChar()" placeholder="Write your article here....&#10;&#10;You can use line breaks and basic formatting." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
               <div class="char-hint"><span id="bp-char">0</span> characters</div>
             </div>
             <div class="frow">
               <label class="flabel">Excerpt <span style="text-transform:none;font-weight:600;letter-spacing:.5px">(short description shown in cards)</span></label>
-              <textarea id="bp-excerpt" maxlength="260" placeholder="One or two sentences about this post..." style="min-height:82px"></textarea>
+              <textarea id="bp-excerpt" maxlength="260" placeholder="One or two sentences about this post..." style="min-height:82px" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
             </div>
             <div class="frow" style="margin-bottom:0">
               <label class="flabel">Tags <span style="text-transform:none;font-weight:600;letter-spacing:.5px">(comma separated)</span></label>
-              <input class="finput" id="bp-tags" type="text" placeholder="BTC, USDT, Hong Kong, OTC">
+              <input class="finput" id="bp-tags" type="text" placeholder="BTC, USDT, Hong Kong, OTC" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
             </div>
           </div>
 
