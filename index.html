@@ -376,7 +376,7 @@
     .calc-tab svg { flex-shrink: 0; }
     .payment-method-wrap { margin: -6px 0 22px; }
     .payment-method-label { display:block; font-size:12px; font-weight:700; color:var(--muted); letter-spacing:.5px; text-transform:uppercase; margin-bottom:10px; }
-    .payment-methods { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+    .payment-methods { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
     .payment-card { display:flex; align-items:center; gap:10px; min-width:0; padding:12px 14px; border-radius:14px; background:rgba(255,255,255,0.025); border:1px solid var(--border); color:var(--muted); text-align:left; transition:var(--transition); }
     .payment-card:hover { border-color:rgba(245,166,35,.28); color:var(--text); }
     .payment-card.active { color:var(--text); border-color:var(--gold); background:linear-gradient(135deg,rgba(245,166,35,.14),rgba(245,166,35,.04)); box-shadow:0 0 0 1px rgba(245,166,35,.15), 0 12px 32px rgba(245,166,35,.14); }
@@ -403,11 +403,6 @@
     .buy-rate { color: var(--green); }
     .sell-rate { color: var(--red); }
     .calc-note { font-size: 12px; color: var(--muted); text-align: center; padding-top: 4px; }
-    .calc-market-meta { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:18px 0; }
-    .calc-meta-item { padding:10px 12px; border:1px solid var(--border); border-radius:10px; background:var(--bg); }
-    .calc-meta-item span { display:block; margin-bottom:3px; font-size:10px; font-weight:800; letter-spacing:.45px; text-transform:uppercase; color:var(--muted); }
-    .calc-meta-item strong { font-size:13px; color:var(--text); }
-    .calc-rate-status { min-height:18px; margin:-6px 0 14px; font-size:12px; color:var(--muted); text-align:center; }
 
     /* ─── SECTION HEADERS ── */
     .section-header { text-align: center; margin-bottom: 56px; }
@@ -549,7 +544,6 @@
       .calc-currency { padding: 0 10px; gap: 5px; font-size: 12px; }
       .coin-img { width: 22px; height: 22px; }
       .payment-methods { grid-template-columns:1fr; gap:8px; }
-      .calc-market-meta { grid-template-columns:1fr; }
       .payment-card { padding:11px 10px; gap:8px; }
       .payment-icon, .payment-icon svg { width:20px; height:20px; }
       .payment-name { font-size:12px; }
@@ -817,7 +811,6 @@
               </span>
               <span>
                 <span class="payment-name" data-i18n="payment-cash">現金交易</span>
-                <span class="payment-spread" data-payment-spread="cash">0.98%</span>
               </span>
             </button>
             <button class="payment-card" type="button" data-method="transfer" onclick="setPaymentMethod('transfer', this)">
@@ -832,43 +825,10 @@
               </span>
               <span>
                 <span class="payment-name" data-i18n="payment-transfer">銀行轉賬</span>
-                <span class="payment-spread" data-payment-spread="transfer">0.59%</span>
-              </span>
-            </button>
-            <button class="payment-card" type="button" data-method="usd" onclick="setPaymentMethod('usd', this)">
-              <span class="payment-icon" aria-hidden="true">
-                <svg viewBox="0 0 32 32" fill="none">
-                  <rect x="6" y="7" width="20" height="18" rx="4" fill="rgba(245,166,35,.16)" stroke="currentColor" stroke-width="1.6"/>
-                  <path d="M16 10.2v11.6M12.8 12.6h4.9a2.2 2.2 0 0 1 0 4.4h-3.2a2.2 2.2 0 0 0 0 4.4h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-                  <path d="M9.5 25h13M11 5h10" stroke="currentColor" stroke-opacity=".65" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-              </span>
-              <span>
-                <span class="payment-name" data-i18n="payment-usd">美元轉賬</span>
-                <span class="payment-spread" data-payment-spread="usd">0.30%</span>
               </span>
             </button>
           </div>
         </div>
-        <div class="calc-market-meta" aria-live="polite">
-          <div class="calc-meta-item">
-            <span data-i18n="reference-rate-label">Reference rate</span>
-            <strong id="reference-rate-display">1 USDT = HK$7.8050</strong>
-          </div>
-          <div class="calc-meta-item">
-            <span data-i18n="selected-method-label">Payment method</span>
-            <strong id="selected-method-display">Cash</strong>
-          </div>
-          <div class="calc-meta-item">
-            <span data-i18n="selected-spread-label">Spread</span>
-            <strong id="selected-spread-display">0.98%</strong>
-          </div>
-          <div class="calc-meta-item">
-            <span data-i18n="updated-time-label">Updated</span>
-            <strong id="rate-updated-display">—</strong>
-          </div>
-        </div>
-        <div class="calc-rate-status" id="rate-status-text"></div>
         <div class="calc-field">
           <label id="from-label">You Pay (HKD)</label>
           <div class="calc-input-wrap">
@@ -1204,7 +1164,7 @@
       'from-buy':'You Pay (HKD)','to-buy':'You Receive (USDT)',
       'from-sell':'You Pay (USDT)','to-sell':'You Receive (HKD)',
       'buy-rate-label':'Buy Rate (per USDT)','sell-rate-label':'Sell Rate (per USDT)',
-      'payment-method-label':'Payment Method','payment-cash':'Cash','payment-transfer':'Bank Transfer','payment-usd':'USD Transfer','payment-spread':'Spread',
+      'payment-method-label':'Payment Method','payment-cash':'Cash','payment-transfer':'Bank Transfer','payment-spread':'Spread',
       'reference-rate-label':'Live reference rate','selected-method-label':'Selected method','selected-spread-label':'Spread','updated-time-label':'Updated','rate-status-live':'OKX live reference rate','rate-status-fallback':'Using latest available rate',
       'order-btn':'Place Order via Telegram',
       'calc-note':'Displayed rates are for reference only. Final rate must be confirmed by our OTC desk before payment.',
@@ -1258,7 +1218,7 @@
       'from-buy':'您支付（港幣）','to-buy':'您收取（USDT）',
       'from-sell':'您支付（USDT）','to-sell':'您收取（港幣）',
       'buy-rate-label':'買入匯率（每USDT）','sell-rate-label':'賣出匯率（每USDT）',
-      'payment-method-label':'付款方式','payment-cash':'現金交易','payment-transfer':'銀行轉賬','payment-usd':'美元轉賬','payment-spread':'差價',
+      'payment-method-label':'付款方式','payment-cash':'現金交易','payment-transfer':'銀行轉賬','payment-spread':'差價',
       'reference-rate-label':'即時參考匯率','selected-method-label':'已選付款方式','selected-spread-label':'差價','updated-time-label':'更新時間','rate-status-live':'OKX 即時參考匯率','rate-status-fallback':'使用最新可用匯率',
       'order-btn':'透過 Telegram 下單',
       'calc-note':'顯示匯率僅供參考。最終匯率必須由我們的 OTC 服務台在付款前確認。',
@@ -1484,7 +1444,6 @@
     paymentMethods: {
       cash: { label: 'Cash', zh: '現金交易', km: 'សាច់ប្រាក់', spread: 0.0098 },
       transfer: { label: 'Bank Transfer', zh: '銀行轉賬', km: 'ផ្ទេរធនាគារ', spread: 0.0059 },
-      usd: { label: 'USD Transfer', zh: '美元轉賬', km: 'ផ្ទេរ USD', spread: 0.0030 },
     }
   };
 
