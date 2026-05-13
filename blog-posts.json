@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "id": "1778652763751",
+    "title": "TESINT",
+    "slug": "tesint",
+    "category": "Market News",
+    "excerpt": "321",
+    "content": "123",
+    "coverImage": "/uploads/1778652762702-image-2026-05-13-10-45-38.jpg",
+    "author": "HKOTC Desk",
+    "status": "published",
+    "createdAt": "2026-05-13T06:12:43.631Z",
+    "updatedAt": "2026-05-13T06:12:43.631Z",
+    "publishedAt": "2026-05-13T06:12:43.631Z",
+    "tags": []
+  }
+]
