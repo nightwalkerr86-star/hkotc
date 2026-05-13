@@ -477,7 +477,6 @@
             <div class="frow" style="margin:0"><label class="flabel">Repository</label><input class="finput" id="gh-repo" type="text" placeholder="nightwalkerr86-star/hkotc"></div>
             <div class="frow" style="margin:0"><label class="flabel">Branch</label><input class="finput" id="gh-branch" type="text" placeholder="main"></div>
             <div class="frow" style="margin:0"><label class="flabel">Blog JSON Path</label><input class="finput" id="gh-blog-path" type="text" placeholder="blog-posts.json"></div>
-            <div class="frow" style="margin:0"><label class="flabel">Channel JSON Path</label><input class="finput" id="gh-channel-path" type="text" placeholder="channel-posts.json"></div>
           </div>
           <div class="btn-row" style="margin-top:16px"><button class="btn btn-primary" onclick="saveSettings()">Save GitHub Settings</button><button class="btn btn-ghost" onclick="testConnection()">Check GitHub</button></div>
           <div class="status" id="s-status"></div>
@@ -588,7 +587,7 @@ function cfg() {
     name,
     branch: saved.branch || 'main',
     blogPath: saved.blogPath || 'blog-posts.json',
-    chPath: saved.chPath || 'channel-posts.json',
+    chPath: 'channel-posts.json',
   };
 }
 function saveSettings() {
@@ -597,7 +596,6 @@ function saveSettings() {
     repo: document.getElementById('gh-repo').value.trim() || 'nightwalkerr86-star/hkotc',
     branch: document.getElementById('gh-branch').value.trim() || 'main',
     blogPath: document.getElementById('gh-blog-path').value.trim() || 'blog-posts.json',
-    chPath: document.getElementById('gh-channel-path').value.trim() || 'channel-posts.json',
   };
   if (!settings.token) { showStatus('s-status','GitHub token is required.','err'); return; }
   if (!/^[^/]+\/[^/]+$/.test(settings.repo)) { showStatus('s-status','Repository must look like owner/repo.','err'); return; }
@@ -611,7 +609,6 @@ function loadSettings() {
     'gh-repo': c.repo,
     'gh-branch': c.branch,
     'gh-blog-path': c.blogPath,
-    'gh-channel-path': c.chPath,
   };
   Object.entries(map).forEach(([id,value]) => { const el=document.getElementById(id); if (el) el.value=value; });
 }
