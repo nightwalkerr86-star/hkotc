@@ -141,6 +141,10 @@ module.exports = async function handler(req, res) {
     const branch = payload.githubBranch || env('GITHUB_BRANCH', DEFAULT_BRANCH);
     const postsPath = payload.githubBlogPath || env('GITHUB_BLOG_PATH', DEFAULT_POSTS_PATH);
 
+    if (payload.verifyOnly) {
+      const { data } = await getGithubFile(owner, repo, branch, postsPath, token);
+      return send(res, 200, { ok: true, mode: 'verify-only', owner, repo, branch, postsPath, count: data.length });
+    }
     if (payload.dryRun) return send(res, 200, { ok: true, mode: 'dry-run', owner, repo, branch, postsPath });
 
     const title = String(payload.title || '').trim();

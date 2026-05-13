@@ -616,7 +616,24 @@ async function testConnection() {
   showStatus('s-status','Checking GitHub access…','info');
   try {
     saveSettings();
-    await ghGet(cfg().blogPath);
+    const c = cfg();
+    if (!LOCAL_SERVER_MODE) {
+      const res = await fetch('/api/publish-post', {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json' },
+        body: JSON.stringify({
+          verifyOnly: true,
+          githubToken: c.token,
+          githubRepo: c.repo,
+          githubBranch: c.branch,
+          githubBlogPath: c.blogPath,
+        }),
+      });
+      const result = await res.json().catch(()=>({message:'GitHub check failed'}));
+      if (!res.ok) throw new Error(result.message || result.error || 'GitHub check failed');
+    } else {
+      await ghGet(c.blogPath);
+    }
     showStatus('s-status','✅ GitHub is connected. Blog JSON can be read.','ok');
   } catch(e) { showStatus('s-status','❌ '+friendlyGitHubError(e.message),'err'); }
 }
