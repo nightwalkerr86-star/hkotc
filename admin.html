@@ -291,42 +291,144 @@
           <div class="stat-card"><div class="stat-n" id="stat-total">—</div><div class="stat-l">Total Published</div></div>
         </div>
         <div class="card">
-          <div class="card-title">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h5"/></svg>
-            Static JSON Blog
+          <div class="card-title">Recent Posts</div>
+          <div id="recent-list" style="font-size:13px;color:var(--muted)">Loading…</div>
+        </div>
+      </div>
+
+      <!-- ── NEW BLOG POST ── -->
+      <div class="panel" id="panel-new-blog">
+        <div class="page-hd">
+          <h1>New Blog Post</h1>
+          <p>Create a blog post and save it to local JSON through server.py.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Write Post</div>
+          <div class="frow">
+            <label class="flabel">Title *</label>
+            <input class="finput" id="bp-title" type="text" placeholder="Post title">
           </div>
-          <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.7">This site now uses <code>blog-posts.json</code> only. No GitHub API, backend API, database, or auto-publish is used. When you create a post here, download the updated JSON file and manually upload or push it to GitHub.</p>
-          <div class="setup-fields">
-            <div class="frow" style="margin:0">
-              <label class="flabel">Blog data file</label>
-              <input class="finput" type="text" value="blog-posts.json" readonly>
-            </div>
-            <div class="frow" style="margin:0">
-              <label class="flabel">Image folder</label>
-              <input class="finput" type="text" value="uploads/" readonly>
-            </div>
+          <div class="frow">
+            <label class="flabel">Excerpt</label>
+            <textarea id="bp-excerpt" maxlength="260" placeholder="Short summary..." style="min-height:82px"></textarea>
           </div>
-          <div class="btn-row" style="margin-top:16px">
-            <button class="btn btn-ghost" onclick="testConnection()">Check JSON</button>
+          <div class="frow">
+            <label class="flabel">Content *</label>
+            <textarea id="bp-body" oninput="updateBpChar()" placeholder="Write the full post..." style="min-height:220px"></textarea>
+            <div class="char-hint"><span id="bp-char">0</span> characters</div>
           </div>
+          <div class="frow">
+            <label class="flabel">Category</label>
+            <select class="finput" id="bp-cat">
+              <option value="Market News">Market News</option>
+              <option value="Regulation">Regulation</option>
+              <option value="OTC Guide">OTC Guide</option>
+              <option value="DeFi">DeFi</option>
+            </select>
+          </div>
+          <div class="frow">
+            <label class="flabel">Tags</label>
+            <input class="finput" id="bp-tags" type="text" placeholder="USDT, HKD, OTC">
+          </div>
+          <div class="frow">
+            <label class="flabel">Cover Image URL / Path</label>
+            <input class="finput" id="bp-photo" type="text" placeholder="/uploads/image.jpg" oninput="onImgUrl('bp')">
+            <div class="char-hint">Upload an image or paste a path/URL. Local server saves uploads into <code>uploads/</code>.</div>
+            <div id="bp-img-preview-wrap" style="display:none;margin-top:12px"><img id="bp-img-preview" style="max-width:360px;width:100%;border-radius:12px;border:1px solid var(--border)" alt=""></div>
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center" id="bp-publish-btn" onclick="publishBlogPost()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Publish to Blog
+          </button>
+          <div class="status" id="bp-status"></div>
+        </div>
+      </div>
+
+      <!-- ── NEW CHANNEL POST ── -->
+      <div class="panel" id="panel-new-channel">
+        <div class="page-hd">
+          <h1>New Channel Post</h1>
+          <p>Create a channel-style post for the blog page.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Channel Post</div>
+          <div class="frow">
+            <label class="flabel">Post Text *</label>
+            <textarea id="cp-text" oninput="cpPreview();updateCpChar()" placeholder="Write channel post text..." style="min-height:180px"></textarea>
+            <div class="char-hint"><span id="cp-char">0</span> characters</div>
+          </div>
+          <div class="frow">
+            <label class="flabel">Image URL / Path</label>
+            <input class="finput" id="cp-photo" type="text" placeholder="/uploads/image.jpg" oninput="onImgUrl('cp')">
+            <div id="cp-img-preview-wrap" style="display:none;margin-top:12px"><img id="cp-img-preview" style="max-width:360px;width:100%;border-radius:12px;border:1px solid var(--border)" alt=""></div>
+          </div>
+          <div class="frow">
+            <label class="flabel">Telegram Link</label>
+            <input class="finput" id="cp-link" type="text" placeholder="https://t.me/...">
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center" id="cp-publish-btn" onclick="publishChannelPost()">Publish Channel Post</button>
+          <div class="status" id="cp-status"></div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <div class="card-title">Preview</div>
+          <div id="cp-prev-media" style="display:none;margin-bottom:12px"><img id="cp-prev-img" style="max-width:360px;width:100%;border-radius:12px" alt=""></div>
+          <div id="cp-prev-text" style="white-space:pre-line;color:var(--text)">Your post text will appear here…</div>
+          <div id="cp-prev-tags" style="margin-top:12px;color:var(--blue)"></div>
+          <div id="cp-prev-date" style="margin-top:12px;color:var(--muted);font-size:12px"></div>
+        </div>
+      </div>
+
+      <!-- ── ALL POSTS ── -->
+      <div class="panel" id="panel-all-posts">
+        <div class="page-hd">
+          <h1>All Posts</h1>
+          <p>Manage local JSON posts. Changes are saved through server.py.</p>
+        </div>
+        <div class="card">
+          <div class="filter-tabs">
+            <button class="filter-tab active" data-f="all" onclick="filterPosts('all',this)">All</button>
+            <button class="filter-tab" data-f="blog" onclick="filterPosts('blog',this)">Blog</button>
+            <button class="filter-tab" data-f="channel" onclick="filterPosts('channel',this)">Channel</button>
+          </div>
+          <table class="posts-table" style="margin-top:16px">
+            <thead><tr><th>Post</th><th>Type</th><th>Date</th><th>Actions</th></tr></thead>
+            <tbody id="posts-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── CUSTOMER COMMENTS ── -->
+      <div class="panel" id="panel-comments">
+        <div class="page-hd">
+          <h1>Customer Comments</h1>
+          <p>Homepage testimonials are stored in this browser.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Add Comment</div>
+          <div class="frow"><label class="flabel">Name *</label><input class="finput" id="cm-name" type="text" placeholder="Customer name"></div>
+          <div class="frow"><label class="flabel">Meta</label><input class="finput" id="cm-meta" type="text" placeholder="Investor · Hong Kong"></div>
+          <div class="frow"><label class="flabel">Rating</label><select class="finput" id="cm-rating"><option value="5">★★★★★ 5</option><option value="4">★★★★☆ 4</option><option value="3">★★★☆☆ 3</option></select></div>
+          <div class="frow"><label class="flabel">Comment *</label><textarea id="cm-text" maxlength="260" placeholder="Write the customer comment..." style="min-height:120px"></textarea><div class="char-hint"><span id="cm-char">0</span> / 260</div></div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="publishCustomerComment()">Publish Comment</button>
+          <div class="status" id="cm-status"></div>
+        </div>
+        <div class="card" style="margin-top:16px"><div class="card-title">Published Comments</div><div id="admin-comments-list"></div></div>
+      </div>
+
+      <!-- ── SETTINGS ── -->
+      <div class="panel" id="panel-settings">
+        <div class="page-hd"><h1>Settings</h1><p>Static blog settings and admin PIN.</p></div>
+        <div class="card">
+          <div class="card-title">Static JSON Blog</div>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.7">This local admin writes directly to <code>blog-posts.json</code> and <code>channel-posts.json</code> through <code>server.py</code>. Run the site at <code>http://127.0.0.1:8000</code>.</p>
+          <div class="setup-fields"><div class="frow" style="margin:0"><label class="flabel">Blog data file</label><input class="finput" type="text" value="blog-posts.json" readonly></div><div class="frow" style="margin:0"><label class="flabel">Image folder</label><input class="finput" type="text" value="uploads/" readonly></div></div>
+          <div class="btn-row" style="margin-top:16px"><button class="btn btn-ghost" onclick="testConnection()">Check JSON</button></div>
           <div class="status" id="s-status"></div>
         </div>
-
         <div class="card" style="margin-top:16px">
-          <div class="card-title">🔑 Change PIN</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:400px">
-            <div class="frow" style="margin:0">
-              <label class="flabel">New PIN (4 digits)</label>
-              <input class="finput" id="new-pin" type="password" maxlength="4" placeholder="••••">
-            </div>
-            <div class="frow" style="margin:0">
-              <label class="flabel">Confirm PIN</label>
-              <input class="finput" id="confirm-pin" type="password" maxlength="4" placeholder="••••">
-            </div>
-          </div>
-          <div class="btn-row" style="margin-top:14px">
-            <button class="btn btn-ghost" onclick="changePIN()">Update PIN</button>
-          </div>
+          <div class="card-title">Change PIN</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:400px"><div class="frow" style="margin:0"><label class="flabel">New PIN (4 digits)</label><input class="finput" id="new-pin" type="password" maxlength="4" placeholder="••••"></div><div class="frow" style="margin:0"><label class="flabel">Confirm PIN</label><input class="finput" id="confirm-pin" type="password" maxlength="4" placeholder="••••"></div></div>
+          <div class="btn-row" style="margin-top:14px"><button class="btn btn-ghost" onclick="changePIN()">Update PIN</button></div>
           <div class="status" id="pin-change-status"></div>
         </div>
       </div>
@@ -425,17 +527,17 @@ function cfg() {
   };
 }
 function saveSettings() {
-  showStatus('s-status','Static mode uses blog-posts.json only.','info');
+  showStatus('s-status','Local server mode uses server.py.','info');
 }
 function loadSettings() {}
 async function testConnection() {
-  showStatus('s-status','Checking blog-posts.json…','info');
+  showStatus('s-status','Checking local server…','info');
   try {
-    const res = await fetch('blog-posts.json?t=' + Date.now(), { cache:'no-store' });
-    if (!res.ok) throw new Error('Cannot load blog-posts.json');
-    const data = await res.json();
-    if (!Array.isArray(data)) throw new Error('blog-posts.json must be a JSON array');
-    showStatus('s-status', '✅ blog-posts.json loaded. Posts: ' + data.length, 'ok');
+    const res = await fetch(LOCAL_API_BASE + '/api/content?path=blog-posts.json&t=' + Date.now(), { cache:'no-store' });
+    if (!res.ok) throw new Error('Cannot reach server.py at http://127.0.0.1:8000');
+    const payload = await res.json();
+    const data = Array.isArray(payload.data) ? payload.data : [];
+    showStatus('s-status', '✅ Local server is working. Blog posts: ' + data.length, 'ok');
   } catch(e) { showStatus('s-status','❌ '+e.message,'err'); }
 }
 function changePIN() {
@@ -461,12 +563,10 @@ function clearAdminPublishPassword() {
 }
 
 function friendlyGitHubError(message) {
-  if (/Static mode cannot upload image files/i.test(message)) {
-    return message;
-  }
-  if (/Read failed/i.test(message)) {
-    return 'Could not read the local JSON file. Make sure blog-posts.json exists beside admin.html.';
-  }
+  if (/Failed to fetch/i.test(message)) return 'Local server is not running. Start server.py and open http://127.0.0.1:8000/admin.html';
+  if (/Local read failed|Read failed/i.test(message)) return 'Could not read local JSON. Make sure server.py is running.';
+  if (/Local write failed/i.test(message)) return 'Could not write local JSON. Make sure server.py is running and files are writable.';
+  if (/Local image upload failed/i.test(message)) return 'Could not upload image. Make sure server.py is running and uploads/ is writable.';
   return message;
 }
 
@@ -504,7 +604,7 @@ async function localUploadImage(path, base64Content) {
 }
 
 async function ghGet(path) {
-  throw new Error('GitHub API is disabled in static JSON mode.');
+  throw new Error('Remote GitHub publishing is disabled. Use the local server endpoints.');
 }
 function encodeBase64Utf8(text) {
   const bytes = new TextEncoder().encode(text);
@@ -520,11 +620,11 @@ function decodeBase64Utf8(base64) {
 }
 
 async function ghPut(path, content, sha, msg) {
-  throw new Error('GitHub API is disabled in static JSON mode.');
+  throw new Error('Remote GitHub publishing is disabled. Use the local server endpoints.');
 }
 
 async function ghPutBase64(path, base64Content, msg) {
-  throw new Error('Image API upload is disabled. Put images in uploads/ manually and paste the path.');
+  return localUploadImage(path, base64Content);
 }
 
 function downloadJsonFile(fileName, data) {
@@ -540,16 +640,11 @@ function downloadJsonFile(fileName, data) {
 }
 
 async function readFile(path) {
-  try {
-    const res = await fetch(serverContentPath(path) + '?t=' + Date.now(), { cache:'no-store' });
-    if (!res.ok) throw new Error('Read failed');
-    const data = await res.json();
-    return {data: Array.isArray(data) ? data : [], sha:null};
-  } catch { return {data:[], sha:null}; }
+  const result = await localGet(path);
+  return {data: Array.isArray(result.data) ? result.data : [], sha:null};
 }
 async function writeFile(path, data, sha, msg) {
-  downloadJsonFile(serverContentPath(path), data);
-  return { ok:true, mode:'download' };
+  return localPut(path, data);
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -619,8 +714,18 @@ async function fileToBase64(file) {
 async function uploadPendingImage(prefix) {
   const input=document.getElementById(prefix+'-photo');
   const file=pendingImageFiles[prefix];
-  if (file) throw new Error('Static mode cannot upload image files. Add the image to uploads/ manually, then paste its path such as /uploads/image.jpg.');
-  return input.dataset.localFile ? '' : input.value.trim();
+  if (!file) return input.dataset.localFile ? '' : input.value.trim();
+  showStatus(prefix+'-status','Uploading image...','info');
+  const path='uploads/'+safeUploadName(file);
+  await localUploadImage(path, await fileToBase64(file));
+  const url='/'+path;
+  pendingImageFiles[prefix]=null;
+  if (pendingImagePreviews[prefix]) URL.revokeObjectURL(pendingImagePreviews[prefix]);
+  pendingImagePreviews[prefix]='';
+  delete input.dataset.localFile;
+  input.value=url;
+  showImgPreview(prefix, url);
+  return url;
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -664,7 +769,7 @@ async function publishChannelPost() {
     const updated=[post,...data];
     await writeFile(c.chPath,updated,sha,`📢 Channel post — ${new Date().toISOString().slice(0,10)}`);
     try { localStorage.removeItem('hkotc_blog_posts_cache_v1'); } catch {}
-    showStatus('cp-status', LOCAL_SERVER_MODE ? '✅ Published to local server. Live on blog now.' : '✅ Published! Live on blog now.','ok');
+    showStatus('cp-status','✅ Published to local server. Refresh blog now.','ok');
     cpClear(); loadAllPosts();
   } catch(e){ showStatus('cp-status','❌ '+friendlyGitHubError(e.message),'err'); }
   setBtnLoading('cp-publish-btn',false);
@@ -695,13 +800,12 @@ async function publishBlogPost() {
   const excerpt=document.getElementById('bp-excerpt').value.trim();
   const tags=document.getElementById('bp-tags').value.trim();
   const cat=document.getElementById('bp-cat').value;
-  const photoInput=document.getElementById('bp-photo');
-  const coverImage=photoInput.dataset.localFile ? '' : photoInput.value.trim();
+  let coverImage=document.getElementById('bp-photo').value.trim();
   if (!title||!body){ showStatus('bp-status','Title and body are required.','err'); return; }
-  if (pendingImageFiles.bp) { showStatus('bp-status','Static mode cannot upload image files. Put the image in uploads/ manually, then paste its path.','err'); return; }
   setBtnLoading('bp-publish-btn',true);
   try {
-    const {data}=await readFile(cfg().blogPath);
+    coverImage=await uploadPendingImage('bp');
+    const {data,sha}=await readFile(cfg().blogPath);
     const now = new Date().toISOString();
     const post = {
       id: String(Date.now()),
@@ -710,24 +814,27 @@ async function publishBlogPost() {
       category: cat || 'Market News',
       excerpt: excerpt || body.slice(0,160),
       content: body,
-      coverImage,
+      coverImage: coverImage || '',
       author: 'HKOTC Desk',
       status: 'published',
       createdAt: now,
       updatedAt: now,
       publishedAt: now,
+      date: Math.floor(Date.now()/1000),
+      body,
+      photo: coverImage || '',
       tags: tags ? tags.split(',').map(t=>t.trim()).filter(Boolean) : []
     };
     const updated = [post, ...data];
-    downloadJsonFile('blog-posts.json', updated);
-    showStatus('bp-status','✅ Downloaded updated blog-posts.json. Replace the file in your project, then upload/push to GitHub manually.','ok');
+    await writeFile(cfg().blogPath, updated, sha, 'Local blog post');
+    showStatus('bp-status','✅ Published to local server. Refresh blog now.','ok');
     ['bp-title','bp-body','bp-excerpt','bp-tags','bp-photo'].forEach(id=>document.getElementById(id).value='');
     pendingImageFiles.bp=null;
     if (pendingImagePreviews.bp) URL.revokeObjectURL(pendingImagePreviews.bp);
     pendingImagePreviews.bp='';
-    delete photoInput.dataset.localFile;
     document.getElementById('bp-img-preview-wrap').style.display='none';
     updateBpChar();
+    await loadAllPosts();
   } catch(e){ showStatus('bp-status','❌ '+friendlyGitHubError(e.message),'err'); }
   setBtnLoading('bp-publish-btn',false);
 }
@@ -819,12 +926,17 @@ function fmtDate(ts) {
   const d=typeof ts==='number'?new Date(ts*1000):new Date(ts);
   return isNaN(d)?'—':d.toLocaleDateString('en-HK',{day:'numeric',month:'short',year:'numeric'});
 }
+function postTime(p) {
+  const v = p.publishedAt || p.createdAt || p.updatedAt || p.date || 0;
+  const d = typeof v === 'number' ? new Date(v * 1000) : new Date(v);
+  return isNaN(d) ? 0 : d.getTime();
+}
 function renderPostsTable(filter) {
   const tbody=document.getElementById('posts-tbody');
   let rows=[];
   if (filter==='all'||filter==='blog') allPostsCache.blog.forEach((p,i)=>rows.push({...p,_type:'blog',_idx:i}));
   if (filter==='all'||filter==='channel') allPostsCache.channel.forEach((p,i)=>rows.push({...p,_type:'channel',_idx:i}));
-  rows.sort((a,b)=>b.date-a.date);
+  rows.sort((a,b)=>postTime(b)-postTime(a));
   if (!rows.length){ tbody.innerHTML='<tr><td colspan="4" style="text-align:center;padding:32px;color:var(--muted);font-size:13px">No posts yet.</td></tr>'; return; }
   tbody.innerHTML=rows.map(p=>{
     const title=p.title||(p.text||'').slice(0,60);
@@ -834,7 +946,7 @@ function renderPostsTable(filter) {
     return `<tr>
       <td><div style="display:flex;gap:12px;align-items:center">${thumb}<div><div class="pt-title">${title.replace(/</g,'&lt;')}</div><div class="pt-sub">${p._type==='channel'?'Channel Post':'Blog Post'}</div></div></div></td>
       <td><span class="pt-cat cat-${cat}">${cat}</span></td>
-      <td style="font-size:12px;color:var(--muted);white-space:nowrap">${fmtDate(p.date)}</td>
+      <td style="font-size:12px;color:var(--muted);white-space:nowrap">${fmtDate(p.publishedAt || p.createdAt || p.date)}</td>
       <td><div class="pt-actions">
         ${p._type==='blog'?`<button class="btn btn-ghost btn-sm" onclick="previewPostByIndex(${p._idx})">View</button>`:''}
         <button class="btn btn-danger btn-sm" onclick="deletePost('${p._type}',${p._idx})">Delete</button>
@@ -867,13 +979,13 @@ function renderDashboard() {
   document.getElementById('stat-ch').textContent=ch;
   document.getElementById('stat-total').textContent=bl+ch;
   const all=[...allPostsCache.blog.map(p=>({...p,_type:'blog'})),...allPostsCache.channel.map(p=>({...p,_type:'channel'}))]
-    .sort((a,b)=>b.date-a.date).slice(0,5);
+    .sort((a,b)=>postTime(b)-postTime(a)).slice(0,5);
   document.getElementById('recent-list').innerHTML=all.length?all.map(p=>`
     <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
       <span style="font-size:18px">${p._type==='channel'?'📢':'✍️'}</span>
       <div style="flex:1">
         <div style="font-size:13px;font-weight:600">${(p.title||(p.text||'').slice(0,60)).replace(/</g,'&lt;')}</div>
-        <div style="font-size:11px;color:var(--muted)">${fmtDate(p.date)} · ${p._type==='channel'?'Channel':'Blog'}</div>
+        <div style="font-size:11px;color:var(--muted)">${fmtDate(p.publishedAt || p.createdAt || p.date)} · ${p._type==='channel'?'Channel':'Blog'}</div>
       </div>
     </div>`).join(''):'<div style="color:var(--muted)">No posts yet. Create your first post!</div>';
 }
