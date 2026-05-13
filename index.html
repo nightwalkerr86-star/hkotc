@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>HKOTC — Hong Kong USDT/HKD OTC Desk | Buy &amp; Sell USDT</title>
-  <meta name="description" content="HKOTC is a Hong Kong USDT/HKD OTC desk for fast, private and secure Tether trades. Convert USDT to HKD or HKD to USDT with live OKX-based rates, zero slippage and same-day settlement.">
-  <meta name="keywords" content="USDT HKD OTC, Hong Kong OTC desk, buy USDT Hong Kong, sell USDT Hong Kong, USDT to HKD, HKD to USDT, Tether Hong Kong, crypto OTC Hong Kong, OKX USDT rate, 港幣兌USDT, USDT兌港幣, 香港加密貨幣OTC, ទិញ USDT ហុងកុង">
+  <meta name="description" content="HKOTC is a Hong Kong USDT/HKD OTC desk for fast, private and secure Tether trades. Convert USDT to HKD or HKD to USDT with live Binance-based rates, zero slippage and same-day settlement.">
+  <meta name="keywords" content="USDT HKD OTC, Hong Kong OTC desk, buy USDT Hong Kong, sell USDT Hong Kong, USDT to HKD, HKD to USDT, Tether Hong Kong, crypto OTC Hong Kong, Binance USDT rate, 港幣兌USDT, USDT兌港幣, 香港加密貨幣OTC, ទិញ USDT ហុងកុង">
   <meta name="author" content="HKOTC">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
   <meta name="theme-color" content="#0a0e1a">
@@ -20,7 +20,7 @@
   <meta property="og:url" content="https://hkotc.io/">
   <meta property="og:site_name" content="HKOTC">
   <meta property="og:title" content="HKOTC — Hong Kong USDT/HKD OTC Desk | Buy &amp; Sell USDT">
-  <meta property="og:description" content="Fast, private and secure Hong Kong crypto OTC trading. Convert USDT to HKD or HKD to USDT with live OKX-based rates and same-day settlement.">
+  <meta property="og:description" content="Fast, private and secure Hong Kong crypto OTC trading. Convert USDT to HKD or HKD to USDT with live Binance-based rates and same-day settlement.">
   <meta property="og:image" content="https://hkotc.io/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -31,7 +31,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="HKOTC — Hong Kong USDT/HKD OTC Desk">
-  <meta name="twitter:description" content="Convert USDT to HKD and HKD to USDT through a Hong Kong OTC desk with live OKX-based rates and same-day settlement.">
+  <meta name="twitter:description" content="Convert USDT to HKD and HKD to USDT through a Hong Kong OTC desk with live Binance-based rates and same-day settlement.">
   <meta name="twitter:image" content="https://hkotc.io/og-image.jpg">
   <meta name="twitter:image:alt" content="HKOTC — Hong Kong USDT/HKD OTC Exchange">
 
@@ -75,7 +75,7 @@
           "HKD to USDT settlement",
           "Hong Kong crypto OTC",
           "Tether exchange rates",
-          "OKX USDT market rates",
+          "Binance USDT market rates",
           "FPS bank transfer settlement"
         ]
       },
@@ -194,7 +194,7 @@
             "name": "Where does HKOTC get live USDT/HKD rates?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "The local calculator uses live OKX market data as the base rate, then applies the desk spread shown on the page before quote confirmation."
+              "text": "The local calculator uses live Binance market data as the base rate, then applies the desk spread shown on the page before quote confirmation."
             }
           }
         ]
@@ -214,7 +214,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://flagcdn.com">
   <link rel="preconnect" href="https://assets.coingecko.com">
-  <link rel="preconnect" href="https://www.okx.com">
+  <link rel="preconnect" href="https://api.binance.com">
   <link rel="dns-prefetch" href="https://t.me">
   <link rel="dns-prefetch" href="https://wa.me">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -1165,7 +1165,7 @@
       'from-sell':'You Pay (USDT)','to-sell':'You Receive (HKD)',
       'buy-rate-label':'Buy Rate (per USDT)','sell-rate-label':'Sell Rate (per USDT)',
       'payment-method-label':'Payment Method','payment-cash':'Cash','payment-transfer':'Bank Transfer','payment-spread':'Spread',
-      'reference-rate-label':'Live reference rate','selected-method-label':'Selected method','selected-spread-label':'Spread','updated-time-label':'Updated','rate-status-live':'OKX live reference rate','rate-status-fallback':'Using latest available rate',
+      'reference-rate-label':'Live reference rate','selected-method-label':'Selected method','selected-spread-label':'Spread','updated-time-label':'Updated','rate-status-live':'Binance live reference rate','rate-status-fallback':'Using latest available rate',
       'order-btn':'Place Order via Telegram',
       'calc-note':'Displayed rates are for reference only. Final rate must be confirmed by our OTC desk before payment.',
       'feat-badge':'Why Choose Us',
@@ -1219,7 +1219,7 @@
       'from-sell':'您支付（USDT）','to-sell':'您收取（港幣）',
       'buy-rate-label':'買入匯率（每USDT）','sell-rate-label':'賣出匯率（每USDT）',
       'payment-method-label':'付款方式','payment-cash':'現金交易','payment-transfer':'銀行轉賬','payment-spread':'差價',
-      'reference-rate-label':'即時參考匯率','selected-method-label':'已選付款方式','selected-spread-label':'差價','updated-time-label':'更新時間','rate-status-live':'OKX 即時參考匯率','rate-status-fallback':'使用最新可用匯率',
+      'reference-rate-label':'即時參考匯率','selected-method-label':'已選付款方式','selected-spread-label':'差價','updated-time-label':'更新時間','rate-status-live':'Binance 即時參考匯率','rate-status-fallback':'使用最新可用匯率',
       'order-btn':'透過 Telegram 下單',
       'calc-note':'顯示匯率僅供參考。最終匯率必須由我們的 OTC 服務台在付款前確認。',
       'feat-badge':'為何選擇我們',
@@ -1436,7 +1436,7 @@
 
   const USD_HKD_FALLBACK = 7.8280;
   const REFERENCE_RATE_FALLBACK = 7.8050;
-  const OKX_TICKER_URL = 'https://www.okx.com/api/v5/market/ticker?instId=';
+  const BINANCE_TICKER_URL = 'https://api.binance.com/api/v3/ticker/price?symbol=';
 
   const CONFIG = {
     whatsapp: 'https://wa.me/qr/K3GYC3HRQVYSI1',
@@ -1469,43 +1469,43 @@
     setTimeout(() => t.classList.remove('show'), duration);
   }
 
-  async function fetchOkxTicker(instId) {
-    const res = await fetch(OKX_TICKER_URL + encodeURIComponent(instId), { cache: 'no-store' });
-    if (!res.ok) throw new Error('OKX request failed: ' + instId);
+  async function fetchBinanceTicker(symbol) {
+    const res = await fetch(BINANCE_TICKER_URL + encodeURIComponent(symbol), { cache: 'no-store' });
+    if (!res.ok) throw new Error('Binance request failed: ' + symbol);
     const json = await res.json();
-    const price = Number(json && json.data && json.data[0] && json.data[0].last);
-    if (!Number.isFinite(price) || price <= 0) throw new Error('OKX price unavailable: ' + instId);
+    const price = Number(json && json.price);
+    if (!Number.isFinite(price) || price <= 0) throw new Error('Binance price unavailable: ' + symbol);
     return price;
   }
 
-  async function fetchOkxReferenceRate() {
+  async function fetchBinanceReferenceRate() {
     try {
-      return { rate: await fetchOkxTicker('USDT-HKD'), source: 'OKX USDT/HKD' };
+      return { rate: await fetchBinanceTicker('USDTHKD'), source: 'Binance USDTHKD' };
     } catch {}
 
     const fallbackPairs = [
-      { instId: 'USDT-USD', invert: false },
-      { instId: 'USDC-USDT', invert: true },
-      { instId: 'USDT-USDC', invert: false },
+      { symbol: 'USDCUSDT', invert: true },
+      { symbol: 'FDUSDUSDT', invert: true },
+      { symbol: 'TUSDUSDT', invert: true },
     ];
 
     for (const pair of fallbackPairs) {
       try {
-        const price = await fetchOkxTicker(pair.instId);
+        const price = await fetchBinanceTicker(pair.symbol);
         const usdtUsd = pair.invert ? 1 / price : price;
         return {
           rate: usdtUsd * USD_HKD_FALLBACK,
-          source: 'OKX ' + pair.instId + ' × USD/HKD ' + USD_HKD_FALLBACK.toFixed(4),
+          source: 'Binance ' + pair.symbol + ' × USD/HKD ' + USD_HKD_FALLBACK.toFixed(4),
         };
       } catch {}
     }
 
-    throw new Error('No OKX reference rate available');
+    throw new Error('No Binance reference rate available');
   }
 
   async function fetchRate() {
     try {
-      const reference = await fetchOkxReferenceRate();
+      const reference = await fetchBinanceReferenceRate();
       liveRate = reference.rate;
       rateSource = reference.source;
       rateStatus = 'live';
@@ -1522,7 +1522,7 @@
 
   function getRateStatusText() {
     const t = LANG[currentLang] || LANG.en;
-    return rateStatus === 'live' ? (t['rate-status-live'] || 'OKX live reference rate') : (t['rate-status-fallback'] || 'Using latest available rate');
+    return rateStatus === 'live' ? (t['rate-status-live'] || 'Binance live reference rate') : (t['rate-status-fallback'] || 'Using latest available rate');
   }
 
   function updateRateDisplay(rate = liveRate) {
