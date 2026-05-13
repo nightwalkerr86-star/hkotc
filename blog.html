@@ -445,14 +445,23 @@
     };
   }
 
+  function isLocalServer() {
+    return ['127.0.0.1', 'localhost'].includes(location.hostname);
+  }
+
   function blogPostUrls() {
     const repo = blogRepo();
-    const sources = [
+    const sources = (isLocalServer() ? [
+      'blog-posts.json',
+      githubContentSource(repo, DEFAULT_BLOG_PATH),
+      rawGithubUrl(repo, DEFAULT_BLOG_PATH),
+      rawGithubUrl(DEFAULT_REPO, DEFAULT_BLOG_PATH)
+    ] : [
       githubContentSource(repo, DEFAULT_BLOG_PATH),
       rawGithubUrl(repo, DEFAULT_BLOG_PATH),
       rawGithubUrl(DEFAULT_REPO, DEFAULT_BLOG_PATH),
       'blog-posts.json'
-    ].filter(Boolean);
+    ]).filter(Boolean);
     return sources.filter((source, index, list) => {
       const key = typeof source === 'string' ? source : source.url;
       return list.findIndex(item => (typeof item === 'string' ? item : item.url) === key) === index;

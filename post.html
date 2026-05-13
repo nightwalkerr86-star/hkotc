@@ -108,7 +108,7 @@
 
 <script>
   const DEFAULT_REPO = 'nightwalkerr86-star/hkotc';
-  const DEFAULT_BRANCH = 'master';
+  const DEFAULT_BRANCH = 'main';
   const DEFAULT_BLOG_PATH = 'otc-web/blog-posts.json';
   const DEFAULT_CHANNEL_PATH = 'otc-web/channel-posts.json';
   const currentLang = localStorage.getItem('lang') || 'en';
@@ -162,23 +162,33 @@
 
   function githubContentSource(repo, filePath) {
     const token = localStorage.getItem('gh_token') || '';
-    if (!token || !repo) return null;
+    if (!repo) return null;
     return {
       kind: 'github-content',
       token,
-      url: `https://api.github.com/repos/${repo}/contents/${filePath.replace(/^\/+/, '')}`
+      url: `https://api.github.com/repos/${repo}/contents/${filePath.replace(/^\/+/, '')}?ref=${DEFAULT_BRANCH}`
     };
+  }
+
+  function isLocalServer() {
+    return ['127.0.0.1', 'localhost'].includes(location.hostname);
   }
 
   function postUrls(type) {
     const repo = contentRepo();
     const defaultPath = type === 'channel' ? DEFAULT_CHANNEL_PATH : DEFAULT_BLOG_PATH;
-    const sources = [
+    const localPath = type === 'channel' ? 'channel-posts.json' : 'blog-posts.json';
+    const sources = (isLocalServer() ? [
+      localPath,
+      githubContentSource(repo, defaultPath),
+      rawGithubUrl(repo, defaultPath),
+      rawGithubUrl(DEFAULT_REPO, defaultPath)
+    ] : [
       githubContentSource(repo, defaultPath),
       rawGithubUrl(repo, defaultPath),
       rawGithubUrl(DEFAULT_REPO, defaultPath),
-      type === 'channel' ? 'channel-posts.json' : 'blog-posts.json'
-    ].filter(Boolean);
+      localPath
+    ]).filter(Boolean);
     return sources.filter((source, index, list) => {
       const key = typeof source === 'string' ? source : source.url;
       return list.findIndex(item => (typeof item === 'string' ? item : item.url) === key) === index;

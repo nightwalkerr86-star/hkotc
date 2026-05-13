@@ -667,6 +667,13 @@ function nav(id) {
 // ═══════════════════════════════════════════════════════════
 const BLOG_POSTS_PATH = 'otc-web/blog-posts.json';
 const CHANNEL_POSTS_PATH = 'otc-web/channel-posts.json';
+const LOCAL_SERVER_MODE = ['127.0.0.1', 'localhost'].includes(location.hostname) || location.protocol === 'file:';
+const LOCAL_API_BASE = location.protocol === 'file:' ? 'http://127.0.0.1:8000' : '';
+function serverContentPath(path) {
+  if (path === BLOG_POSTS_PATH) return 'blog-posts.json';
+  if (path === CHANNEL_POSTS_PATH) return 'channel-posts.json';
+  return path.replace(/^\/+/, '');
+}
 
 function cfg() {
   return {
@@ -736,6 +743,7 @@ function friendlyGitHubError(message) {
 }
 
 async function checkContentAccess(path) {
+  if (LOCAL_SERVER_MODE) return;
   const c=cfg();
   const res=await fetch(`https://api.github.com/repos/${c.repo}/contents/${path}`,{
     headers:{Authorization:`Bearer ${c.token}`,Accept:'application/vnd.github+json'}
@@ -748,6 +756,32 @@ async function checkContentAccess(path) {
 // ═══════════════════════════════════════════════════════════
 //  GITHUB API
 // ═══════════════════════════════════════════════════════════
+async function localGet(path) {
+  const res = await fetch(LOCAL_API_BASE + '/api/content?path=' + encodeURIComponent(serverContentPath(path)), { cache: 'no-store' });
+  if (!res.ok) { const e = await res.json().catch(() => ({message: 'Local read failed'})); throw new Error(e.message || 'Local read failed'); }
+  return res.json();
+}
+
+async function localPut(path, data) {
+  const res = await fetch(LOCAL_API_BASE + '/api/content', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ path: serverContentPath(path), data })
+  });
+  if (!res.ok) { const e = await res.json().catch(() => ({message: 'Local write failed'})); throw new Error(e.message || 'Local write failed'); }
+  return res.json();
+}
+
+async function localUploadImage(path, base64Content) {
+  const res = await fetch(LOCAL_API_BASE + '/api/upload-image', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ path, content: base64Content })
+  });
+  if (!res.ok) { const e = await res.json().catch(() => ({message: 'Local image upload failed'})); throw new Error(e.message || 'Local image upload failed'); }
+  return res.json();
+}
+
 async function ghGet(path) {
   const c=cfg();
   const res=await fetch(`https://api.github.com/repos/${c.repo}/contents/${path}`,{
@@ -781,6 +815,7 @@ async function ghPut(path, content, sha, msg) {
 }
 
 async function ghPutBase64(path, base64Content, msg) {
+  if (LOCAL_SERVER_MODE) return localUploadImage(path, base64Content);
   const c=cfg();
   let sha;
   try { sha=(await ghGet(path)).sha; } catch {}
@@ -794,12 +829,17 @@ async function ghPutBase64(path, base64Content, msg) {
 }
 async function readFile(path) {
   try {
+    if (LOCAL_SERVER_MODE) {
+      const result = await localGet(path);
+      return {data: Array.isArray(result.data) ? result.data : [], sha:null};
+    }
     const f=await ghGet(path);
     const data=JSON.parse(decodeBase64Utf8(f.content));
     return {data, sha:f.sha};
   } catch { return {data:[], sha:null}; }
 }
 async function writeFile(path, data, sha, msg) {
+  if (LOCAL_SERVER_MODE) return localPut(path, data);
   if (!sha) {
     // File might not exist — create it
     try { const f=await ghGet(path); sha=f.sha; } catch {}
@@ -939,7 +979,7 @@ async function publishChannelPost() {
   const link=document.getElementById('cp-link').value.trim();
   if (!text){ showStatus('cp-status','Post text is required.','err'); return; }
   const c=cfg();
-  if (!c.token||!c.repo){ showStatus('cp-status','Set up GitHub in Settings first.','err'); return; }
+  if (!LOCAL_SERVER_MODE && (!c.token||!c.repo)){ showStatus('cp-status','Set up GitHub in Settings first.','err'); return; }
   setBtnLoading('cp-publish-btn',true);
   try {
     photo=await uploadPendingImage('cp');
@@ -947,7 +987,7 @@ async function publishChannelPost() {
     const post={message_id:Date.now(),date:Math.floor(Date.now()/1000),text,photo:photo||'',channel:'hkotcdesk',message_link:link||''};
     const updated=[post,...data];
     await writeFile(c.chPath,updated,sha,`📢 Channel post — ${new Date().toISOString().slice(0,10)}`);
-    showStatus('cp-status','✅ Published! Live on blog now.','ok');
+    showStatus('cp-status', LOCAL_SERVER_MODE ? '✅ Published to local server. Live on blog now.' : '✅ Published! Live on blog now.','ok');
     cpClear(); loadAllPosts();
   } catch(e){ showStatus('cp-status','❌ '+friendlyGitHubError(e.message),'err'); }
   setBtnLoading('cp-publish-btn',false);
@@ -967,7 +1007,7 @@ async function publishBlogPost() {
   let photo=document.getElementById('bp-photo').value.trim();
   if (!title||!body){ showStatus('bp-status','Title and body are required.','err'); return; }
   const c=cfg();
-  if (!c.token||!c.repo){ showStatus('bp-status','Set up GitHub in Settings first.','err'); return; }
+  if (!LOCAL_SERVER_MODE && (!c.token||!c.repo)){ showStatus('bp-status','Set up GitHub in Settings first.','err'); return; }
   setBtnLoading('bp-publish-btn',true);
   try {
     photo=await uploadPendingImage('bp');
@@ -975,7 +1015,7 @@ async function publishBlogPost() {
     const post={id:Date.now(),date:Math.floor(Date.now()/1000),title,body,excerpt:excerpt||body.slice(0,160)+'…',photo:photo||'',category:cat,tags:tags?tags.split(',').map(t=>t.trim()):[]};
     const updated=[post,...data];
     await writeFile(c.blogPath,updated,sha,`✍️ Blog post — ${title.slice(0,60)}`);
-    showStatus('bp-status','✅ Published! Live on blog now.','ok');
+    showStatus('bp-status', LOCAL_SERVER_MODE ? '✅ Published to local server. Live on blog now.' : '✅ Published! Live on blog now.','ok');
     // Clear
     ['bp-title','bp-body','bp-excerpt','bp-tags','bp-photo'].forEach(id=>document.getElementById(id).value='');
     pendingImageFiles.bp=null;
@@ -1066,7 +1106,7 @@ document.addEventListener('input', event => {
 // ═══════════════════════════════════════════════════════════
 let allPostsCache={blog:[],channel:[]};
 async function loadAllPosts() {
-  const c=cfg(); if (!c.token||!c.repo) return;
+  const c=cfg(); if (!LOCAL_SERVER_MODE && (!c.token||!c.repo)) return;
   const [bl,ch]=await Promise.all([readFile(c.blogPath),readFile(c.chPath)]);
   allPostsCache={blog:bl.data, channel:ch.data};
   document.getElementById('posts-count').textContent=bl.data.length+ch.data.length;
@@ -1168,7 +1208,7 @@ async function initApp() {
   loadSettings();
   updateCommentsCount();
   const c=cfg();
-  if (!c.token||!c.repo) { nav('settings'); return; }
+  if (!LOCAL_SERVER_MODE && (!c.token||!c.repo)) { nav('settings'); return; }
   await loadAllPosts();
   renderDashboard();
   document.getElementById('stat-blog').textContent=allPostsCache.blog.length;
