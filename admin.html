@@ -292,287 +292,22 @@
         </div>
         <div class="card">
           <div class="card-title">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            Recent Activity
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h5"/></svg>
+            Static JSON Blog
           </div>
-          <div id="recent-list" style="font-size:13px;color:var(--muted)">Loading…</div>
-        </div>
-      </div>
-
-      <!-- ── NEW BLOG POST ── -->
-      <div class="panel" id="panel-new-blog">
-        <div class="page-hd">
-          <h1>New Blog Post</h1>
-          <p>Write a full article for your blog.</p>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start">
-          <div>
-            <div class="card">
-              <div class="frow">
-                <label class="flabel">Post Title *</label>
-                <input class="finput" id="bp-title" type="text" placeholder="e.g. Bitcoin Hits New ATH — What It Means for HK OTC" oninput="bpPreview()">
-              </div>
-              <div class="frow">
-                <label class="flabel">Body / Content *</label>
-                <div class="fmt-bar">
-                  <button class="fmt-btn" onclick="fmt('**','**')" title="Bold"><b>B</b></button>
-                  <button class="fmt-btn" onclick="fmt('*','*')" title="Italic"><i>I</i></button>
-                  <button class="fmt-btn" onclick="fmtLine('## ')" title="Heading">H</button>
-                  <button class="fmt-btn" onclick="fmtLine('- ')" title="List">• List</button>
-                  <button class="fmt-btn" onclick="fmt('\n\n---\n\n','')" title="Divider">—</button>
-                </div>
-                <textarea id="bp-body" placeholder="Write your article here…&#10;&#10;You can use line breaks and basic formatting." oninput="bpPreview();updateBpChar()"></textarea>
-                <div class="char-hint"><span id="bp-char">0</span> characters</div>
-              </div>
-              <div class="frow">
-                <label class="flabel">Excerpt <span style="font-weight:400;text-transform:none">(short description shown in cards)</span></label>
-                <textarea id="bp-excerpt" placeholder="One or two sentences about this post…" style="min-height:72px" oninput="bpPreview()"></textarea>
-              </div>
-              <div class="frow">
-                <label class="flabel">Tags <span style="font-weight:400;text-transform:none">(comma separated)</span></label>
-                <input class="finput" id="bp-tags" type="text" placeholder="BTC, USDT, Hong Kong, OTC">
-              </div>
-            </div>
-          </div>
-
-          <!-- Right sidebar -->
-          <div style="display:flex;flex-direction:column;gap:16px">
-            <div class="card">
-              <div class="card-title">Publish</div>
-              <div class="frow" style="margin-bottom:14px">
-                <label class="flabel">Category</label>
-                <select class="fselect" id="bp-cat">
-                  <option value="market">📊 Market</option>
-                  <option value="regulation">⚖️ Regulation</option>
-                  <option value="guide">📖 OTC Guide</option>
-                  <option value="defi">🔮 DeFi</option>
-                  <option value="news">📰 News</option>
-                </select>
-              </div>
-              <button class="btn btn-primary" style="width:100%;justify-content:center" id="bp-publish-btn" onclick="publishBlogPost()">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                Publish Post
-              </button>
-              <div class="status" id="bp-status"></div>
-            </div>
-
-            <div class="card">
-              <div class="card-title">Cover Image URL <span style="font-size:11px;font-weight:400;text-transform:none;color:var(--muted)">(optional)</span></div>
-              <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.6">
-                Paste a direct image link. Upload to <a href="https://imgur.com/upload" target="_blank" rel="noopener noreferrer" style="color:var(--gold)">Imgur.com</a> to get a free permanent URL.
-              </div>
-              <div class="upload-drop" role="button" tabindex="0" onclick="document.getElementById('bp-photo-file').click()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('bp-photo-file').click()}">
-                <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M23 46H17a11 11 0 0 1 0-22 16 16 0 0 1 30-5 13 13 0 0 1 1 26h-7"/>
-                  <path d="M32 50V28"/>
-                  <path d="M23 37l9-9 9 9"/>
-                </svg>
-                <div class="upload-drop-main">Drag&Drop files here</div>
-                <div class="upload-drop-or">or</div>
-                <button class="upload-browse" type="button">Browse Files</button>
-                <input id="bp-photo-file" type="file" accept="image/*" onchange="handleImgFile(event,'bp')" hidden>
-              </div>
-              <input class="finput" id="bp-photo" type="text" placeholder="https://i.imgur.com/xxxxxxx.jpg" oninput="onImgUrl('bp')">
-              <div class="img-preview-wrap" id="bp-img-preview-wrap" style="margin-top:10px">
-                <img id="bp-img-preview" alt="">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── NEW CHANNEL POST ── -->
-      <div class="panel" id="panel-new-channel">
-        <div class="page-hd">
-          <h1>New Channel Post</h1>
-          <p>Share your Telegram post content directly to the blog.</p>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start">
-          <div class="card">
-            <div class="frow">
-              <label class="flabel">Post Text *</label>
-              <div class="fmt-bar">
-                <span style="font-size:12px;color:var(--muted);padding:0 6px">Paste from Telegram — emojis and line breaks work ✓</span>
-              </div>
-              <textarea id="cp-text" placeholder="🔥 今日焦點：…&#10;&#10;Paste your full Telegram post here including hashtags." style="min-height:220px" oninput="cpPreview();updateCpChar()"></textarea>
-              <div class="char-hint"><span id="cp-char">0</span> characters</div>
-            </div>
-            <div class="frow">
-              <label class="flabel">Image URL <span style="font-weight:400;text-transform:none">(optional)</span></label>
-              <div style="font-size:12px;color:var(--muted);margin-bottom:8px;line-height:1.6">
-                Paste an image link. To get the Telegram image URL: open Telegram Web → right-click the photo → Copy image address.<br>
-                Or upload to <a href="https://imgur.com/upload" target="_blank" rel="noopener noreferrer" style="color:var(--gold)">Imgur.com</a> and paste the direct link here.
-              </div>
-              <div class="upload-drop" role="button" tabindex="0" onclick="document.getElementById('cp-photo-file').click()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('cp-photo-file').click()}">
-                <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M23 46H17a11 11 0 0 1 0-22 16 16 0 0 1 30-5 13 13 0 0 1 1 26h-7"/>
-                  <path d="M32 50V28"/>
-                  <path d="M23 37l9-9 9 9"/>
-                </svg>
-                <div class="upload-drop-main">Drag&Drop files here</div>
-                <div class="upload-drop-or">or</div>
-                <button class="upload-browse" type="button">Browse Files</button>
-                <input id="cp-photo-file" type="file" accept="image/*" onchange="handleImgFile(event,'cp')" hidden>
-              </div>
-              <input class="finput" id="cp-photo" type="text" placeholder="https://i.imgur.com/xxxxxxx.jpg" oninput="onImgUrl('cp')">
-              <div class="img-preview-wrap" id="cp-img-preview-wrap" style="margin-top:10px">
-                <img id="cp-img-preview" alt="">
-              </div>
-            </div>
-            <div class="frow">
-              <label class="flabel">Telegram Post Link <span style="font-weight:400;text-transform:none">(optional)</span></label>
-              <input class="finput" id="cp-link" type="url" placeholder="https://t.me/yourchannel/123">
-            </div>
-            <div class="btn-row">
-              <button class="btn btn-primary" id="cp-publish-btn" onclick="publishChannelPost()">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                Publish to Blog
-              </button>
-              <button class="btn btn-ghost" onclick="cpClear()">Clear</button>
-            </div>
-            <div class="status" id="cp-status"></div>
-          </div>
-
-          <!-- Live preview -->
-          <div class="card" style="position:sticky;top:20px">
-            <div class="card-title">Live Preview</div>
-            <div style="border:1px solid var(--border);border-radius:14px;overflow:hidden">
-              <div id="cp-prev-media" style="display:none;width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--surface)">
-                <img id="cp-prev-img" style="width:100%;height:100%;object-fit:cover" alt="">
-              </div>
-              <div style="padding:14px">
-                <div style="font-size:11px;font-weight:800;color:var(--gold);display:flex;align-items:center;gap:6px;margin-bottom:8px">
-                  <div style="width:6px;height:6px;border-radius:50%;background:var(--green)"></div>
-                  港汇加密交易台 | HK OTC Desk
-                </div>
-                <div id="cp-prev-text" style="font-size:13px;line-height:1.65;white-space:pre-line;color:var(--text)">Your post text will appear here…</div>
-                <div id="cp-prev-tags" style="font-size:12px;color:#4a9eff;margin-top:8px;line-height:1.6"></div>
-                <div id="cp-prev-date" style="font-size:11px;color:var(--muted);margin-top:10px"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── ALL POSTS ── -->
-      <div class="panel" id="panel-all-posts">
-        <div class="page-hd" style="display:flex;align-items:flex-start;justify-content:space-between">
-          <div>
-            <h1>All Posts</h1>
-            <p>Manage your published blog and channel posts.</p>
-          </div>
-          <div style="display:flex;gap:8px">
-            <button class="btn btn-ghost btn-sm" onclick="nav('new-blog')">+ Blog Post</button>
-            <button class="btn btn-ghost btn-sm" onclick="nav('new-channel')">+ Channel Post</button>
-          </div>
-        </div>
-        <div class="card" style="padding:0;overflow:hidden">
-          <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;gap:8px">
-            <button class="btn btn-ghost btn-sm filter-tab active" data-f="all" onclick="filterPosts('all',this)">All</button>
-            <button class="btn btn-ghost btn-sm filter-tab" data-f="blog" onclick="filterPosts('blog',this)">Blog</button>
-            <button class="btn btn-ghost btn-sm filter-tab" data-f="channel" onclick="filterPosts('channel',this)">Channel</button>
-          </div>
-          <div id="posts-table-wrap" style="overflow-x:auto">
-            <table class="posts-table" id="posts-table">
-              <thead>
-                <tr>
-                  <th>Post</th>
-                  <th>Type</th>
-                  <th>Date</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="posts-tbody">
-                <tr><td colspan="4" style="text-align:center;padding:32px;color:var(--muted);font-size:13px">Loading posts…</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── CUSTOMER COMMENTS ── -->
-      <div class="panel" id="panel-comments">
-        <div class="page-hd" style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
-          <div>
-            <h1>Customer Comments</h1>
-            <p>Publish approved customer feedback to the homepage. Visitors cannot post here.</p>
-          </div>
-          <a href="/#reviews" class="btn btn-ghost btn-sm" target="_blank" rel="noopener noreferrer">View on Home</a>
-        </div>
-        <div class="comment-admin-grid">
-          <div class="card">
-            <div class="card-title">Published Comments</div>
-            <div class="comment-list" id="admin-comments-list"></div>
-          </div>
-          <div class="card">
-            <div class="card-title">Add Customer Comment</div>
-            <div class="frow">
-              <label class="flabel">Customer Name *</label>
-              <input class="finput" id="cm-name" type="text" maxlength="40" placeholder="e.g. Michael T.">
-            </div>
-            <div class="frow">
-              <label class="flabel">Customer Info</label>
-              <input class="finput" id="cm-meta" type="text" maxlength="60" placeholder="e.g. Investor · Hong Kong">
-            </div>
-            <div class="frow">
-              <label class="flabel">Rating</label>
-              <select class="fselect" id="cm-rating">
-                <option value="5">★★★★★ 5</option>
-                <option value="4">★★★★☆ 4</option>
-                <option value="3">★★★☆☆ 3</option>
-              </select>
-            </div>
-            <div class="frow">
-              <label class="flabel">Comment *</label>
-              <textarea id="cm-text" maxlength="260" placeholder="Write the customer comment..." style="min-height:120px"></textarea>
-              <div class="char-hint"><span id="cm-char">0</span> / 260</div>
-            </div>
-            <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="publishCustomerComment()">Publish Comment</button>
-            <div class="status" id="cm-status"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── SETTINGS ── -->
-      <div class="panel" id="panel-settings">
-        <div class="page-hd">
-          <h1>Settings</h1>
-          <p>GitHub connection and account options.</p>
-        </div>
-        <div class="card">
-          <div class="card-title">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
-            Secure Publishing Backend
-          </div>
-          <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.7">Blog posts are published through <code>/api/publish-post</code>. Keep the GitHub token in Vercel environment variables only, never in this admin page.</p>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.7">This site now uses <code>blog-posts.json</code> only. No GitHub API, backend API, database, or auto-publish is used. When you create a post here, download the updated JSON file and manually upload or push it to GitHub.</p>
           <div class="setup-fields">
             <div class="frow" style="margin:0">
-              <label class="flabel">Required env</label>
-              <input class="finput" type="text" value="GITHUB_TOKEN" readonly>
+              <label class="flabel">Blog data file</label>
+              <input class="finput" type="text" value="blog-posts.json" readonly>
             </div>
             <div class="frow" style="margin:0">
-              <label class="flabel">Required env</label>
-              <input class="finput" type="text" value="GITHUB_OWNER" readonly>
-            </div>
-            <div class="frow" style="margin:0">
-              <label class="flabel">Required env</label>
-              <input class="finput" type="text" value="GITHUB_REPO" readonly>
-            </div>
-            <div class="frow" style="margin:0">
-              <label class="flabel">Required env</label>
-              <input class="finput" type="text" value="ADMIN_PASSWORD" readonly>
-            </div>
-            <div class="frow" style="margin:0">
-              <label class="flabel">Optional env</label>
-              <input class="finput" type="text" value="GITHUB_BRANCH=main" readonly>
-            </div>
-            <div class="frow" style="margin:0">
-              <label class="flabel">Optional env</label>
-              <input class="finput" type="text" value="GITHUB_BLOG_PATH=blog-posts.json" readonly>
+              <label class="flabel">Image folder</label>
+              <input class="finput" type="text" value="uploads/" readonly>
             </div>
           </div>
           <div class="btn-row" style="margin-top:16px">
-            <button class="btn btn-ghost" onclick="testConnection()">Check Backend</button>
+            <button class="btn btn-ghost" onclick="testConnection()">Check JSON</button>
           </div>
           <div class="status" id="s-status"></div>
         </div>
@@ -690,23 +425,18 @@ function cfg() {
   };
 }
 function saveSettings() {
-  showStatus('s-status','No frontend GitHub settings are needed. Configure environment variables in Vercel.','info');
+  showStatus('s-status','Static mode uses blog-posts.json only.','info');
 }
 function loadSettings() {}
 async function testConnection() {
-  showStatus('s-status','Testing backend…','info');
+  showStatus('s-status','Checking blog-posts.json…','info');
   try {
-    const password = getAdminPublishPassword();
-    if (!password) { showStatus('s-status','Admin password is required to test publishing backend.','err'); return; }
-    const res = await fetch('/api/publish-post', {
-      method: 'POST',
-      headers: { 'Content-Type':'application/json', 'x-admin-password': password },
-      body: JSON.stringify({ title:'Backend test', content:'Backend test', dryRun:true })
-    });
-    if (res.status === 401) { sessionStorage.removeItem('admin_publish_password'); showStatus('s-status','❌ Wrong admin password.','err'); return; }
-    if (!res.ok) { const e = await res.json().catch(()=>({message:res.status})); showStatus('s-status','❌ '+(e.message || e.error || res.status),'err'); return; }
-    showStatus('s-status','✅ Backend is reachable.','ok');
-  } catch(e) { showStatus('s-status','❌ '+friendlyGitHubError(e.message),'err'); }
+    const res = await fetch('blog-posts.json?t=' + Date.now(), { cache:'no-store' });
+    if (!res.ok) throw new Error('Cannot load blog-posts.json');
+    const data = await res.json();
+    if (!Array.isArray(data)) throw new Error('blog-posts.json must be a JSON array');
+    showStatus('s-status', '✅ blog-posts.json loaded. Posts: ' + data.length, 'ok');
+  } catch(e) { showStatus('s-status','❌ '+e.message,'err'); }
 }
 function changePIN() {
   const p=document.getElementById('new-pin').value;
@@ -731,20 +461,11 @@ function clearAdminPublishPassword() {
 }
 
 function friendlyGitHubError(message) {
-  if (/Invalid admin password|unauthorized/i.test(message)) {
-    return 'Wrong admin publish password. Please try again.';
+  if (/Static mode cannot upload image files/i.test(message)) {
+    return message;
   }
-  if (/Missing environment variable/i.test(message)) {
-    return message + '. Add it in Vercel Project Settings → Environment Variables.';
-  }
-  if (/Resource not accessible by personal access token/i.test(message)) {
-    return 'GitHub token permission problem: the server token needs Repository permissions → Contents → Read and write.';
-  }
-  if (/Bad credentials/i.test(message)) {
-    return 'Server GitHub token is invalid. Create a new token and update GITHUB_TOKEN in Vercel.';
-  }
-  if (/Not Found|GitHub read 404/i.test(message)) {
-    return 'GitHub repo or JSON path not found. Check GITHUB_OWNER, GITHUB_REPO, and GITHUB_BLOG_PATH in Vercel.';
+  if (/Read failed/i.test(message)) {
+    return 'Could not read the local JSON file. Make sure blog-posts.json exists beside admin.html.';
   }
   return message;
 }
@@ -783,12 +504,7 @@ async function localUploadImage(path, base64Content) {
 }
 
 async function ghGet(path) {
-  const c=cfg();
-  const res=await fetch(`https://api.github.com/repos/${c.repo}/contents/${path}?ref=main`,{
-    headers:{Accept:'application/vnd.github+json'}
-  });
-  if (!res.ok){ const e=await res.json().catch(()=>({message:`GitHub read ${res.status}`})); throw new Error(e.message||`GitHub read ${res.status}`); }
-  return res.json();
+  throw new Error('GitHub API is disabled in static JSON mode.');
 }
 function encodeBase64Utf8(text) {
   const bytes = new TextEncoder().encode(text);
@@ -804,31 +520,36 @@ function decodeBase64Utf8(base64) {
 }
 
 async function ghPut(path, content, sha, msg) {
-  throw new Error('Publishing now uses the secure /api/publish-post backend. GitHub tokens are not stored in admin.html.');
+  throw new Error('GitHub API is disabled in static JSON mode.');
 }
 
 async function ghPutBase64(path, base64Content, msg) {
-  if (LOCAL_SERVER_MODE) return localUploadImage(path, base64Content);
-  throw new Error('Image upload for blog posts is handled by the secure publish backend.');
+  throw new Error('Image API upload is disabled. Put images in uploads/ manually and paste the path.');
 }
+
+function downloadJsonFile(fileName, data) {
+  const blob = new Blob([JSON.stringify(data, null, 2) + '\n'], { type:'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName.replace(/^.*\//, '') || 'blog-posts.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 500);
+}
+
 async function readFile(path) {
   try {
-    if (LOCAL_SERVER_MODE) {
-      const result = await localGet(path);
-      return {data: Array.isArray(result.data) ? result.data : [], sha:null};
-    }
-    const f=await ghGet(path);
-    const data=JSON.parse(decodeBase64Utf8(f.content));
-    return {data, sha:f.sha};
+    const res = await fetch(serverContentPath(path) + '?t=' + Date.now(), { cache:'no-store' });
+    if (!res.ok) throw new Error('Read failed');
+    const data = await res.json();
+    return {data: Array.isArray(data) ? data : [], sha:null};
   } catch { return {data:[], sha:null}; }
 }
 async function writeFile(path, data, sha, msg) {
-  if (LOCAL_SERVER_MODE) return localPut(path, data);
-  if (!sha) {
-    // File might not exist — create it
-    try { const f=await ghGet(path); sha=f.sha; } catch {}
-  }
-  return ghPut(path, data, sha||undefined, msg);
+  downloadJsonFile(serverContentPath(path), data);
+  return { ok:true, mode:'download' };
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -898,36 +619,8 @@ async function fileToBase64(file) {
 async function uploadPendingImage(prefix) {
   const input=document.getElementById(prefix+'-photo');
   const file=pendingImageFiles[prefix];
-  if (!file) return input.dataset.localFile ? '' : input.value.trim();
-  showStatus(prefix+'-status','Uploading image...','info');
-  const path='uploads/'+safeUploadName(file);
-  await ghPutBase64(path, await fileToBase64(file), `🖼 Upload image — ${file.name.slice(0,60)}`);
-  const url='/'+path;
-  pendingImageFiles[prefix]=null;
-  if (pendingImagePreviews[prefix]) URL.revokeObjectURL(pendingImagePreviews[prefix]);
-  pendingImagePreviews[prefix]='';
-  delete input.dataset.localFile;
-  input.value=url;
-  showImgPreview(prefix, url);
-  return url;
-}
-
-// ═══════════════════════════════════════════════════════════
-//  TEXT FORMATTING TOOLBAR
-// ═══════════════════════════════════════════════════════════
-function fmt(open, close) {
-  const ta=document.getElementById('bp-body');
-  const s=ta.selectionStart, e=ta.selectionEnd;
-  const sel=ta.value.slice(s,e)||'text';
-  ta.value=ta.value.slice(0,s)+open+sel+close+ta.value.slice(e);
-  ta.focus(); bpPreview();
-}
-function fmtLine(prefix) {
-  const ta=document.getElementById('bp-body');
-  const s=ta.selectionStart;
-  const ls=ta.value.lastIndexOf('\n',s-1)+1;
-  ta.value=ta.value.slice(0,ls)+prefix+ta.value.slice(ls);
-  ta.focus(); bpPreview();
+  if (file) throw new Error('Static mode cannot upload image files. Add the image to uploads/ manually, then paste its path such as /uploads/image.jpg.');
+  return input.dataset.localFile ? '' : input.value.trim();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -993,13 +686,7 @@ function slugifyPostTitle(value) {
 }
 
 async function buildCoverUpload(prefix) {
-  const file = pendingImageFiles[prefix];
-  if (!file) return null;
-  return {
-    fileName: file.name,
-    mimeType: file.type,
-    base64: await fileToBase64(file),
-  };
+  return null;
 }
 
 async function publishBlogPost() {
@@ -1008,43 +695,39 @@ async function publishBlogPost() {
   const excerpt=document.getElementById('bp-excerpt').value.trim();
   const tags=document.getElementById('bp-tags').value.trim();
   const cat=document.getElementById('bp-cat').value;
-  const coverImage=document.getElementById('bp-photo').dataset.localFile ? '' : document.getElementById('bp-photo').value.trim();
+  const photoInput=document.getElementById('bp-photo');
+  const coverImage=photoInput.dataset.localFile ? '' : photoInput.value.trim();
   if (!title||!body){ showStatus('bp-status','Title and body are required.','err'); return; }
-  const adminPassword = getAdminPublishPassword();
-  if (!adminPassword){ showStatus('bp-status','Admin publish password is required.','err'); return; }
+  if (pendingImageFiles.bp) { showStatus('bp-status','Static mode cannot upload image files. Put the image in uploads/ manually, then paste its path.','err'); return; }
   setBtnLoading('bp-publish-btn',true);
   try {
-    const payload = {
+    const {data}=await readFile(cfg().blogPath);
+    const now = new Date().toISOString();
+    const post = {
+      id: String(Date.now()),
       title,
       slug: slugifyPostTitle(title),
-      category: cat,
+      category: cat || 'Market News',
       excerpt: excerpt || body.slice(0,160),
       content: body,
       coverImage,
-      tags: tags ? tags.split(',').map(t=>t.trim()).filter(Boolean) : [],
-      coverImageUpload: await buildCoverUpload('bp'),
+      author: 'HKOTC Desk',
+      status: 'published',
+      createdAt: now,
+      updatedAt: now,
+      publishedAt: now,
+      tags: tags ? tags.split(',').map(t=>t.trim()).filter(Boolean) : []
     };
-    const res = await fetch('/api/publish-post', {
-      method: 'POST',
-      headers: { 'Content-Type':'application/json', 'x-admin-password': adminPassword },
-      body: JSON.stringify(payload),
-    });
-    const result = await res.json().catch(()=>({message:res.status}));
-    if (res.status === 401) {
-      clearAdminPublishPassword();
-      showStatus('bp-status','❌ Wrong admin publish password. Please try again.','err');
-      return;
-    }
-    if (!res.ok) throw new Error(result.message || result.error || 'Publish failed');
-    try { localStorage.removeItem('hkotc_blog_posts_cache_v1'); } catch {}
-    showStatus('bp-status','✅ Published to GitHub. Refresh blog after Vercel redeploy or GitHub raw update.','ok');
+    const updated = [post, ...data];
+    downloadJsonFile('blog-posts.json', updated);
+    showStatus('bp-status','✅ Downloaded updated blog-posts.json. Replace the file in your project, then upload/push to GitHub manually.','ok');
     ['bp-title','bp-body','bp-excerpt','bp-tags','bp-photo'].forEach(id=>document.getElementById(id).value='');
     pendingImageFiles.bp=null;
     if (pendingImagePreviews.bp) URL.revokeObjectURL(pendingImagePreviews.bp);
     pendingImagePreviews.bp='';
-    delete document.getElementById('bp-photo').dataset.localFile;
+    delete photoInput.dataset.localFile;
     document.getElementById('bp-img-preview-wrap').style.display='none';
-    updateBpChar(); loadAllPosts();
+    updateBpChar();
   } catch(e){ showStatus('bp-status','❌ '+friendlyGitHubError(e.message),'err'); }
   setBtnLoading('bp-publish-btn',false);
 }

@@ -107,10 +107,8 @@
 </div>
 
 <script>
-  const DEFAULT_REPO = 'nightwalkerr86-star/hkotc';
-  const DEFAULT_BRANCH = 'main';
-  const DEFAULT_BLOG_PATH = 'otc-web/blog-posts.json';
-  const DEFAULT_CHANNEL_PATH = 'otc-web/channel-posts.json';
+  const DEFAULT_BLOG_PATH = 'blog-posts.json';
+  const DEFAULT_CHANNEL_PATH = 'channel-posts.json';
   const currentLang = localStorage.getItem('lang') || 'en';
   const POST_I18N = {
     en: {
@@ -152,69 +150,20 @@
   }
   applyPostLanguage();
 
-  function rawGithubUrl(repo, filePath) {
-    return `https://raw.githubusercontent.com/${repo}/${DEFAULT_BRANCH}/${filePath.replace(/^\/+/, '')}`;
-  }
-
-  function contentRepo() {
-    return localStorage.getItem('gh_repo') || DEFAULT_REPO;
-  }
-
-  function githubContentSource(repo, filePath) {
-    const token = localStorage.getItem('gh_token') || '';
-    if (!repo) return null;
-    return {
-      kind: 'github-content',
-      token,
-      url: `https://api.github.com/repos/${repo}/contents/${filePath.replace(/^\/+/, '')}?ref=${DEFAULT_BRANCH}`
-    };
-  }
-
-  function isLocalServer() {
-    return ['127.0.0.1', 'localhost'].includes(location.hostname);
-  }
-
   function postUrls(type) {
-    const repo = contentRepo();
-    const defaultPath = type === 'channel' ? DEFAULT_CHANNEL_PATH : DEFAULT_BLOG_PATH;
-    const localPath = type === 'channel' ? 'channel-posts.json' : 'blog-posts.json';
-    const sources = (isLocalServer() ? [
-      localPath,
-      githubContentSource(repo, defaultPath),
-      rawGithubUrl(repo, defaultPath),
-      rawGithubUrl(DEFAULT_REPO, defaultPath)
-    ] : [
-      githubContentSource(repo, defaultPath),
-      rawGithubUrl(repo, defaultPath),
-      rawGithubUrl(DEFAULT_REPO, defaultPath),
-      localPath
-    ]).filter(Boolean);
-    return sources.filter((source, index, list) => {
-      const key = typeof source === 'string' ? source : source.url;
-      return list.findIndex(item => (typeof item === 'string' ? item : item.url) === key) === index;
-    });
-  }
-
-  function decodeBase64Utf8(base64) {
-    const binary = atob(String(base64 || '').replace(/\n/g, ''));
-    const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
-    return new TextDecoder().decode(bytes);
+    return type === 'channel'
+      ? ['/channel-posts.json', 'channel-posts.json']
+      : ['/blog-posts.json', 'blog-posts.json'];
   }
 
   async function fetchFirstJson(urls) {
     let lastError;
     for (const source of urls) {
-      const isObjectSource = typeof source === 'object';
-      const url = isObjectSource ? source.url : source;
+      const url = source;
       try {
-        const res = await fetch(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now(), {
-          headers: isObjectSource && source.token ? { Authorization: `Bearer ${source.token}`, Accept: 'application/vnd.github+json' } : {}
-        });
+        const res = await fetch(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now(), { cache: 'no-store' });
         if (!res.ok) throw new Error(res.status);
-        const data = await res.json();
-        const payload = isObjectSource && source.kind === 'github-content'
-          ? JSON.parse(decodeBase64Utf8(data.content))
-          : data;
+        const payload = await res.json();
         const posts = Array.isArray(payload) ? payload : (payload.record || payload.posts || []);
         if (Array.isArray(posts)) return posts;
       } catch (error) {
@@ -225,7 +174,57 @@
   }
 
   function categoryLabel(cat) {
-    return postLang.cats[cat] || cat;
+    const key = normalizeCategoryKey(cat);
+    return postLang.cats[key] || cat || postLang.cats.news;
+  }
+
+  function slugifyPostTitle(value) {
+    return String(value || '')
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9\u4e00-\u9fff\u1780-\u17ff]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 80) || ('post-' + Date.now());
+  }
+
+  function normalizeCategoryKey(value) {
+    const raw = String(value || 'news').toLowerCase();
+    if (raw.includes('regulation')) return 'regulation';
+    if (raw.includes('guide') || raw.includes('otc')) return 'guide';
+    if (raw.includes('defi')) return 'defi';
+    if (raw.includes('channel')) return 'channel';
+    if (raw.includes('market')) return 'news';
+    return raw.replace(/[^a-z0-9]+/g, '') || 'news';
+  }
+
+  function safeText(value) {
+    return String(value || '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char]));
+  }
+
+  function normalizeBlogPost(post) {
+    if (!post || typeof post !== 'object') return null;
+    const title = post.title || 'Untitled post';
+    const content = post.content || post.body || post.text || '';
+    const dateSource = post.publishedAt || post.createdAt || post.updatedAt || post.date || new Date().toISOString();
+    const parsedDate = typeof dateSource === 'number' ? new Date(dateSource * 1000) : new Date(dateSource);
+    const isoDate = isNaN(parsedDate) ? new Date().toISOString() : parsedDate.toISOString();
+    return {
+      ...post,
+      id: String(post.id || post.message_id || slugifyPostTitle(title)),
+      title,
+      slug: post.slug || slugifyPostTitle(title),
+      category: post.category || 'Market News',
+      excerpt: post.excerpt || String(content).slice(0, 180),
+      content,
+      coverImage: post.coverImage || post.photo || '',
+      author: post.author || 'HKOTC Desk',
+      status: post.status || 'published',
+      publishedAt: post.publishedAt || isoDate,
+      createdAt: post.createdAt || isoDate,
+      updatedAt: post.updatedAt || isoDate,
+      tags: Array.isArray(post.tags) ? post.tags : [],
+    };
   }
 
   function fmtDate(ts) {
@@ -235,22 +234,25 @@
 
   function setBlogPostingSchema(p, type) {
     document.querySelectorAll('script[data-dynamic-schema]').forEach(el => el.remove());
-    const title = p.title || (p.text || '').slice(0, 80) || 'HKOTC Post';
-    const description = p.excerpt || (p.body || p.text || '').slice(0, 180);
-    const id = p.id || p.message_id || '';
+    const blog = type === 'channel' ? p : normalizeBlogPost(p);
+    const title = blog.title || (blog.text || '').slice(0, 80) || 'HKOTC Post';
+    const description = blog.excerpt || (blog.content || blog.body || blog.text || '').slice(0, 180);
+    const id = blog.id || blog.message_id || '';
+    const publishedAt = blog.publishedAt || blog.date || new Date().toISOString();
+    const image = blog.coverImage || blog.photo || 'https://hkotc.io/og-image.jpg';
     const schema = {
       '@context': 'https://schema.org',
       '@type': type === 'channel' ? 'SocialMediaPosting' : 'BlogPosting',
       headline: title,
       description,
-      image: p.photo ? [p.photo] : ['https://hkotc.io/og-image.jpg'],
-      datePublished: typeof p.date === 'number' ? new Date(p.date * 1000).toISOString() : p.date,
-      dateModified: typeof p.date === 'number' ? new Date(p.date * 1000).toISOString() : p.date,
-      author: { '@type': 'Organization', name: 'HKOTC', url: 'https://hkotc.io/' },
+      image: [image],
+      datePublished: typeof publishedAt === 'number' ? new Date(publishedAt * 1000).toISOString() : publishedAt,
+      dateModified: blog.updatedAt || (typeof publishedAt === 'number' ? new Date(publishedAt * 1000).toISOString() : publishedAt),
+      author: { '@type': 'Organization', name: blog.author || 'HKOTC', url: 'https://hkotc.io/' },
       publisher: { '@type': 'Organization', name: 'HKOTC', url: 'https://hkotc.io/', logo: { '@type': 'ImageObject', url: 'https://hkotc.io/og-image.jpg' } },
-      mainEntityOfPage: { '@type': 'WebPage', '@id': `https://hkotc.io//post?type=${type}&id=${id}` },
-      articleSection: p.category || type,
-      keywords: Array.isArray(p.tags) ? p.tags.join(', ') : ''
+      mainEntityOfPage: { '@type': 'WebPage', '@id': `https://hkotc.io/post?slug=${encodeURIComponent(blog.slug || id)}` },
+      articleSection: blog.category || type,
+      keywords: Array.isArray(blog.tags) ? blog.tags.join(', ') : ''
     };
     const script = document.createElement('script');
     script.type = 'application/ld+json';
@@ -277,20 +279,23 @@
         </div>`;
   }
 
-  function renderBlogPost(p) {
-    const cat = p.category || 'news';
-    const tags = (p.tags || []).map(t => '#' + t).join(' ');
+  function renderBlogPost(rawPost) {
+    const p = normalizeBlogPost(rawPost);
+    const cat = p.category || 'Market News';
+    const catKey = normalizeCategoryKey(cat);
+    const tags = (p.tags || []).map(t => '#' + safeText(t)).join(' ');
+    const contentHtml = safeText(p.content || '').replace(/\n/g, '<br>');
     return `
-      ${p.photo ? `<div class="post-hero"><img src="${p.photo}" alt="${p.title}" onerror="this.parentElement.style.display='none'"><div class="post-hero-gradient"></div></div>` : ''}
+      ${p.coverImage ? `<div class="post-hero"><img src="${safeText(p.coverImage)}" alt="${safeText(p.title)}" onerror="this.parentElement.style.display='none'"><div class="post-hero-gradient"></div></div>` : ''}
       <div class="article-wrap">
         <div class="article-meta">
-          <span class="art-cat cat-${cat}">${categoryLabel(cat)}</span>
-          <span class="art-date">${fmtDate(p.date)}</span>
-          <span class="art-source">HKOTC</span>
+          <span class="art-cat cat-${catKey}">${safeText(categoryLabel(cat))}</span>
+          <span class="art-date">${fmtDate(p.publishedAt)}</span>
+          <span class="art-source">${safeText(p.author || 'HKOTC Desk')}</span>
         </div>
-        <h1 class="art-title">${p.title}</h1>
-        ${p.excerpt ? `<p class="art-excerpt">${p.excerpt}</p>` : ''}
-        <div class="art-body">${p.body || ''}</div>
+        <h1 class="art-title">${safeText(p.title)}</h1>
+        ${p.excerpt ? `<p class="art-excerpt">${safeText(p.excerpt)}</p>` : ''}
+        <div class="art-body">${contentHtml}</div>
         ${tags ? `<div class="art-tags">${tags}</div>` : ''}
         ${shareActions(p.title)}
       </div>`;
@@ -346,18 +351,22 @@
   async function loadPost() {
     const params = new URLSearchParams(location.search);
     const type = params.get('type') || 'blog';
-    const id   = params.get('id');
+    const slug = params.get('slug');
+    const id = params.get('id');
 
-    if (!id) { showNotFound(); return; }
+    if (type === 'blog' && !slug && !id) { showNotFound(); return; }
+    if (type !== 'blog' && !id) { showNotFound(); return; }
     showSkeleton();
 
     try {
       const posts = await fetchFirstJson(postUrls(type));
-      const post  = posts.find(p => String(p.id || p.message_id) === String(id));
+      const normalizedPosts = type === 'blog' ? posts.map(normalizeBlogPost).filter(Boolean) : posts;
+      const post = type === 'blog'
+        ? normalizedPosts.find(p => (slug && p.slug === slug) || (id && String(p.id) === String(id)))
+        : normalizedPosts.find(p => String(p.id || p.message_id) === String(id));
 
-      if (!post) { showNotFound(); return; }
+      if (!post || (type === 'blog' && post.status !== 'published')) { showNotFound(); return; }
 
-      // Update page title and structured data
       document.title = (post.title || post.text?.slice(0,60) || 'Post') + ' — HKOTC';
       setBlogPostingSchema(post, type);
 

@@ -422,34 +422,11 @@
 
 
   // ── CHANNEL POSTS ─────────────────────────────────────────────────────────
-  const DEFAULT_REPO = 'nightwalkerr86-star/hkotc';
-  const DEFAULT_BRANCH = 'main';
   const DEFAULT_BLOG_PATH = 'blog-posts.json';
-  const CHANNEL_POSTS_URL = 'https://raw.githubusercontent.com/nightwalkerr86-star/hkotc/main/channel-posts.json';
-
-  function rawGithubUrl(repo, filePath) {
-    return `https://raw.githubusercontent.com/${repo}/${DEFAULT_BRANCH}/${filePath.replace(/^\/+/, '')}`;
-  }
-
-  function githubContentSource(repo, filePath) {
-    if (!repo) return null;
-    return {
-      kind: 'github-content',
-      url: `https://api.github.com/repos/${repo}/contents/${filePath.replace(/^\/+/, '')}?ref=${DEFAULT_BRANCH}`
-    };
-  }
+  const CHANNEL_POSTS_URL = 'channel-posts.json';
 
   function blogPostUrls() {
-    const sources = [
-      githubContentSource(DEFAULT_REPO, DEFAULT_BLOG_PATH),
-      rawGithubUrl(DEFAULT_REPO, DEFAULT_BLOG_PATH),
-      '/blog-posts.json',
-      'blog-posts.json'
-    ].filter(Boolean);
-    return sources.filter((source, index, list) => {
-      const key = typeof source === 'string' ? source : source.url;
-      return list.findIndex(item => (typeof item === 'string' ? item : item.url) === key) === index;
-    });
+    return ['/blog-posts.json', 'blog-posts.json'];
   }
   const CH_PER_PAGE = 6;
   let allChannelPosts = [];
@@ -535,14 +512,6 @@
     </article>`;
   }
 
-  function decodeBase64Utf8(base64) {
-    const binary = atob(String(base64 || '').replace(/\n/g, ''));
-    const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
-    return new TextDecoder().decode(bytes);
-  }
-
-  const BLOG_CACHE_KEY = 'hkotc_blog_posts_cache_v1';
-
   function normalizePosts(payload) {
     const posts = Array.isArray(payload) ? payload : (payload && (payload.record || payload.posts)) || [];
     if (!Array.isArray(posts)) return [];
@@ -552,34 +521,16 @@
       .sort((a, b) => new Date(b.publishedAt || b.createdAt) - new Date(a.publishedAt || a.createdAt));
   }
 
-  function readCachedBlogPosts() {
-    try {
-      const cached = JSON.parse(localStorage.getItem(BLOG_CACHE_KEY) || '[]');
-      return normalizePosts(cached);
-    } catch {
-      return [];
-    }
-  }
-
-  function cacheBlogPosts(posts) {
-    try { localStorage.setItem(BLOG_CACHE_KEY, JSON.stringify(posts.slice(0, 40))); } catch {}
-  }
-
-  async function fetchBlogSource(source) {
-    const isObjectSource = typeof source === 'object';
-    const url = isObjectSource ? source.url : source;
+  async function fetchBlogSource(url) {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 6500);
     try {
       const res = await fetch(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now(), {
         signal: controller.signal,
-        headers: isObjectSource ? { Accept: 'application/vnd.github+json' } : {}
+        cache: 'no-store'
       });
       if (!res.ok) throw new Error(res.status);
-      const data = await res.json();
-      const payload = isObjectSource && source.kind === 'github-content'
-        ? JSON.parse(decodeBase64Utf8(data.content))
-        : data;
+      const payload = await res.json();
       const posts = normalizePosts(payload);
       if (!posts.length) throw new Error('empty');
       return posts;
@@ -595,20 +546,14 @@
   async function initBlogPosts() {
     const grid = document.getElementById('blog-grid');
     if (!grid) return;
-    const cachedPosts = readCachedBlogPosts();
-    if (cachedPosts.length) {
-      grid.innerHTML = cachedPosts.map(blogCardHTML).join('');
-    } else {
-      grid.innerHTML = '<p class="blog-empty">Loading blog posts...</p>';
-    }
+    grid.innerHTML = '<p class="blog-empty">Loading blog posts...</p>';
     try {
       const posts = await fetchFirstJson(blogPostUrls());
       const visiblePosts = posts.filter(Boolean);
       if (!visiblePosts.length) throw new Error('empty');
-      cacheBlogPosts(visiblePosts);
       grid.innerHTML = visiblePosts.map(blogCardHTML).join('');
     } catch {
-      if (!cachedPosts.length) grid.innerHTML = '<p class="blog-empty">No blog posts yet.</p>';
+      grid.innerHTML = '<p class="blog-empty">No blog posts yet.</p>';
     }
   }
 
