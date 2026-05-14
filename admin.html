@@ -525,6 +525,7 @@
 // ═══════════════════════════════════════════════════════════
 const DEFAULT_PIN = '1234'; // ← change this to your PIN
 let PIN = localStorage.getItem('admin_pin') || DEFAULT_PIN;
+const ADMIN_ACTIVE_TAB_KEY = 'hkotc_admin_active_tab';
 
 // ═══════════════════════════════════════════════════════════
 //  LOCK SCREEN
@@ -566,6 +567,7 @@ function nav(id) {
   document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
   document.getElementById('panel-'+id)?.classList.add('active');
   document.getElementById('nav-'+id)?.classList.add('active');
+  localStorage.setItem(ADMIN_ACTIVE_TAB_KEY, id);
   if (id==='all-posts') renderPostsTable('all');
   if (id==='comments') renderAdminComments();
   if (id==='dashboard') renderDashboard();
@@ -1278,6 +1280,8 @@ async function initApp() {
   document.getElementById('stat-blog').textContent=allPostsCache.blog.length;
   document.getElementById('stat-ch').textContent=allPostsCache.channel.length;
   document.getElementById('stat-total').textContent=allPostsCache.blog.length+allPostsCache.channel.length;
+  const savedTab = localStorage.getItem(ADMIN_ACTIVE_TAB_KEY);
+  if (savedTab && document.getElementById('panel-'+savedTab)) nav(savedTab);
 }
 
 if (sessionStorage.getItem('admin_unlocked')==='1') {
