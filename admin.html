@@ -1195,6 +1195,10 @@ async function deletePost(type, idx) {
         id: target.id,
         message_id: target.message_id,
         slug: target.slug,
+        title: target.title || target.text,
+        publishedAt: target.publishedAt,
+        createdAt: target.createdAt,
+        date: target.date,
         index: idx,
       });
     } else {

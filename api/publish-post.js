@@ -152,11 +152,24 @@ module.exports = async function handler(req, res) {
       const { data: currentPosts, sha } = await getGithubFile(owner, repo, branch, targetPath, token);
       const deleteId = String(payload.id || payload.message_id || '').trim();
       const deleteSlug = String(payload.slug || '').trim();
+      const deleteTitle = String(payload.title || '').trim();
+      const deleteDate = String(payload.publishedAt || payload.createdAt || payload.date || '').trim();
       const deleteIndex = Number.isInteger(payload.index) ? payload.index : -1;
+      const sameDay = (a, b) => {
+        if (!a || !b) return false;
+        const da = new Date(typeof a === 'number' ? a * 1000 : a);
+        const db = new Date(typeof b === 'number' ? b * 1000 : b);
+        return !isNaN(da) && !isNaN(db) && da.toISOString().slice(0, 10) === db.toISOString().slice(0, 10);
+      };
       let nextPosts = currentPosts.filter((post, index) => {
-        if (deleteId && String(post.id || post.message_id || '') === deleteId) return false;
-        if (deleteSlug && String(post.slug || '') === deleteSlug) return false;
-        if (!deleteId && !deleteSlug && index === deleteIndex) return false;
+        const postId = String(post.id || post.message_id || '').trim();
+        const postSlug = String(post.slug || '').trim();
+        const postTitle = String(post.title || (post.text || '').slice(0, 60)).trim();
+        const postDate = post.publishedAt || post.createdAt || post.updatedAt || post.date || '';
+        if (deleteId && postId === deleteId) return false;
+        if (deleteSlug && postSlug === deleteSlug) return false;
+        if (deleteTitle && postTitle === deleteTitle && (!deleteDate || sameDay(postDate, deleteDate))) return false;
+        if (!deleteId && !deleteSlug && !deleteTitle && index === deleteIndex) return false;
         return true;
       });
       if (nextPosts.length === currentPosts.length) {
