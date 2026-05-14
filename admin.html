@@ -331,8 +331,8 @@
       <!-- ── NEW BLOG POST ── -->
       <div class="panel" id="panel-new-blog">
         <div class="page-hd">
-          <h1>New Blog Post</h1>
-          <p>Write a full article for your blog.</p>
+          <h1 id="bp-heading">New Blog Post</h1>
+          <p id="bp-subheading">Write a full article for your blog.</p>
         </div>
         <div class="editor-grid">
           <div class="card editor-main-card">
@@ -378,6 +378,7 @@
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                 Publish Post
               </button>
+              <button class="btn btn-ghost editor-publish-btn" id="bp-cancel-edit-btn" onclick="resetBlogEditor()" style="display:none">Cancel Edit</button>
               <div class="status" id="bp-status"></div>
             </div>
 
@@ -947,6 +948,7 @@ async function publishChannelPost() {
 // ═══════════════════════════════════════════════════════════
 //  BLOG POST
 // ═══════════════════════════════════════════════════════════
+let editingBlogPost = null;
 function bpPreview(){}
 function updateBpChar(){ document.getElementById('bp-char').textContent=document.getElementById('bp-body').value.length; }
 function slugifyPostTitle(value) {
@@ -967,6 +969,45 @@ async function buildCoverUpload(prefix) {
     mimeType: file.type,
     base64: await fileToBase64(file),
   };
+}
+
+function setBlogEditorMode(mode) {
+  const isEdit = mode === 'edit';
+  document.getElementById('bp-heading').textContent = isEdit ? 'Edit Blog Post' : 'New Blog Post';
+  document.getElementById('bp-subheading').textContent = isEdit ? 'Update this published article.' : 'Write a full article for your blog.';
+  document.getElementById('bp-publish-btn').innerHTML = isEdit
+    ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Update Post'
+    : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Publish Post';
+  document.getElementById('bp-cancel-edit-btn').style.display = isEdit ? 'inline-flex' : 'none';
+}
+
+function resetBlogEditor() {
+  ['bp-title','bp-body','bp-excerpt','bp-tags','bp-photo'].forEach(id=>document.getElementById(id).value='');
+  pendingImageFiles.bp=null;
+  if (pendingImagePreviews.bp) URL.revokeObjectURL(pendingImagePreviews.bp);
+  pendingImagePreviews.bp='';
+  delete document.getElementById('bp-photo').dataset.localFile;
+  document.getElementById('bp-img-preview-wrap').style.display='none';
+  editingBlogPost = null;
+  updateBpChar();
+  setBlogEditorMode('create');
+}
+
+function editBlogPost(idx) {
+  const post = allPostsCache.blog[idx];
+  if (!post) return;
+  editingBlogPost = {...post};
+  document.getElementById('bp-title').value = post.title || '';
+  document.getElementById('bp-body').value = post.content || post.body || post.text || '';
+  document.getElementById('bp-excerpt').value = post.excerpt || '';
+  document.getElementById('bp-tags').value = Array.isArray(post.tags) ? post.tags.join(', ') : '';
+  document.getElementById('bp-cat').value = post.category || 'Market News';
+  document.getElementById('bp-photo').value = post.coverImage || post.photo || '';
+  delete document.getElementById('bp-photo').dataset.localFile;
+  showImgPreview('bp', document.getElementById('bp-photo').value.trim());
+  updateBpChar();
+  setBlogEditorMode('edit');
+  nav('new-blog');
 }
 
 async function publishPostThroughBackend(payload) {
@@ -1017,20 +1058,21 @@ async function publishBlogPost() {
   setBtnLoading('bp-publish-btn',true);
   try {
     const now = new Date().toISOString();
+    const editing = editingBlogPost || {};
     const payload = {
-      id: String(Date.now()),
+      id: String(editing.id || editing.message_id || Date.now()),
       title,
-      slug: slugifyPostTitle(title),
+      slug: editing.slug || slugifyPostTitle(title),
       category: cat,
       excerpt: excerpt || body.slice(0,160),
       content: body,
       coverImage,
       author: 'HKOTC Desk',
       status: 'published',
-      createdAt: now,
+      createdAt: editing.createdAt || editing.publishedAt || now,
       updatedAt: now,
-      publishedAt: now,
-      date: Math.floor(Date.now()/1000),
+      publishedAt: editing.publishedAt || now,
+      date: editing.date || Math.floor(Date.now()/1000),
       body,
       photo: coverImage,
       tags: tags ? tags.split(',').map(t=>t.trim()).filter(Boolean) : [],
@@ -1052,19 +1094,13 @@ async function publishBlogPost() {
       showStatus('bp-status','Publishing post to GitHub…','info');
       const c = cfg();
       const {data,sha} = await ghGet(c.blogPath);
-      const updated = [payload, ...data.filter(item => String(item.id) !== payload.id)];
-      await ghPut(c.blogPath, JSON.stringify(updated, null, 2) + '\n', sha, `Publish blog post: ${title}`);
+      const updated = [payload, ...data.filter(item => String(item.id || item.message_id || '') !== payload.id && String(item.slug || '') !== payload.slug)];
+      await ghPut(c.blogPath, JSON.stringify(updated, null, 2) + '\n', sha, `${editingBlogPost ? 'Update' : 'Publish'} blog post: ${title}`);
     }
 
     try { localStorage.removeItem('hkotc_blog_posts_cache_v1'); } catch {}
-    showStatus('bp-status','✅ Published to GitHub. Admin stayed on this page.','ok');
-    ['bp-title','bp-body','bp-excerpt','bp-tags','bp-photo'].forEach(id=>document.getElementById(id).value='');
-    pendingImageFiles.bp=null;
-    if (pendingImagePreviews.bp) URL.revokeObjectURL(pendingImagePreviews.bp);
-    pendingImagePreviews.bp='';
-    delete document.getElementById('bp-photo').dataset.localFile;
-    document.getElementById('bp-img-preview-wrap').style.display='none';
-    updateBpChar();
+    showStatus('bp-status', editingBlogPost ? '✅ Post updated on GitHub.' : '✅ Published to GitHub. Admin stayed on this page.','ok');
+    resetBlogEditor();
     await loadAllPosts();
     renderDashboard();
   } catch(e){ showStatus('bp-status','❌ '+friendlyGitHubError(e.message),'err'); }
@@ -1181,11 +1217,12 @@ function renderPostsTable(filter) {
     return `<tr>
       <td><div style="display:flex;gap:12px;align-items:center">${thumb}<div><div class="pt-title">${title.replace(/</g,'&lt;')}</div><div class="pt-sub">${p._type==='channel'?'Channel Post':'Blog Post'}</div></div></div></td>
       <td><span class="pt-cat cat-${cat}">${cat}</span></td>
-      <td style="font-size:12px;color:var(--muted);white-space:nowrap">${fmtDate(p.publishedAt || p.createdAt || p.date)}</td>
-      <td><div class="pt-actions">
-        ${p._type==='blog'?`<button class="btn btn-ghost btn-sm" onclick="previewPostByIndex(${p._idx})">View</button>`:''}
-        <button class="btn btn-danger btn-sm" onclick="deletePost('${p._type}',${p._idx})">Delete</button>
-      </div></td>
+	      <td style="font-size:12px;color:var(--muted);white-space:nowrap">${fmtDate(p.publishedAt || p.createdAt || p.date)}</td>
+	      <td><div class="pt-actions">
+	        ${p._type==='blog'?`<button class="btn btn-ghost btn-sm" onclick="previewPostByIndex(${p._idx})">View</button>`:''}
+	        ${p._type==='blog'?`<button class="btn btn-ghost btn-sm" onclick="editBlogPost(${p._idx})">Edit</button>`:''}
+	        <button class="btn btn-danger btn-sm" onclick="deletePost('${p._type}',${p._idx})">Delete</button>
+	      </div></td>
     </tr>`;
   }).join('');
 }
