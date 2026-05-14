@@ -788,7 +788,10 @@ function downloadJsonFile(fileName, data) {
 }
 
 async function readFile(path) {
-  if (cfg().token) return ghGet(path);
+  if (cfg().token) {
+    try { return await ghGet(path); }
+    catch (error) { console.warn('GitHub read failed, falling back to static JSON:', error.message); }
+  }
   try {
     const res = await fetch(serverContentPath(path) + '?t=' + Date.now(), { cache:'no-store' });
     if (!res.ok) throw new Error('Read failed');
@@ -1116,7 +1119,10 @@ document.addEventListener('input', event => {
 let allPostsCache={blog:[],channel:[]};
 async function loadAllPosts() {
   const c=cfg();
-  const [bl,ch]=await Promise.all([readFile(c.blogPath),readFile(c.chPath)]);
+  const [bl,ch]=await Promise.all([
+    readFile(c.blogPath).catch(()=>({data:[],sha:null})),
+    readFile(c.chPath).catch(()=>({data:[],sha:null})),
+  ]);
   allPostsCache={blog:bl.data, channel:ch.data};
   document.getElementById('posts-count').textContent=bl.data.length+ch.data.length;
 }
@@ -1223,7 +1229,8 @@ function setBtnLoading(id,loading) {
 async function initApp() {
   loadSettings();
   updateCommentsCount();
-  await loadAllPosts();
+  try { await loadAllPosts(); }
+  catch (error) { console.warn('Admin dashboard load failed:', error.message); allPostsCache={blog:[],channel:[]}; }
   renderDashboard();
   document.getElementById('stat-blog').textContent=allPostsCache.blog.length;
   document.getElementById('stat-ch').textContent=allPostsCache.channel.length;
