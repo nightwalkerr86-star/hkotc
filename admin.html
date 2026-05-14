@@ -975,6 +975,24 @@ async function publishPostThroughBackend(payload) {
   return result;
 }
 
+async function deletePostThroughBackend(payload) {
+  const c = cfg();
+  const res = await fetch('/api/publish-post', {
+    method: 'POST',
+    headers: { 'Content-Type':'application/json' },
+    body: JSON.stringify({
+      ...payload,
+      deletePost: true,
+      githubToken: c.token,
+      githubRepo: c.repo,
+      githubBranch: c.branch,
+    }),
+  });
+  const result = await res.json().catch(()=>({message:'Delete failed'}));
+  if (!res.ok) throw new Error(result.message || result.error || 'Delete failed');
+  return result;
+}
+
 async function publishBlogPost() {
   const title=document.getElementById('bp-title').value.trim();
   const body=document.getElementById('bp-body').value.trim();
@@ -1168,10 +1186,22 @@ async function deletePost(type, idx) {
   try { localStorage.removeItem('hkotc_blog_posts_cache_v1'); } catch {}
   const c=cfg();
   const path=type==='blog'?c.blogPath:c.chPath;
-  const {data,sha}=await readFile(path);
-  data.splice(idx,1);
+  const source=type==='blog'?allPostsCache.blog:allPostsCache.channel;
+  const target=source[idx] || {};
   try {
-    await writeFile(path,data,sha,'🗑 Delete post');
+    if (!LOCAL_SERVER_MODE && c.token) {
+      await deletePostThroughBackend({
+        githubPath: path,
+        id: target.id,
+        message_id: target.message_id,
+        slug: target.slug,
+        index: idx,
+      });
+    } else {
+      const {data,sha}=await readFile(path);
+      data.splice(idx,1);
+      await writeFile(path,data,sha,'🗑 Delete post');
+    }
     try { localStorage.removeItem('hkotc_blog_posts_cache_v1'); } catch {}
     await loadAllPosts();
     renderPostsTable(document.querySelector('.filter-tab.active')?.dataset.f||'all');

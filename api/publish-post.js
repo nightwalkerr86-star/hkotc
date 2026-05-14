@@ -147,6 +147,25 @@ module.exports = async function handler(req, res) {
     }
     if (payload.dryRun) return send(res, 200, { ok: true, mode: 'dry-run', owner, repo, branch, postsPath });
 
+    if (payload.deletePost) {
+      const targetPath = payload.githubPath || postsPath;
+      const { data: currentPosts, sha } = await getGithubFile(owner, repo, branch, targetPath, token);
+      const deleteId = String(payload.id || payload.message_id || '').trim();
+      const deleteSlug = String(payload.slug || '').trim();
+      const deleteIndex = Number.isInteger(payload.index) ? payload.index : -1;
+      let nextPosts = currentPosts.filter((post, index) => {
+        if (deleteId && String(post.id || post.message_id || '') === deleteId) return false;
+        if (deleteSlug && String(post.slug || '') === deleteSlug) return false;
+        if (!deleteId && !deleteSlug && index === deleteIndex) return false;
+        return true;
+      });
+      if (nextPosts.length === currentPosts.length) {
+        return send(res, 404, { error: 'post_not_found', message: 'Post not found in GitHub JSON' });
+      }
+      await putGithubFile(owner, repo, branch, targetPath, JSON.stringify(nextPosts, null, 2) + '\n', sha, 'Delete post', token);
+      return send(res, 200, { ok: true, mode: 'delete', count: nextPosts.length });
+    }
+
     const title = String(payload.title || '').trim();
     const content = String(payload.content || payload.body || '').trim();
     if (!title || !content) return send(res, 400, { error: 'invalid_post', message: 'Title and content are required' });
