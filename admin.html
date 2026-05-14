@@ -176,7 +176,7 @@
     .cat-news{background:rgba(244,63,94,.16);color:#f43f5e;border:1px solid rgba(244,63,94,.30)}
     .cat-channel{background:rgba(42,171,238,.16);color:#2AABEE;border:1px solid rgba(42,171,238,.30)}
     .pt-actions{display:flex;gap:6px}
-    .comment-admin-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:20px;align-items:start}
+    .comment-admin-grid{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:20px;align-items:start}
     .comment-editor-card{padding:28px 30px}
     .comment-publish-btn{width:100%;justify-content:center;min-height:44px;margin-top:14px}
     .comment-list{display:grid;gap:12px}
@@ -189,7 +189,7 @@
     .comment-admin-meta{font-size:11px;color:var(--muted);margin-top:2px}
     .comment-admin-text{font-size:13px;line-height:1.6;color:rgba(240,242,255,.82);white-space:pre-wrap;margin-top:8px}
     .comment-admin-stars{font-size:13px;color:var(--gold);white-space:nowrap;letter-spacing:1px}
-    @media(max-width:900px){.comment-admin-grid{grid-template-columns:1fr}.comment-admin-card{grid-template-columns:auto minmax(0,1fr)}.comment-admin-card .btn{grid-column:1/-1;justify-content:center}}
+    @media(max-width:1000px){.comment-admin-grid{grid-template-columns:1fr}.comment-admin-card{grid-template-columns:auto minmax(0,1fr)}.comment-admin-card .btn{grid-column:1/-1;justify-content:center}}
 
     /* ── STATS GRID ── */
     .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
@@ -458,18 +458,16 @@
           <div class="card comment-editor-card">
             <div class="frow"><label class="flabel">Customer Name *</label><input class="finput editor-title-input" id="cm-name" type="text" placeholder="e.g. Jason L." autocomplete="off"></div>
             <div class="frow"><label class="flabel">Customer Meta</label><input class="finput" id="cm-meta" type="text" placeholder="Investor · Hong Kong" autocomplete="off"></div>
-            <div class="frow" style="margin-bottom:0"><label class="flabel">Comment *</label><textarea id="cm-text" maxlength="260" placeholder="Write the customer comment..." style="min-height:190px" autocomplete="off"></textarea><div class="char-hint"><span id="cm-char">0</span> / 260</div></div>
+            <div class="frow"><label class="flabel">Comment *</label><textarea id="cm-text" maxlength="260" placeholder="Write the customer comment..." style="min-height:190px" autocomplete="off"></textarea><div class="char-hint"><span id="cm-char">0</span> / 260</div></div>
+            <div class="frow" style="margin-bottom:0"><label class="flabel">Rating</label><select class="finput" id="cm-rating"><option value="5">★★★★★ 5</option><option value="4">★★★★☆ 4</option><option value="3">★★★☆☆ 3</option></select></div>
+            <button class="btn btn-primary comment-publish-btn" onclick="publishCustomerComment()">Publish Comment</button>
+            <div class="status" id="cm-status"></div>
           </div>
-          <aside class="editor-side">
-            <div class="card">
-              <div class="card-title">Publish</div>
-              <div class="frow" style="margin-bottom:0"><label class="flabel">Rating</label><select class="finput" id="cm-rating"><option value="5">★★★★★ 5</option><option value="4">★★★★☆ 4</option><option value="3">★★★☆☆ 3</option></select></div>
-              <button class="btn btn-primary comment-publish-btn" onclick="publishCustomerComment()">Publish Comment</button>
-              <div class="status" id="cm-status"></div>
-            </div>
-          </aside>
+          <div class="card">
+            <div class="card-title">Published Comments</div>
+            <div class="comment-list" id="admin-comments-list"></div>
+          </div>
         </div>
-        <div class="card" style="margin-top:16px"><div class="card-title">Published Comments</div><div class="comment-list" id="admin-comments-list"></div></div>
       </div>
 
       <!-- ── SETTINGS ── -->
@@ -1056,7 +1054,7 @@ async function publishBlogPost() {
     }
 
     try { localStorage.removeItem('hkotc_blog_posts_cache_v1'); } catch {}
-    showStatus('bp-status','✅ Published to GitHub. Opening blog page…','ok');
+    showStatus('bp-status','✅ Published to GitHub. Admin stayed on this page.','ok');
     ['bp-title','bp-body','bp-excerpt','bp-tags','bp-photo'].forEach(id=>document.getElementById(id).value='');
     pendingImageFiles.bp=null;
     if (pendingImagePreviews.bp) URL.revokeObjectURL(pendingImagePreviews.bp);
@@ -1064,7 +1062,8 @@ async function publishBlogPost() {
     delete document.getElementById('bp-photo').dataset.localFile;
     document.getElementById('bp-img-preview-wrap').style.display='none';
     updateBpChar();
-    setTimeout(()=>{ window.location.href = '/blog?t=' + Date.now(); }, 900);
+    await loadAllPosts();
+    renderDashboard();
   } catch(e){ showStatus('bp-status','❌ '+friendlyGitHubError(e.message),'err'); }
   setBtnLoading('bp-publish-btn',false);
 }
