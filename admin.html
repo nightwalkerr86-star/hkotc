@@ -176,17 +176,20 @@
     .cat-news{background:rgba(244,63,94,.16);color:#f43f5e;border:1px solid rgba(244,63,94,.30)}
     .cat-channel{background:rgba(42,171,238,.16);color:#2AABEE;border:1px solid rgba(42,171,238,.30)}
     .pt-actions{display:flex;gap:6px}
-    .comment-admin-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:start}
+    .comment-admin-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:20px;align-items:start}
+    .comment-editor-card{padding:28px 30px}
+    .comment-publish-btn{width:100%;justify-content:center;min-height:44px;margin-top:14px}
     .comment-list{display:grid;gap:12px}
-    .comment-admin-card{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
-    .comment-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 auto;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#07090f;font-weight:900}
+    .comment-admin-card{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:start;padding:18px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.025)}
+    .comment-admin-card:hover{border-color:rgba(245,166,35,.2);background:rgba(255,255,255,.035)}
+    .comment-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 auto;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#07090f;font-weight:900}
     .comment-admin-body{flex:1;min-width:0}
-    .comment-admin-head{display:flex;justify-content:space-between;gap:12px;margin-bottom:4px}
+    .comment-admin-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px}
     .comment-admin-name{font-size:13px;font-weight:800}
     .comment-admin-meta{font-size:11px;color:var(--muted);margin-top:2px}
     .comment-admin-text{font-size:13px;line-height:1.6;color:rgba(240,242,255,.82);white-space:pre-wrap;margin-top:8px}
-    .comment-admin-stars{font-size:12px;color:var(--gold);white-space:nowrap}
-    @media(max-width:900px){.comment-admin-grid{grid-template-columns:1fr}}
+    .comment-admin-stars{font-size:13px;color:var(--gold);white-space:nowrap;letter-spacing:1px}
+    @media(max-width:900px){.comment-admin-grid{grid-template-columns:1fr}.comment-admin-card{grid-template-columns:auto minmax(0,1fr)}.comment-admin-card .btn{grid-column:1/-1;justify-content:center}}
 
     /* ── STATS GRID ── */
     .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
@@ -451,16 +454,22 @@
           <h1>Customer Comments</h1>
           <p>Homepage testimonials are stored in this browser.</p>
         </div>
-        <div class="card">
-          <div class="card-title">Add Comment</div>
-          <div class="frow"><label class="flabel">Name *</label><input class="finput" id="cm-name" type="text" placeholder="Customer name"></div>
-          <div class="frow"><label class="flabel">Meta</label><input class="finput" id="cm-meta" type="text" placeholder="Investor · Hong Kong"></div>
-          <div class="frow"><label class="flabel">Rating</label><select class="finput" id="cm-rating"><option value="5">★★★★★ 5</option><option value="4">★★★★☆ 4</option><option value="3">★★★☆☆ 3</option></select></div>
-          <div class="frow"><label class="flabel">Comment *</label><textarea id="cm-text" maxlength="260" placeholder="Write the customer comment..." style="min-height:120px"></textarea><div class="char-hint"><span id="cm-char">0</span> / 260</div></div>
-          <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="publishCustomerComment()">Publish Comment</button>
-          <div class="status" id="cm-status"></div>
+        <div class="comment-admin-grid">
+          <div class="card comment-editor-card">
+            <div class="frow"><label class="flabel">Customer Name *</label><input class="finput editor-title-input" id="cm-name" type="text" placeholder="e.g. Jason L." autocomplete="off"></div>
+            <div class="frow"><label class="flabel">Customer Meta</label><input class="finput" id="cm-meta" type="text" placeholder="Investor · Hong Kong" autocomplete="off"></div>
+            <div class="frow" style="margin-bottom:0"><label class="flabel">Comment *</label><textarea id="cm-text" maxlength="260" placeholder="Write the customer comment..." style="min-height:190px" autocomplete="off"></textarea><div class="char-hint"><span id="cm-char">0</span> / 260</div></div>
+          </div>
+          <aside class="editor-side">
+            <div class="card">
+              <div class="card-title">Publish</div>
+              <div class="frow" style="margin-bottom:0"><label class="flabel">Rating</label><select class="finput" id="cm-rating"><option value="5">★★★★★ 5</option><option value="4">★★★★☆ 4</option><option value="3">★★★☆☆ 3</option></select></div>
+              <button class="btn btn-primary comment-publish-btn" onclick="publishCustomerComment()">Publish Comment</button>
+              <div class="status" id="cm-status"></div>
+            </div>
+          </aside>
         </div>
-        <div class="card" style="margin-top:16px"><div class="card-title">Published Comments</div><div id="admin-comments-list"></div></div>
+        <div class="card" style="margin-top:16px"><div class="card-title">Published Comments</div><div class="comment-list" id="admin-comments-list"></div></div>
       </div>
 
       <!-- ── SETTINGS ── -->
@@ -1086,21 +1095,21 @@ function renderAdminComments() {
     list.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:18px;text-align:center;border:1px dashed var(--border);border-radius:14px">No customer comments yet.</div>';
     return;
   }
-  list.innerHTML = comments.map((comment, index) => {
-    const rating = Math.max(3, Math.min(5, Number(comment.rating) || 5));
-    const stars = '★'.repeat(rating) + '☆'.repeat(5 - rating);
-    const initial = escapeHtml((comment.name || 'C').trim().charAt(0).toUpperCase());
-    return `<div class="comment-admin-card">
-      <div class="comment-avatar">${initial}</div>
-      <div class="comment-admin-body">
-        <div class="comment-admin-head">
-          <div><div class="comment-admin-name">${escapeHtml(comment.name)}</div><div class="comment-admin-meta">${escapeHtml(comment.meta || 'Customer')}</div></div>
-          <div class="comment-admin-stars">${stars}</div>
-        </div>
-        <div class="comment-admin-text">${escapeHtml(comment.text)}</div>
-      </div>
-      <button class="btn btn-danger btn-sm" onclick="deleteCustomerComment(${index})">Delete</button>
-    </div>`;
+	  list.innerHTML = comments.map((comment, index) => {
+	    const rating = Math.max(3, Math.min(5, Number(comment.rating) || 5));
+	    const stars = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+	    const initial = escapeHtml((comment.name || 'C').trim().charAt(0).toUpperCase());
+	    return `<div class="comment-admin-card">
+	      <div class="comment-avatar">${initial}</div>
+	      <div class="comment-admin-body">
+	        <div class="comment-admin-head">
+	          <div><div class="comment-admin-name">${escapeHtml(comment.name)}</div><div class="comment-admin-meta">${escapeHtml(comment.meta || 'Customer')}</div></div>
+	        </div>
+	        <div class="comment-admin-stars">${stars}</div>
+	        <div class="comment-admin-text">${escapeHtml(comment.text)}</div>
+	      </div>
+	      <button class="btn btn-danger btn-sm" onclick="deleteCustomerComment(${index})">Delete</button>
+	    </div>`;
   }).join('');
 }
 function publishCustomerComment() {
