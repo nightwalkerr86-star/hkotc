@@ -178,6 +178,7 @@
     .pt-actions{display:flex;gap:6px}
     .comment-admin-grid{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:20px;align-items:start}
     .comment-editor-card{padding:28px 30px}
+    .comment-published-card{align-self:start;margin-top:0}
     .comment-publish-btn{width:100%;justify-content:center;min-height:44px;margin-top:14px}
     .comment-list{display:grid;gap:12px}
     .comment-admin-card{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:start;padding:18px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.025)}
@@ -463,7 +464,7 @@
             <button class="btn btn-primary comment-publish-btn" onclick="publishCustomerComment()">Publish Comment</button>
             <div class="status" id="cm-status"></div>
           </div>
-          <div class="card">
+          <div class="card comment-published-card">
             <div class="card-title">Published Comments</div>
             <div class="comment-list" id="admin-comments-list"></div>
           </div>
