@@ -486,6 +486,8 @@
     .partner-logo-card { min-height: 112px; padding: 18px 12px; border-radius: 10px; background: rgba(255,255,255,0.035); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; color: var(--text); box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); transition: background 0.2s, border-color 0.2s, transform 0.2s; }
     .partner-logo-card:hover { background: rgba(245,166,35,0.06); border-color: rgba(245,166,35,0.18); transform: translateY(-2px); }
     .partner-logo-icon { width: 34px; height: 34px; color: rgba(240,242,255,0.78); opacity: 0.94; }
+    .partner-logo-img { display: block; max-width: 82%; max-height: 46px; object-fit: contain; filter: grayscale(1) contrast(1.12); opacity: 0.88; transition: opacity 0.2s, filter 0.2s; }
+    .partner-logo-card:hover .partner-logo-img { opacity: 1; filter: grayscale(1) contrast(1.2); }
     .partner-logo-text { color: rgba(240,242,255,0.82); font-size: clamp(13px, 1.7vw, 18px); font-weight: 850; letter-spacing: 0; line-height: 1.08; }
     @media (min-width: 768px) { .partners-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
@@ -574,6 +576,7 @@
       .partners-grid { gap: 7px; }
       .partner-logo-card { min-height: 86px; padding: 14px 8px; border-radius: 8px; }
       .partner-logo-icon { width: 28px; height: 28px; }
+      .partner-logo-img { max-height: 34px; }
 
       /* Footer — 2-column grid, logo full-width on top */
       footer { padding: 44px 0 24px; }
@@ -1051,37 +1054,29 @@
         <h2 id="partners-title" class="partners-title" data-i18n="partners-title">Partners</h2>
       </div>
       <div class="partners-grid" aria-label="Partner logo placeholders">
-        <div class="partner-logo-card" aria-label="Silvergate logo placeholder">
-          <svg class="partner-logo-icon" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="15" fill="none" stroke="currentColor" stroke-width="3"/><path d="M12 22h16M15 16h10M15 28h10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
-          <span class="partner-logo-text">Silvergate</span>
+        <div class="partner-logo-card" aria-label="Silvergate">
+          <img class="partner-logo-img" src="partner%20logo/download.png" alt="Silvergate logo" loading="lazy" decoding="async">
         </div>
-        <div class="partner-logo-card" aria-label="Galaxy Digital Assets logo placeholder">
-          <svg class="partner-logo-icon" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4l4.2 11.2L36 20l-11.8 4.8L20 36l-4.2-11.2L4 20l11.8-4.8L20 4z" fill="currentColor"/></svg>
-          <span class="partner-logo-text">Galaxy Digital Assets</span>
+        <div class="partner-logo-card" aria-label="Galaxy Digital Assets">
+          <img class="partner-logo-img" src="partner%20logo/493-4933026_frequency-client-logos-galaxy-white-background-galaxy-digital.png" alt="Galaxy Digital Assets logo" loading="lazy" decoding="async">
         </div>
-        <div class="partner-logo-card" aria-label="Coinbase logo placeholder">
-          <svg class="partner-logo-icon" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" stroke-width="4"/><path d="M26 15a8 8 0 1 0 0 10" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
-          <span class="partner-logo-text">Coinbase</span>
+        <div class="partner-logo-card" aria-label="Coinbase">
+          <img class="partner-logo-img" src="partner%20logo/Coinbase_Wordmark-719a982e55e945fc93a3b1770b6a9aa9.png" alt="Coinbase logo" loading="lazy" decoding="async">
         </div>
-        <div class="partner-logo-card" aria-label="Alibaba Cloud logo placeholder">
-          <svg class="partner-logo-icon" viewBox="0 0 40 40" aria-hidden="true"><path d="M10 25V15l10-6 10 6v10l-10 6-10-6z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M14 22h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
-          <span class="partner-logo-text">Alibaba Cloud</span>
+        <div class="partner-logo-card" aria-label="Alibaba Cloud">
+          <img class="partner-logo-img" src="partner%20logo/download-1.png" alt="Alibaba Cloud logo" loading="lazy" decoding="async">
         </div>
-        <div class="partner-logo-card" aria-label="DBS logo placeholder">
-          <svg class="partner-logo-icon" viewBox="0 0 40 40" aria-hidden="true"><path d="M8 8h24v24H8z" fill="none" stroke="currentColor" stroke-width="3"/><path d="M20 8v24M8 20h24M13 13l14 14M27 13L13 27" stroke="currentColor" stroke-width="2.4"/></svg>
-          <span class="partner-logo-text">DBS</span>
+        <div class="partner-logo-card" aria-label="DBS">
+          <img class="partner-logo-img" src="partner%20logo/download-2.png" alt="DBS logo" loading="lazy" decoding="async">
         </div>
-        <div class="partner-logo-card" aria-label="imToken logo placeholder">
-          <svg class="partner-logo-icon" viewBox="0 0 40 40" aria-hidden="true"><rect x="8" y="7" width="24" height="26" rx="7" fill="none" stroke="currentColor" stroke-width="3"/><path d="M16 16h8a4 4 0 0 1 0 8h-8z" fill="currentColor"/></svg>
-          <span class="partner-logo-text">imToken</span>
+        <div class="partner-logo-card" aria-label="imToken">
+          <img class="partner-logo-img" src="partner%20logo/download-3.png" alt="imToken logo" loading="lazy" decoding="async">
         </div>
-        <div class="partner-logo-card" aria-label="Ledger logo placeholder">
-          <svg class="partner-logo-icon" viewBox="0 0 40 40" aria-hidden="true"><path d="M9 9h10v4h-6v6H9V9zm12 0h10v10h-4v-6h-6V9zM9 21h4v6h6v4H9V21zm18 0h4v10H21v-4h6v-6z" fill="currentColor"/></svg>
-          <span class="partner-logo-text">Ledger</span>
+        <div class="partner-logo-card" aria-label="Ledger">
+          <img class="partner-logo-img" src="partner%20logo/download-4.png" alt="Ledger logo" loading="lazy" decoding="async">
         </div>
-        <div class="partner-logo-card" aria-label="Chainalysis logo placeholder">
-          <svg class="partner-logo-icon" viewBox="0 0 40 40" aria-hidden="true"><circle cx="13" cy="20" r="5" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="27" cy="13" r="5" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="27" cy="27" r="5" fill="none" stroke="currentColor" stroke-width="3"/><path d="M17.5 18l5-3M17.5 22l5 3" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
-          <span class="partner-logo-text">Chainalysis</span>
+        <div class="partner-logo-card" aria-label="Chainalysis">
+          <img class="partner-logo-img" src="partner%20logo/download-5.png" alt="Chainalysis logo" loading="lazy" decoding="async">
         </div>
       </div>
     </div>
