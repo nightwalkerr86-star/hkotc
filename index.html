@@ -478,18 +478,15 @@
     .hours-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 100px; background: rgba(0,212,170,0.1); border: 1px solid rgba(0,212,170,0.2); font-size: 13px; font-weight: 600; color: var(--green); }
 
     /* ─── PARTNERS ── */
-    #partners { padding: 0 0 80px; background: var(--bg); }
-    .partners-card { padding: 34px; border-radius: 24px; background: linear-gradient(145deg, rgba(19,24,41,0.98), rgba(7,9,15,0.98)); border: 1px solid var(--border); box-shadow: 0 24px 70px rgba(0,0,0,0.36); overflow: hidden; position: relative; }
-    .partners-card::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at 16% 0%, rgba(245,166,35,0.12), transparent 30%), radial-gradient(circle at 100% 100%, rgba(79,142,247,0.1), transparent 34%); }
-    .partners-card > * { position: relative; z-index: 1; }
-    .partners-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 24px; }
-    .partners-title { font-size: clamp(24px, 4vw, 34px); font-weight: 900; letter-spacing: 0; line-height: 1.1; }
-    .partners-sub { max-width: 520px; color: var(--muted); font-size: 13px; line-height: 1.7; text-align: right; }
-    .partners-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-    .partner-logo-card { min-height: 86px; padding: 18px 14px; border-radius: 16px; background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; text-align: center; color: rgba(240,242,255,0.78); filter: grayscale(1); transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.2s; }
-    .partner-logo-card:hover { transform: translateY(-2px); border-color: rgba(245,166,35,0.22); background: rgba(255,255,255,0.055); color: #fff; }
-    .partner-logo-text { font-size: clamp(14px, 2vw, 18px); font-weight: 850; letter-spacing: 0; line-height: 1.15; opacity: 0.88; }
-    .partners-disclaimer { margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); color: var(--muted); font-size: 12px; line-height: 1.65; }
+    #partners { padding: 0 0 72px; background: var(--bg); }
+    .partners-card { max-width: 980px; margin: 0 auto; padding: 30px; border-radius: 20px; background: var(--bg2); border: 1px solid var(--border); box-shadow: 0 18px 48px rgba(0,0,0,0.22); }
+    .partners-head { text-align: center; margin-bottom: 22px; }
+    .partners-title { font-size: clamp(22px, 3vw, 30px); font-weight: 850; letter-spacing: 0; line-height: 1.15; }
+    .partners-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .partner-logo-card { min-height: 68px; padding: 14px 10px; border-radius: 12px; background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: center; text-align: center; color: rgba(240,242,255,0.68); filter: grayscale(1); transition: border-color 0.2s, color 0.2s, background 0.2s; }
+    .partner-logo-card:hover { border-color: rgba(245,166,35,0.18); background: rgba(255,255,255,0.045); color: rgba(240,242,255,0.9); }
+    .partner-logo-text { font-size: clamp(13px, 1.8vw, 16px); font-weight: 800; letter-spacing: 0.2px; line-height: 1.15; opacity: 0.86; }
+    .partners-disclaimer { max-width: 760px; margin: 16px auto 0; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.08); color: var(--muted); font-size: 11.5px; line-height: 1.65; text-align: center; }
     @media (min-width: 768px) { .partners-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
     /* ─── FLOATING BUTTONS ── */
@@ -572,10 +569,9 @@
       .contact-card .btn { align-self: stretch; }
 
       #partners { padding: 0 0 52px; }
-      .partners-card { padding: 24px 18px; border-radius: 20px; }
-      .partners-head { display: block; margin-bottom: 20px; }
-      .partners-sub { margin-top: 8px; text-align: left; font-size: 12px; }
-      .partner-logo-card { min-height: 74px; padding: 14px 10px; border-radius: 14px; }
+      .partners-card { padding: 22px 16px; border-radius: 18px; }
+      .partners-head { margin-bottom: 18px; }
+      .partner-logo-card { min-height: 62px; padding: 12px 8px; border-radius: 12px; }
 
       /* Footer — 2-column grid, logo full-width on top */
       footer { padding: 44px 0 24px; }
@@ -1051,7 +1047,6 @@
     <div class="partners-card">
       <div class="partners-head">
         <h2 id="partners-title" class="partners-title" data-i18n="partners-title">Partners</h2>
-        <p class="partners-sub" data-i18n="partners-sub">Ecosystem references for OTC clients and crypto market participants.</p>
       </div>
       <div class="partners-grid" aria-label="Partner logo placeholders">
         <div class="partner-logo-card" aria-label="Silvergate logo placeholder"><span class="partner-logo-text">Silvergate</span></div>
