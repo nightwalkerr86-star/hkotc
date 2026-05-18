@@ -1930,32 +1930,5 @@ Hello! I would like to place this order. Please confirm availability and rate.`;
   spySections.forEach(s => spyObserver.observe(s));
 
 </script>
-<script>
-(function(){
-  if (sessionStorage.getItem('hkotc_scam_warning_seen') === '1') return;
-  const lang = localStorage.getItem('lang') || 'en';
-  const copy = {
-    en: { title: "Scam Warning Alert", body: "Please be aware of fake accounts, impersonators, and suspicious payment requests.\n\nOur official team will only communicate through the official contact channels listed on this website. We will never ask you to send money to a personal account, third-party account, or unknown wallet address without official confirmation.\n\nBefore making any payment, please always confirm:\n\n- The official order number\n- The latest exchange rate\n- The official receiving account or wallet address\n- The payment amount\n- The identity verification status\n\nDo not make any payment before receiving final confirmation from our team.\n\nIf anyone contacts you privately claiming to represent us, offers unusually high rates, or asks you to pay quickly, please stop immediately and contact our official support.\n\nYour safety is our priority. Always verify before you pay.", button: 'I Understand' },
-    zh: { title: "防騙提醒", body: "請小心假冒帳號、冒充客服及可疑付款要求。\n\n我們的團隊只會透過本網站列出的官方聯絡方式與客戶溝通。未經正式確認前，我們不會要求客戶付款至私人帳戶、第三方帳戶或不明錢包地址。\n\n付款前，請務必確認以下資料：\n\n- 官方訂單編號\n- 最新兌換匯率\n- 官方收款帳戶或錢包地址\n- 付款金額\n- 身份核實狀態\n\n未收到我們團隊的最終確認前，請勿付款。\n\n如有人私下聯絡您，自稱是我們職員、提供異常優惠匯率，或要求您立即付款，請立即停止交易，並透過官方渠道聯絡我們核實。\n\n保障您的資金安全，付款前請先確認。", button: '我明白' },
-    km: { title: "សេចក្តីជូនដំណឹងប្រុងប្រយ័ត្នពីការឆបោក", body: "សូមប្រុងប្រយ័ត្នចំពោះគណនីក្លែងក្លាយ អ្នកបន្លំជាបុគ្គលិក និងសំណើបង់ប្រាក់ដែលគួរឲ្យសង្ស័យ។\n\nក្រុមការងាររបស់យើងនឹងទាក់ទងអតិថិជនតែតាមរយៈ បណ្តាញទំនាក់ទំនងផ្លូវការ ដែលបានបង្ហាញនៅលើគេហទំព័រនេះប៉ុណ្ណោះ។ យើងនឹងមិនស្នើឲ្យអតិថិជនផ្ទេរប្រាក់ទៅគណនីផ្ទាល់ខ្លួន គណនីភាគីទីបី ឬអាសយដ្ឋានកាបូបគ្រីបតូដែលមិនស្គាល់ ដោយគ្មានការបញ្ជាក់ផ្លូវការឡើយ។\n\nមុនពេលធ្វើការបង់ប្រាក់ សូមពិនិត្យ និងបញ្ជាក់ព័ត៌មានខាងក្រោមជានិច្ច៖\n\n- លេខបញ្ជាទិញផ្លូវការ\n- អត្រាប្តូរប្រាក់ចុងក្រោយ\n- គណនីទទួលប្រាក់ ឬអាសយដ្ឋានកាបូបគ្រីបតូផ្លូវការ\n- ចំនួនទឹកប្រាក់ដែលត្រូវបង់\n- ស្ថានភាពនៃការផ្ទៀងផ្ទាត់អត្តសញ្ញាណ\n\nសូមកុំធ្វើការបង់ប្រាក់ មុនពេលទទួលបានការបញ្ជាក់ចុងក្រោយពីក្រុមការងាររបស់យើង។\n\nប្រសិនបើមាននរណាម្នាក់ទាក់ទងមកអ្នកជាលក្ខណៈឯកជន ដោយអះអាងថាជាបុគ្គលិករបស់យើង ផ្តល់អត្រាប្តូរប្រាក់ខ្ពស់ខុសធម្មតា ឬជំរុញឲ្យអ្នកបង់ប្រាក់ភ្លាមៗ សូមបញ្ឈប់ការធ្វើប្រតិបត្តិការភ្លាម ហើយទាក់ទងមកយើងតាមបណ្តាញផ្លូវការដើម្បីផ្ទៀងផ្ទាត់។\n\nសុវត្ថិភាពនៃទ្រព្យសម្បត្តិរបស់អ្នក គឺជាអាទិភាពរបស់យើង។ សូមផ្ទៀងផ្ទាត់ជាមុន មុនពេលបង់ប្រាក់។", button: 'ខ្ញុំយល់ហើយ' }
-  };
-  const t = copy[lang] || copy.en;
-  const style = document.createElement('style');
-  style.textContent = '.scam-pop-backdrop{position:fixed;inset:0;z-index:4000;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(0,0,0,.68);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .22s}.scam-pop-backdrop.open{opacity:1;pointer-events:auto}.scam-pop{width:min(96vw,860px);border-radius:22px;border:1px solid rgba(245,166,35,.32);background:#0d1120;color:#f0f2ff;box-shadow:0 28px 90px rgba(0,0,0,.48);overflow:hidden;transform:translateY(10px) scale(.98);transition:transform .22s}.scam-pop-backdrop.open .scam-pop{transform:translateY(0) scale(1)}html.light .scam-pop{background:#fff;color:#111827}.scam-pop-head{padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:11px}.scam-pop-icon{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(245,166,35,.14);color:#f5a623;flex:0 0 auto}.scam-pop-title{font-size:19px;font-weight:900}.scam-pop-body{padding:20px 24px 22px;color:#a5aec4;font-size:14px;line-height:1.75;max-height:min(68vh,520px);overflow-y:auto}.scam-pop-text{white-space:pre-line;margin:0}html.light .scam-pop-body{color:#526078}.scam-pop-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}.scam-pop-btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;min-width:180px;border-radius:12px;border:1px solid rgba(255,255,255,.10);font:inherit;font-weight:800;text-decoration:none;cursor:pointer}.scam-pop-primary{background:linear-gradient(135deg,#f5a623,#ffcc66);color:#07090f}.scam-pop-secondary{background:rgba(44,165,224,.14);color:#60c5ff}@media(max-width:620px){.scam-pop{width:min(100%,460px);border-radius:18px}.scam-pop-actions{display:grid;grid-template-columns:1fr}.scam-pop-btn{min-width:0}}';
-  document.head.appendChild(style);
-  const backdrop = document.createElement('div');
-  backdrop.className = 'scam-pop-backdrop';
-  backdrop.innerHTML = '<div class="scam-pop" role="dialog" aria-modal="true" aria-labelledby="scam-pop-title"><div class="scam-pop-head"><div class="scam-pop-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg></div><div class="scam-pop-title" id="scam-pop-title"></div></div><div class="scam-pop-body"><p class="scam-pop-text"></p><div class="scam-pop-actions"><button class="scam-pop-btn scam-pop-primary" type="button"></button></div></div></div>';
-  backdrop.querySelector('#scam-pop-title').textContent = t.title;
-  backdrop.querySelector('.scam-pop-text').textContent = t.body;
-  backdrop.querySelector('.scam-pop-primary').textContent = t.button;
-  function closePopup(){ sessionStorage.setItem('hkotc_scam_warning_seen','1'); backdrop.classList.remove('open'); setTimeout(() => backdrop.remove(), 240); }
-  backdrop.querySelector('.scam-pop-primary').addEventListener('click', closePopup);
-  backdrop.addEventListener('click', event => { if (event.target === backdrop) closePopup(); });
-  document.addEventListener('keydown', event => { if (event.key === 'Escape' && backdrop.classList.contains('open')) closePopup(); });
-  document.body.appendChild(backdrop);
-  setTimeout(() => backdrop.classList.add('open'), 5000);
-})();
-</script>
 </body>
 </html>
