@@ -477,6 +477,21 @@
     .contact-card .btn { align-self: flex-start; margin-top: auto; }
     .hours-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 100px; background: rgba(0,212,170,0.1); border: 1px solid rgba(0,212,170,0.2); font-size: 13px; font-weight: 600; color: var(--green); }
 
+    /* ─── PARTNERS ── */
+    #partners { padding: 0 0 80px; background: var(--bg); }
+    .partners-card { padding: 34px; border-radius: 24px; background: linear-gradient(145deg, rgba(19,24,41,0.98), rgba(7,9,15,0.98)); border: 1px solid var(--border); box-shadow: 0 24px 70px rgba(0,0,0,0.36); overflow: hidden; position: relative; }
+    .partners-card::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at 16% 0%, rgba(245,166,35,0.12), transparent 30%), radial-gradient(circle at 100% 100%, rgba(79,142,247,0.1), transparent 34%); }
+    .partners-card > * { position: relative; z-index: 1; }
+    .partners-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 24px; }
+    .partners-title { font-size: clamp(24px, 4vw, 34px); font-weight: 900; letter-spacing: 0; line-height: 1.1; }
+    .partners-sub { max-width: 520px; color: var(--muted); font-size: 13px; line-height: 1.7; text-align: right; }
+    .partners-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .partner-logo-card { min-height: 86px; padding: 18px 14px; border-radius: 16px; background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; text-align: center; color: rgba(240,242,255,0.78); filter: grayscale(1); transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.2s; }
+    .partner-logo-card:hover { transform: translateY(-2px); border-color: rgba(245,166,35,0.22); background: rgba(255,255,255,0.055); color: #fff; }
+    .partner-logo-text { font-size: clamp(14px, 2vw, 18px); font-weight: 850; letter-spacing: 0; line-height: 1.15; opacity: 0.88; }
+    .partners-disclaimer { margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); color: var(--muted); font-size: 12px; line-height: 1.65; }
+    @media (min-width: 768px) { .partners-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
     /* ─── FLOATING BUTTONS ── */
     .float-btns { position: fixed; bottom: 24px; right: 16px; display: flex; flex-direction: column; gap: 12px; z-index: 900; }
     .float-btn { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: var(--transition); box-shadow: 0 4px 20px rgba(0,0,0,0.4); position: relative; border:0; cursor:pointer; }
@@ -555,6 +570,12 @@
       /* Contact — stretch CTA buttons full width */
       .contact-card { padding: 24px 20px; }
       .contact-card .btn { align-self: stretch; }
+
+      #partners { padding: 0 0 52px; }
+      .partners-card { padding: 24px 18px; border-radius: 20px; }
+      .partners-head { display: block; margin-bottom: 20px; }
+      .partners-sub { margin-top: 8px; text-align: left; font-size: 12px; }
+      .partner-logo-card { min-height: 74px; padding: 14px 10px; border-radius: 14px; }
 
       /* Footer — 2-column grid, logo full-width on top */
       footer { padding: 44px 0 24px; }
@@ -1024,6 +1045,29 @@
   </div>
 </section>
 
+<!-- ─── PARTNERS ── -->
+<section id="partners" aria-labelledby="partners-title">
+  <div class="container">
+    <div class="partners-card">
+      <div class="partners-head">
+        <h2 id="partners-title" class="partners-title" data-i18n="partners-title">Partners</h2>
+        <p class="partners-sub" data-i18n="partners-sub">Ecosystem references for OTC clients and crypto market participants.</p>
+      </div>
+      <div class="partners-grid" aria-label="Partner logo placeholders">
+        <div class="partner-logo-card" aria-label="Silvergate logo placeholder"><span class="partner-logo-text">Silvergate</span></div>
+        <div class="partner-logo-card" aria-label="Galaxy Digital Assets logo placeholder"><span class="partner-logo-text">Galaxy Digital Assets</span></div>
+        <div class="partner-logo-card" aria-label="Coinbase logo placeholder"><span class="partner-logo-text">Coinbase</span></div>
+        <div class="partner-logo-card" aria-label="Alibaba Cloud logo placeholder"><span class="partner-logo-text">Alibaba Cloud</span></div>
+        <div class="partner-logo-card" aria-label="DBS logo placeholder"><span class="partner-logo-text">DBS</span></div>
+        <div class="partner-logo-card" aria-label="imToken logo placeholder"><span class="partner-logo-text">imToken</span></div>
+        <div class="partner-logo-card" aria-label="Ledger logo placeholder"><span class="partner-logo-text">Ledger</span></div>
+        <div class="partner-logo-card" aria-label="Chainalysis logo placeholder"><span class="partner-logo-text">Chainalysis</span></div>
+      </div>
+      <p class="partners-disclaimer" data-i18n="partners-disclaimer">Logos are shown for informational and ecosystem reference only. No partnership is implied unless officially stated.</p>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <!-- ─── FOOTER ── -->
@@ -1193,6 +1237,9 @@
       'desk-status':'Desk is ONLINE — Available Now',
       'wa-title':'WhatsApp','wa-desc':'Message us directly for instant quotes, support, and trading. Typical response under 2 minutes.','wa-btn':'Open WhatsApp Chat →',
       'tg-title':'Telegram','tg-desc':"Chat directly on Telegram. Use the calculator to pre-fill your order — we'll confirm rate and settle fast.",'tg-btn':'Open Telegram →',
+      'partners-title':'Partners',
+      'partners-sub':'Ecosystem references for OTC clients and crypto market participants.',
+      'partners-disclaimer':'Logos are shown for informational and ecosystem reference only. No partnership is implied unless officially stated.',
       'footer-desc':"Hong Kong's most trusted crypto OTC desk. Fast, private, and secure USDT ↔ HKD trading since 2020.",
       'footer-trading':'Trading','footer-company':'Company','footer-contact':'Contact',
       'footer-rate':'USDT/HKD Rate','footer-calc':'Calculator','footer-how':'How It Works','footer-start':'Start Trading',
@@ -1247,6 +1294,9 @@
       'desk-status':'服務台在線 — 立即可用',
       'wa-title':'WhatsApp','wa-desc':'直接發訊息獲取即時報價、支援和交易服務，通常2分鐘內回覆。','wa-btn':'開啟 WhatsApp 聊天 →',
       'tg-title':'Telegram','tg-desc':'直接在Telegram聊天，使用計算器預填訂單，我們確認匯率後迅速結算。','tg-btn':'開啟 Telegram →',
+      'partners-title':'Partners',
+      'partners-sub':'OTC 客戶及加密貨幣市場參與者的生態參考。',
+      'partners-disclaimer':'標誌僅作資訊及生態參考用途。除非正式聲明，否則不代表任何合作關係。',
       'footer-desc':'香港最值得信賴的加密貨幣場外交易平台，自2020年起提供快速、私隱、安全的USDT ↔ 港幣交易。',
       'footer-trading':'交易','footer-company':'公司','footer-contact':'聯絡',
       'footer-rate':'USDT/港幣匯率','footer-calc':'計算器','footer-how':'如何運作','footer-start':'開始交易',
@@ -1335,6 +1385,9 @@
       'tg-title': 'Telegram',
       'tg-desc': 'ជជែកផ្ទាល់លើ Telegram។ ប្រើម៉ាស៊ីនគណនាដើម្បីបំពេញការបញ្ជាទិញជាមុន ហើយយើងនឹងបញ្ជាក់អត្រា និងទូទាត់ឱ្យលឿន។',
       'tg-btn': 'បើក Telegram →',
+      'partners-title': 'Partners',
+      'partners-sub': 'ឯកសារយោងអំពីប្រព័ន្ធអេកូសម្រាប់អតិថិជន OTC និងអ្នកចូលរួមទីផ្សារគ្រីបតូ។',
+      'partners-disclaimer': 'ឡូហ្គោត្រូវបានបង្ហាញសម្រាប់ព័ត៌មាន និងឯកសារយោងអំពីប្រព័ន្ធអេកូប៉ុណ្ណោះ។ មិនមានន័យថាមានភាពជាដៃគូទេ លុះត្រាតែមានការប្រកាសជាផ្លូវការ។',
       'footer-desc': 'តុ OTC គ្រីបតូដែលគួរឱ្យទុកចិត្តបំផុតនៅហុងកុង។ ជួញដូរ USDT ↔ HKD រហ័ស ឯកជន និងសុវត្ថិភាពតាំងពីឆ្នាំ 2020។',
       'footer-trading': 'ការជួញដូរ',
       'footer-company': 'ក្រុមហ៊ុន',
