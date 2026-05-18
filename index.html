@@ -486,8 +486,10 @@
     .partner-logo-card { min-height: 112px; padding: 18px 12px; border-radius: 10px; background: rgba(255,255,255,0.035); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; color: var(--text); box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); transition: background 0.2s, border-color 0.2s, transform 0.2s; }
     .partner-logo-card:hover { background: rgba(245,166,35,0.06); border-color: rgba(245,166,35,0.18); transform: translateY(-2px); }
     .partner-logo-icon { width: 34px; height: 34px; color: rgba(240,242,255,0.78); opacity: 0.94; }
-    .partner-logo-img { display: block; max-width: 82%; max-height: 46px; object-fit: contain; filter: grayscale(1) contrast(1.12); opacity: 0.88; transition: opacity 0.2s, filter 0.2s; }
-    .partner-logo-card:hover .partner-logo-img { opacity: 1; filter: grayscale(1) contrast(1.2); }
+    .partner-logo-img { display: block; width: auto; max-width: 74%; max-height: 50px; object-fit: contain; filter: grayscale(1) invert(1) brightness(1.22) contrast(1.16); mix-blend-mode: screen; opacity: 0.82; transition: opacity 0.2s, filter 0.2s, transform 0.2s; }
+    .partner-logo-card:hover .partner-logo-img { opacity: 0.98; filter: grayscale(1) invert(1) brightness(1.35) contrast(1.2); }
+    .partner-logo-wide { max-width: 78%; }
+    .partner-logo-tall { max-height: 58px; max-width: 58%; transform: scale(1.16); }
     .partner-logo-text { color: rgba(240,242,255,0.82); font-size: clamp(13px, 1.7vw, 18px); font-weight: 850; letter-spacing: 0; line-height: 1.08; }
     @media (min-width: 768px) { .partners-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
@@ -576,7 +578,8 @@
       .partners-grid { gap: 7px; }
       .partner-logo-card { min-height: 86px; padding: 14px 8px; border-radius: 8px; }
       .partner-logo-icon { width: 28px; height: 28px; }
-      .partner-logo-img { max-height: 34px; }
+      .partner-logo-img { max-width: 78%; max-height: 36px; }
+      .partner-logo-tall { max-height: 46px; max-width: 58%; transform: scale(1.14); }
 
       /* Footer — 2-column grid, logo full-width on top */
       footer { padding: 44px 0 24px; }
@@ -1055,16 +1058,16 @@
       </div>
       <div class="partners-grid" aria-label="Partner logo placeholders">
         <div class="partner-logo-card" aria-label="Silvergate">
-          <img class="partner-logo-img" src="partner-logo/download.png" alt="Silvergate logo" loading="lazy" decoding="async">
+          <img class="partner-logo-img partner-logo-wide" src="partner-logo/download.png" alt="Silvergate logo" loading="lazy" decoding="async">
         </div>
         <div class="partner-logo-card" aria-label="Galaxy Digital Assets">
-          <img class="partner-logo-img" src="partner-logo/493-4933026_frequency-client-logos-galaxy-white-background-galaxy-digital.png" alt="Galaxy Digital Assets logo" loading="lazy" decoding="async">
+          <img class="partner-logo-img partner-logo-tall" src="partner-logo/493-4933026_frequency-client-logos-galaxy-white-background-galaxy-digital.png" alt="Galaxy Digital Assets logo" loading="lazy" decoding="async">
         </div>
         <div class="partner-logo-card" aria-label="Coinbase">
-          <img class="partner-logo-img" src="partner-logo/Coinbase_Wordmark-719a982e55e945fc93a3b1770b6a9aa9.png" alt="Coinbase logo" loading="lazy" decoding="async">
+          <img class="partner-logo-img partner-logo-wide" src="partner-logo/Coinbase_Wordmark-719a982e55e945fc93a3b1770b6a9aa9.png" alt="Coinbase logo" loading="lazy" decoding="async">
         </div>
         <div class="partner-logo-card" aria-label="Alibaba Cloud">
-          <img class="partner-logo-img" src="partner-logo/download-1.png" alt="Alibaba Cloud logo" loading="lazy" decoding="async">
+          <img class="partner-logo-img partner-logo-wide" src="partner-logo/download-1.png" alt="Alibaba Cloud logo" loading="lazy" decoding="async">
         </div>
         <div class="partner-logo-card" aria-label="DBS">
           <img class="partner-logo-img" src="partner-logo/download-2.png" alt="DBS logo" loading="lazy" decoding="async">
@@ -1076,7 +1079,7 @@
           <img class="partner-logo-img" src="partner-logo/download-4.png" alt="Ledger logo" loading="lazy" decoding="async">
         </div>
         <div class="partner-logo-card" aria-label="Chainalysis">
-          <img class="partner-logo-img" src="partner-logo/download-5.png" alt="Chainalysis logo" loading="lazy" decoding="async">
+          <img class="partner-logo-img partner-logo-wide" src="partner-logo/download-5.png" alt="Chainalysis logo" loading="lazy" decoding="async">
         </div>
       </div>
     </div>
