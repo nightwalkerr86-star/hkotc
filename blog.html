@@ -156,8 +156,17 @@
     .blog-card-excerpt { font-size: 13px; line-height: 1.65; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
     .blog-card-link { position: absolute; inset: 0; z-index: 1; }
     .blog-empty { text-align: center; color: var(--muted); font-size: 14px; padding: 56px 0; }
+    .blog-pagination { display: none; align-items: center; justify-content: center; gap: 10px; margin: 28px auto 0; flex-wrap: wrap; }
+    .page-btn { min-width: 42px; height: 38px; padding: 0 13px; border-radius: 10px; background: var(--bg2); border: 1px solid var(--border); color: var(--muted); font-size: 13px; font-weight: 800; transition: var(--transition); }
+    .page-btn:hover:not(:disabled), .page-btn.active { color: var(--gold); border-color: rgba(245,166,35,.55); background: rgba(245,166,35,.12); }
+    .page-btn:disabled { opacity: .4; cursor: not-allowed; }
+    .page-status { min-width: 92px; text-align: center; color: var(--muted); font-size: 12px; font-weight: 700; }
     @media (max-width: 900px) { .blog-grid { grid-template-columns: repeat(2,1fr); } }
-    @media (max-width: 580px) { .blog-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 580px) {
+      .blog-grid { grid-template-columns: 1fr; }
+      .blog-pagination { gap: 8px; margin-top: 22px; }
+      .page-btn { min-width: 38px; height: 36px; padding: 0 11px; font-size: 12px; }
+    }
 
     /* ── CHANNEL POSTS SECTION ── */
     .channel-section { max-width: 1200px; min-height: 0; margin: 0 auto; padding: 0 24px; }
@@ -292,6 +301,7 @@
 <!-- BLOG POSTS SECTION -->
 <div class="blog-section">
   <div class="blog-grid" id="blog-grid"></div>
+  <div class="blog-pagination" id="blog-pagination" aria-label="Blog pagination"></div>
 </div>
 
 <!-- CHANNEL POSTS SECTION -->
@@ -324,6 +334,9 @@
       'hero-sub': "Market updates, OTC guides, regulatory news, and expert analysis from HK's crypto OTC desk.",
       'ch-section-title':'📢 From Our Channel',
       'ch-load-more':'Load More',
+      'page-prev':'Prev',
+      'page-next':'Next',
+      'page-status':'Page {current} of {total}',
       'ft-home':'Home','ft-privacy':'Privacy','ft-terms':'Terms',
       'ft-copy':'© 2025 HKOTC. All rights reserved.',
     },
@@ -335,6 +348,9 @@
       'hero-sub': '市場動態、OTC交易指南、監管新聞及香港加密貨幣場外交易台的專業分析。',
       'ch-section-title':'📢 頻道最新貼文',
       'ch-load-more':'載入更多',
+      'page-prev':'上一頁',
+      'page-next':'下一頁',
+      'page-status':'第 {current} / {total} 頁',
       'ft-home':'主頁','ft-privacy':'私隱','ft-terms':'條款',
       'ft-copy':'© 2025 HKOTC. 版權所有。',
     },
@@ -350,6 +366,9 @@
       'hero-sub': 'តាមដានបច្ចុប្បន្នភាពទីផ្សារ មគ្គុទេសក៍ប្តូរ USDT/HKD ព័ត៌មានបទប្បញ្ញត្តិ និងការវិភាគពីក្រុម OTC របស់យើង។',
       'ch-section-title': '📢 ព័ត៌មានពីឆានែលរបស់យើង',
       'ch-load-more': 'បង្ហាញបន្ថែម',
+      'page-prev': 'មុន',
+      'page-next': 'បន្ទាប់',
+      'page-status': 'ទំព័រ {current} / {total}',
       'ft-home': 'ទំព័រដើម',
       'ft-privacy': 'គោលការណ៍ឯកជនភាព',
       'ft-terms': 'លក្ខខណ្ឌប្រើប្រាស់',
@@ -406,6 +425,7 @@
     currentLang = lang;
     localStorage.setItem('lang', lang);
     applyLang(lang);
+    if (allBlogPosts.length) renderBlogPage(blogPage, false);
     const m = document.getElementById('lang-menu');
     if (m) m.classList.remove('open');
   }
@@ -426,6 +446,9 @@
   const DEFAULT_BRANCH = 'main';
   const DEFAULT_BLOG_PATH = 'blog-posts.json';
   const CHANNEL_POSTS_URL = 'channel-posts.json';
+  const BLOG_PER_PAGE = 6;
+  let allBlogPosts = [];
+  let blogPage = 0;
 
   function rawGithubUrl(filePath) {
     return `https://raw.githubusercontent.com/${DEFAULT_REPO}/${DEFAULT_BRANCH}/${filePath.replace(/^\/+/, '')}`;
@@ -549,6 +572,48 @@
     return Promise.any(urls.map(fetchBlogSource));
   }
 
+  function pageLabel(key) {
+    return (LANG[currentLang] && LANG[currentLang][key]) || LANG.en[key] || '';
+  }
+
+  function renderBlogPagination(totalPages) {
+    const wrap = document.getElementById('blog-pagination');
+    if (!wrap) return;
+    if (totalPages <= 1) {
+      wrap.style.display = 'none';
+      wrap.innerHTML = '';
+      return;
+    }
+    wrap.style.display = 'flex';
+    const current = blogPage + 1;
+    const status = pageLabel('page-status')
+      .replace('{current}', current)
+      .replace('{total}', totalPages);
+    const pages = Array.from({ length: totalPages }, (_, i) => {
+      return `<button class="page-btn ${i === blogPage ? 'active' : ''}" type="button" onclick="renderBlogPage(${i})" aria-label="Page ${i + 1}">${i + 1}</button>`;
+    }).join('');
+    wrap.innerHTML = `
+      <button class="page-btn" type="button" onclick="renderBlogPage(${blogPage - 1})" ${blogPage === 0 ? 'disabled' : ''}>${pageLabel('page-prev')}</button>
+      ${pages}
+      <span class="page-status">${status}</span>
+      <button class="page-btn" type="button" onclick="renderBlogPage(${blogPage + 1})" ${blogPage >= totalPages - 1 ? 'disabled' : ''}>${pageLabel('page-next')}</button>
+    `;
+  }
+
+  function renderBlogPage(page = 0, shouldScroll = true) {
+    const grid = document.getElementById('blog-grid');
+    if (!grid) return;
+    const totalPages = Math.max(1, Math.ceil(allBlogPosts.length / BLOG_PER_PAGE));
+    blogPage = Math.min(Math.max(0, page), totalPages - 1);
+    const start = blogPage * BLOG_PER_PAGE;
+    const visiblePosts = allBlogPosts.slice(start, start + BLOG_PER_PAGE);
+    grid.innerHTML = visiblePosts.map(blogCardHTML).join('');
+    renderBlogPagination(totalPages);
+    if (shouldScroll) {
+      document.querySelector('.blog-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
   async function initBlogPosts() {
     const grid = document.getElementById('blog-grid');
     if (!grid) return;
@@ -557,9 +622,15 @@
       const posts = await fetchFirstJson(blogPostUrls());
       const visiblePosts = posts.filter(Boolean);
       if (!visiblePosts.length) throw new Error('empty');
-      grid.innerHTML = visiblePosts.map(blogCardHTML).join('');
+      allBlogPosts = visiblePosts;
+      renderBlogPage(0, false);
     } catch {
       grid.innerHTML = '<p class="blog-empty">No blog posts yet.</p>';
+      const pagination = document.getElementById('blog-pagination');
+      if (pagination) {
+        pagination.style.display = 'none';
+        pagination.innerHTML = '';
+      }
     }
   }
 
