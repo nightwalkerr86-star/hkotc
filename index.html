@@ -332,7 +332,7 @@
     .hero-sub { font-size: clamp(13px, 2vw, 15px); color: var(--muted); max-width: 520px; margin: 0 auto 36px; font-weight: 400; line-height: 1.7; }
     .hero-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 48px; }
     .hero-ctas .btn { min-width: 160px; }
-    .rate-card { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; padding: 20px 32px; border-radius: 20px; background: rgba(255,255,255,0.04); border: 1px solid rgba(245,166,35,0.2); box-shadow: 0 0 40px rgba(245,166,35,0.1); margin-bottom: 16px; }
+    .rate-card { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; width: min(100%, 320px); box-sizing: border-box; padding: 20px 32px; border-radius: 20px; background: rgba(255,255,255,0.04); border: 1px solid rgba(245,166,35,0.2); box-shadow: 0 0 40px rgba(245,166,35,0.1); margin-bottom: 16px; }
     .rate-label { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
     .rate-value { font-size: clamp(36px, 8vw, 56px); font-weight: 900; line-height: 1; background: linear-gradient(135deg, var(--gold), var(--gold2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .rate-sub { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
@@ -1514,6 +1514,7 @@
   const REFERENCE_RATE_FALLBACK_USD = 1.0000;
   const REFERENCE_RATE_FALLBACK_KHR = 4100;
   const BINANCE_TICKER_URL = 'https://api.binance.com/api/v3/ticker/price?symbol=';
+  const EXCHANGE_RATE_API_URL = 'https://open.er-api.com/v6/latest/USD';
 
   const CONFIG = {
     whatsapp: 'https://wa.me/qr/K3GYC3HRQVYSI1',
@@ -1553,6 +1554,15 @@
     const price = Number(json && json.price);
     if (!Number.isFinite(price) || price <= 0) throw new Error('Binance price unavailable: ' + symbol);
     return price;
+  }
+
+  async function fetchUsdKhrRate() {
+    const res = await fetch(EXCHANGE_RATE_API_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error('USD/KHR request failed');
+    const json = await res.json();
+    const rate = Number(json && json.rates && json.rates.KHR);
+    if (!Number.isFinite(rate) || rate <= 0) throw new Error('USD/KHR rate unavailable');
+    return rate;
   }
 
   function isHongKongMarket() {
@@ -1640,6 +1650,15 @@
       } catch {}
     }
 
+    let usdKhrRate = USD_KHR_FALLBACK;
+    let usdKhrLive = false;
+    if (market.code === 'khr') {
+      try {
+        usdKhrRate = await fetchUsdKhrRate();
+        usdKhrLive = true;
+      } catch {}
+    }
+
     const fallbackPairs = [
       { symbol: 'USDCUSDT', invert: true },
       { symbol: 'FDUSDUSDT', invert: true },
@@ -1658,8 +1677,8 @@
         }
         if (market.code === 'khr') {
           return {
-            rate: usdtUsd * USD_KHR_FALLBACK,
-            source: 'Binance ' + pair.symbol + ' × USD/KHR ' + USD_KHR_FALLBACK.toLocaleString('en-US'),
+            rate: usdtUsd * usdKhrRate,
+            source: 'Binance ' + pair.symbol + ' × USD/KHR ' + usdKhrRate.toLocaleString('en-US', { maximumFractionDigits: 2 }) + (usdKhrLive ? '' : ' fallback'),
           };
         }
         return {
@@ -1667,6 +1686,13 @@
           source: 'Binance ' + pair.symbol + ' × USD/HKD ' + USD_HKD_FALLBACK.toFixed(4),
         };
       } catch {}
+    }
+
+    if (market.code === 'khr' && usdKhrLive) {
+      return {
+        rate: usdKhrRate,
+        source: 'USD/KHR ' + usdKhrRate.toLocaleString('en-US', { maximumFractionDigits: 2 }) + ' × USDT/USD fallback',
+      };
     }
 
     throw new Error('No Binance reference rate available');
