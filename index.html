@@ -332,9 +332,9 @@
     .hero-sub { font-size: clamp(13px, 2vw, 15px); color: var(--muted); max-width: 520px; margin: 0 auto 36px; font-weight: 400; line-height: 1.7; }
     .hero-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 48px; }
     .hero-ctas .btn { min-width: 160px; }
-    .rate-card { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; width: min(100%, 320px); box-sizing: border-box; padding: 20px 32px; border-radius: 20px; background: rgba(255,255,255,0.04); border: 1px solid rgba(245,166,35,0.2); box-shadow: 0 0 40px rgba(245,166,35,0.1); margin-bottom: 16px; }
+    .rate-card { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; width: min(100%, 420px); box-sizing: border-box; padding: 20px 32px; border-radius: 20px; background: rgba(255,255,255,0.04); border: 1px solid rgba(245,166,35,0.2); box-shadow: 0 0 40px rgba(245,166,35,0.1); margin-bottom: 16px; }
     .rate-label { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
-    .rate-value { font-size: clamp(36px, 8vw, 56px); font-weight: 900; line-height: 1; background: linear-gradient(135deg, var(--gold), var(--gold2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .rate-value { width: 100%; text-align: center; font-size: clamp(36px, 7vw, 54px); font-weight: 900; line-height: 1; letter-spacing: 0; white-space: nowrap; background: linear-gradient(135deg, var(--gold), var(--gold2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .rate-sub { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
     .rate-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 1.5s ease-in-out infinite; flex-shrink: 0; }
     .rate-change { color: var(--green); font-weight: 600; }
@@ -538,6 +538,7 @@
       .hero-title { letter-spacing: -1px; }
       .hero-sub { font-size: 13px; margin-bottom: 28px; }
       .rate-card { width: 100%; padding: 18px 20px; }
+      .rate-value { font-size: clamp(34px, 14vw, 52px); }
       .hero-ctas { flex-direction: column; gap: 10px; margin-bottom: 0; }
       .hero-ctas .btn { width: 100%; min-width: unset; justify-content: center; }
 
